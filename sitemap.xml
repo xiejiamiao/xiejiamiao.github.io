@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://doc.dimsum.com/2020/03/27/dotnet-core-cap/</loc>
+    
+    <lastmod>2020-03-27T08:49:50.101Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://doc.dimsum.com/2020/03/27/chang-yong-docker/</loc>
     
-    <lastmod>2020-03-27T08:14:04.679Z</lastmod>
+    <lastmod>2020-03-27T08:47:18.133Z</lastmod>
     
   </url>
   
@@ -16,7 +23,7 @@
   </url>
   
   <url>
-    <loc>http://doc.dimsum.com/repository/index.html</loc>
+    <loc>http://doc.dimsum.com/categories/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
@@ -30,7 +37,7 @@
   </url>
   
   <url>
-    <loc>http://doc.dimsum.com/categories/index.html</loc>
+    <loc>http://doc.dimsum.com/repository/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
