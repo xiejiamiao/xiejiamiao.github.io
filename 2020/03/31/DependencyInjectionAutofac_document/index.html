@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>.NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力 | Hexo</title>
+  <meta name="description" content="引入Autofac增强什么能力 核心扩展点 集成Autofac 代码验证 项目与依赖 在代码中引入Autofac 创建测试服务 获取Autofac根容器 一般注册服务 基于名字注册服务 属性注入 AOP切面拦截器 创建子容器    引入Autofac增强什么能力 基于名称的注入：需要把一个服务按照名称来区分它的不同实现 属性注入：直接把服务注册到某个类的属性里面去，而不需要定义构造函数 子容器：">
+<meta property="og:type" content="article">
+<meta property="og:title" content=".NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力">
+<meta property="og:url" content="http://doc.dimsum.com/2020/03/31/DependencyInjectionAutofac_document/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="引入Autofac增强什么能力 核心扩展点 集成Autofac 代码验证 项目与依赖 在代码中引入Autofac 创建测试服务 获取Autofac根容器 一般注册服务 基于名字注册服务 属性注入 AOP切面拦截器 创建子容器    引入Autofac增强什么能力 基于名称的注入：需要把一个服务按照名称来区分它的不同实现 属性注入：直接把服务注册到某个类的属性里面去，而不需要定义构造函数 子容器：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-31T10:18:35.342Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content=".NET Core">
+<meta property="article:tag" content="ASP.NET Core">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://doc.dimsum.com/2020/03/31/DependencyInjectionAutofac_document/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 14px;">教程备忘</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/31/DependencyInjectionAutofac_document/" class="title">.NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-30T16:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/31/DependencyInjectionScopeAndDisposable_document/" class="title">.NET Core开发实战课程备忘(3) -- 作用域与对象释放行为</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-30T16:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/30/DependencyInjection_document/" class="title">.NET Core开发实战课程备忘(2) -- 依赖注入：良好架构的起点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-29T16:00:00.000Z" itemprop="datePublished">2020-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/30/StartupDemo_document/" class="title">.NET Core开发实战课程备忘(1) -- ASP.NET Core的启动流程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-29T16:00:00.000Z" itemprop="datePublished">2020-03-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/03/27/chang-yong-docker/" class="title">开发常用的docker镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-03-26T16:00:00.000Z" itemprop="datePublished">2020-03-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-DependencyInjectionAutofac_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      .NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/31/DependencyInjectionAutofac_document/" class="article-date">
+	  <time datetime="2020-03-30T16:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a>, <a class="article-tag-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/31/DependencyInjectionAutofac_document/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.7k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 7(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#%e5%bc%95%e5%85%a5autofac%e5%a2%9e%e5%bc%ba%e4%bb%80%e4%b9%88%e8%83%bd%e5%8a%9b">引入Autofac增强什么能力</a></li>
+<li><a href="#%e6%a0%b8%e5%bf%83%e6%89%a9%e5%b1%95%e7%82%b9">核心扩展点</a></li>
+<li><a href="#%e9%9b%86%e6%88%90autofac">集成Autofac</a></li>
+<li><a href="#%e4%bb%a3%e7%a0%81%e9%aa%8c%e8%af%81">代码验证</a><ul>
+<li><a href="#%e9%a1%b9%e7%9b%ae%e4%b8%8e%e4%be%9d%e8%b5%96">项目与依赖</a></li>
+<li><a href="#%e5%9c%a8%e4%bb%a3%e7%a0%81%e4%b8%ad%e5%bc%95%e5%85%a5autofac">在代码中引入<code>Autofac</code></a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e6%b5%8b%e8%af%95%e6%9c%8d%e5%8a%a1">创建测试服务</a></li>
+<li><a href="#%e8%8e%b7%e5%8f%96autofac%e6%a0%b9%e5%ae%b9%e5%99%a8">获取<code>Autofac</code>根容器</a></li>
+<li><a href="#%e4%b8%80%e8%88%ac%e6%b3%a8%e5%86%8c%e6%9c%8d%e5%8a%a1">一般注册服务</a></li>
+<li><a href="#%e5%9f%ba%e4%ba%8e%e5%90%8d%e5%ad%97%e6%b3%a8%e5%86%8c%e6%9c%8d%e5%8a%a1">基于名字注册服务</a></li>
+<li><a href="#%e5%b1%9e%e6%80%a7%e6%b3%a8%e5%85%a5">属性注入</a></li>
+<li><a href="#aop%e5%88%87%e9%9d%a2%e6%8b%a6%e6%88%aa%e5%99%a8">AOP切面拦截器</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e5%ad%90%e5%ae%b9%e5%99%a8">创建子容器</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="引入Autofac增强什么能力"><a href="#引入Autofac增强什么能力" class="headerlink" title="引入Autofac增强什么能力"></a>引入Autofac增强什么能力</h1><ul>
+<li>基于名称的注入：需要把一个服务按照名称来区分它的不同实现</li>
+<li>属性注入：直接把服务注册到某个类的属性里面去，而不需要定义构造函数</li>
+<li>子容器：类似原生的scope，但是功能更加丰富</li>
+<li>基于动态代理的AOP：当我们需要在服务中注入我们额外的行为的时候</li>
+</ul>
+<h1 id="核心扩展点"><a href="#核心扩展点" class="headerlink" title="核心扩展点"></a>核心扩展点</h1><p><code>IServiceProviderFactory&lt;TContainerBuilder&gt;</code>：第三方的依赖注入容器都是使用这个类来作为拓展点，把自己注入到整个框架里面来，也就是我们在使用依赖注入框架的时候，不需要关注谁家的特性谁家接口时怎么样的，我们直接使用官方核心的定义即可，不需要直接依赖这些框架</p>
+<h1 id="集成Autofac"><a href="#集成Autofac" class="headerlink" title="集成Autofac"></a>集成Autofac</h1><ul>
+<li><code>Autofac.Extensions.DependencyInjection</code></li>
+<li><code>Autofac.Extras.DynamicProxy</code></li>
+</ul>
+<h1 id="代码验证"><a href="#代码验证" class="headerlink" title="代码验证"></a>代码验证</h1><h2 id="项目与依赖"><a href="#项目与依赖" class="headerlink" title="项目与依赖"></a>项目与依赖</h2><p>创建名字为<code>DependencyInjectionAutofacDemo</code>的<code>ASP.NET Core</code>项目，类型为<code>API</code></p>
+<p>通过<code>nuget</code>引入以下两个包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Autofac.Extensions.DependencyInjection</span><br><span class="line">Autofac.Extras.DynamicProxy</span><br></pre></td></tr></table></figure>
+<h2 id="在代码中引入Autofac"><a href="#在代码中引入Autofac" class="headerlink" title="在代码中引入Autofac"></a>在代码中引入<code>Autofac</code></h2><p>在<code>Program.cs</code>的<code>CreateDefaultBuilder</code>后面添加以下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.UseServiceProviderFactory(new AutofacServiceProviderFactory())</span><br></pre></td></tr></table></figure>
+<p><code>UseServiceProviderFactory</code>用来注册第三方容器的入口</p>
+<p>在<code>Startup</code>中新增<code>ConfigureContainer</code>方法，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureContainer</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此<code>Autofac</code>框架引入完毕，下面要创建测试服务类</p>
+<h2 id="创建测试服务"><a href="#创建测试服务" class="headerlink" title="创建测试服务"></a>创建测试服务</h2><p>创建测试服务<code>MyService.cs</code>类，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">DependencyInjectionAutofacDemo.Services</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IMyService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">ShowCode</span>(<span class="params"></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyService</span> : <span class="title">IMyService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowCode</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">$"MyService.ShowCode:<span class="subst">&#123;GetHashCode()&#125;</span>"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyServiceV2</span> : <span class="title">IMyService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> MyNameService MyNameService &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowCode</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">$"MyServiceV2.ShowCode:<span class="subst">&#123;GetHashCode()&#125;</span>,MyNameService是否为空:<span class="subst">&#123;MyNameService==<span class="literal">null</span>&#125;</span>"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyNameService</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建测试拦截器<code>MyInterceptor.cs</code>，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Castle.DynamicProxy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">DependencyInjectionAutofacDemo.Services</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyInterceptor</span>:<span class="title">IInterceptor</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Intercept</span>(<span class="params">IInvocation invocation</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">$"Intercept before,Method:<span class="subst">&#123;invocation.Method.Name&#125;</span>"</span>);</span><br><span class="line">            invocation.Proceed();</span><br><span class="line">            Console.WriteLine(<span class="string">$"Intercept after,Method:<span class="subst">&#123;invocation.Method.Name&#125;</span>"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>IInterceptor 是Autofac面向切面最重要的一个接口，他可以把我们的逻辑注入到方法的切面里面去</li>
+<li><code>invocation.Proceed()</code>是指具体方法的执行，如果这句不执行，就相当于把切面方法拦截了，让具体类的方法不执行</li>
+</ul>
+<h2 id="获取Autofac根容器"><a href="#获取Autofac根容器" class="headerlink" title="获取Autofac根容器"></a>获取<code>Autofac</code>根容器</h2><p>在<code>Startup</code>里新增类型为<code>ILifetimeScope</code>的<code>AutofacContainer</code>属性，然后在<code>Configure</code>方法中为这个属性复制为<code>Autofac</code>的根容器，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Autofac;</span><br><span class="line"><span class="keyword">using</span> Autofac.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Autofac.Extras.DynamicProxy;</span><br><span class="line"><span class="keyword">using</span> DependencyInjectionAutofacDemo.Services;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Builder;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Hosting;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Hosting;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">DependencyInjectionAutofacDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Startup</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Startup</span>(<span class="params">IConfiguration configuration</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Configuration = configuration;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> IConfiguration Configuration &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureServices</span>(<span class="params">IServiceCollection services</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            services.AddControllers();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureContainer</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> ILifetimeScope AutofacContainer &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">this</span>.AutofacContainer = app.ApplicationServices.GetAutofacRoot();</span><br><span class="line">            <span class="keyword">if</span> (env.IsDevelopment())</span><br><span class="line">            &#123;</span><br><span class="line">                app.UseDeveloperExceptionPage();</span><br><span class="line">            &#125;</span><br><span class="line">            app.UseHttpsRedirection();</span><br><span class="line">            app.UseRouting();</span><br><span class="line">            app.UseAuthorization();</span><br><span class="line">            app.UseEndpoints(endpoints =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                endpoints.MapControllers();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="一般注册服务"><a href="#一般注册服务" class="headerlink" title="一般注册服务"></a>一般注册服务</h2><p>在<code>ConfigureContainer</code>方法中进行服务注册，然后在<code>Configure</code>方法中获取服务实现对象，调用服务的<code>ShowCode</code>方法，具体代码如下:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureContainer</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    builder.RegisterType&lt;MyService&gt;().As&lt;IMyService&gt;();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> serviceNoName = <span class="keyword">this</span>.AutofacContainer.Resolve&lt;IMyService&gt;();</span><br><span class="line">    serviceNoName.ShowCode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Autofac注册服务与<code>ASP.NET Core</code>写法相反，先注册实现类，然后再标记这个实现类为哪种类型</strong></p>
+<p>运行项目会看到控制台打印了<code>MyService</code>对象调用<code>ShowCode</code>方法时候打印的信息，类似信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyService.ShowCode:16336406</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于名字注册服务"><a href="#基于名字注册服务" class="headerlink" title="基于名字注册服务"></a>基于名字注册服务</h2><p>注释掉上一步的测试代码，一样是在<code>ConfigureContainer</code>方法中进行服务注册，然后在<code>Configure</code>方法中获取服务实现对象，调用服务的<code>ShowCode</code>方法，具体代码如下:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureContainer</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    builder.RegisterType&lt;MyServiceV2&gt;().Named&lt;IMyService&gt;(<span class="string">"service2"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> service = <span class="keyword">this</span>.AutofacContainer.ResolveNamed&lt;IMyService&gt;(<span class="string">"service2"</span>);</span><br><span class="line">    service.ShowCode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行项目会看到控制台打印了<code>MyServiceV2</code>对象调用<code>ShowCode</code>方法时候打印的信息，类似信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyServiceV2.ShowCode:16336406,MyNameService是否为空:True</span><br></pre></td></tr></table></figure>
+
+<h2 id="属性注入"><a href="#属性注入" class="headerlink" title="属性注入"></a>属性注入</h2><p>注释掉上一步的测试代码，在<code>ConfigureContainer</code>方法中进行服务注册，注意需要先将属性的服务先进行注册，再进行调用方的服务注册，然后一样再<code>Configure</code>中获取对象，调用<code>ShowCode</code>方法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureContainer</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    builder.RegisterType&lt;MyNameService&gt;();</span><br><span class="line">    builder.RegisterType&lt;MyServiceV2&gt;().As&lt;IMyService&gt;().PropertiesAutowired();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> service = <span class="keyword">this</span>.AutofacContainer.Resolve&lt;IMyService&gt;();</span><br><span class="line">    service.ShowCode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行项目会看到控制台打印了<code>MyServiceV2</code>对象调用<code>ShowCode</code>方法时候打印的信息，类似信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyServiceV2.ShowCode:10309404,MyNameService是否为空:False</span><br></pre></td></tr></table></figure>
+<p>可以发现<code>MyNameService</code>属性已经不为空了，通过属性注入的操作注入到了服务对象中去，打断点进行调试，可以看出<code>MyNameService</code>类型就是上面注册的类型</p>
+<h2 id="AOP切面拦截器"><a href="#AOP切面拦截器" class="headerlink" title="AOP切面拦截器"></a>AOP切面拦截器</h2><p>注释掉上一步的测试代码，先在<code>ConfigureContainer</code>方法中注册拦截器，然后在服务，并指定拦截器为刚刚所注册的拦截器，并且允许接口拦截器生效，获取服务与上一步操作一致</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureContainer</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    builder.RegisterType&lt;MyInterceptor&gt;();</span><br><span class="line">    builder.RegisterType&lt;MyServiceV2&gt;().As&lt;IMyService&gt;().PropertiesAutowired().InterceptedBy(<span class="keyword">typeof</span>(MyInterceptor)).EnableInterfaceInterceptors();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> service = <span class="keyword">this</span>.AutofacContainer.Resolve&lt;IMyService&gt;();</span><br><span class="line">    service.ShowCode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行项目，可以看到控制台在打印出<code>MyServiceV2</code>的<code>ShowCode</code>方法所打印的信息前后，有拦截器打印出来的信息，类似信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Intercept before,Method:ShowCode</span><br><span class="line">MyServiceV2.ShowCode:25116876,MyNameService是否为空:True</span><br><span class="line">Intercept after,Method:ShowCode</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建子容器"><a href="#创建子容器" class="headerlink" title="创建子容器"></a>创建子容器</h2><p>子容器主要适用于将服务注册进指定名字的容器里，这样只有在创建出指定名字的容器才可获取到服务对象，其他容器无法获得该服务对象，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureContainer</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    builder.RegisterType&lt;MyNameService&gt;().InstancePerMatchingLifetimeScope(<span class="string">"myScope"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> myScope = <span class="keyword">this</span>.AutofacContainer.BeginLifetimeScope(<span class="string">"myScope"</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> service0 = myScope.Resolve&lt;MyNameService&gt;();</span><br><span class="line">        <span class="keyword">using</span> (<span class="keyword">var</span> scope = myScope.BeginLifetimeScope())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> service1 = scope.Resolve&lt;MyNameService&gt;();</span><br><span class="line">            <span class="keyword">var</span> service2 = scope.Resolve&lt;MyNameService&gt;();</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(<span class="string">$"service0=service1:<span class="subst">&#123;service0==service1&#125;</span>"</span>);</span><br><span class="line">            Console.WriteLine(<span class="string">$"service1=service2:<span class="subst">&#123;service1==service2&#125;</span>"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码可看到对象获取成功，并且获取到的对象在作用域内为同一个对象，类似信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service0&#x3D;service1:True</span><br><span class="line">service1&#x3D;service2:True</span><br></pre></td></tr></table></figure>
+<p>如果这时候不通过创建指定名字的容器来获得服务对象，会发现代码运行直接报错</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://doc.dimsum.com/2020/03/31/DependencyInjectionAutofac_document/" title=".NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力" target="_blank" rel="external">http://doc.dimsum.com/2020/03/31/DependencyInjectionAutofac_document/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/03/31/DependencyInjectionScopeAndDisposable_document/" title=".NET Core开发实战课程备忘(3) -- 作用域与对象释放行为"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
