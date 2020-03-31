@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://doc.dimsum.com/2020/04/01/ConfigurationEnvironmentVariables_Document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.269Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://doc.dimsum.com/2020/04/01/ConfigurationFile_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.269Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://doc.dimsum.com/2020/03/31/Configuration_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.269Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://doc.dimsum.com/2020/03/31/ConfigurationCommandLine_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.268Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://doc.dimsum.com/2020/03/31/DependencyInjectionAutofac_document/</loc>
     
     <lastmod>2020-03-31T10:18:35.342Z</lastmod>
