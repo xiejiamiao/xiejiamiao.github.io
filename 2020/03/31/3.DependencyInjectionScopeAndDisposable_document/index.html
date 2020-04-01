@@ -21,18 +21,18 @@
   <meta name="description" content="实现IDisposable接口类型的释放 建议 代码验证 项目 创建测试服务 测试Transient服务的释放时机 测试Scope服务的释放时机 测试Singleton服务的释放时机   避坑 自己new服务 在跟容器获取Transient服务    实现IDisposable接口类型的释放 DI只负责释放其创建的对象实例 DI在容器或子容器释放时，释放尤其创建的对象实例  建议 避免在根容器获">
 <meta property="og:type" content="article">
 <meta property="og:title" content=".NET Core开发实战课程备忘(3) -- 作用域与对象释放行为">
-<meta property="og:url" content="http://doc.dimsum.com/2020/03/31/DependencyInjectionScopeAndDisposable_document/index.html">
+<meta property="og:url" content="http://doc.dimsum.com/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/index.html">
 <meta property="og:site_name" content="dimsum">
 <meta property="og:description" content="实现IDisposable接口类型的释放 建议 代码验证 项目 创建测试服务 测试Transient服务的释放时机 测试Scope服务的释放时机 测试Singleton服务的释放时机   避坑 自己new服务 在跟容器获取Transient服务    实现IDisposable接口类型的释放 DI只负责释放其创建的对象实例 DI在容器或子容器释放时，释放尤其创建的对象实例  建议 避免在根容器获">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-03-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-31T04:28:11.520Z">
+<meta property="article:published_time" content="2020-03-31T04:12:12.000Z">
+<meta property="article:modified_time" content="2020-04-01T09:04:14.822Z">
 <meta property="article:author" content="Jiamiao.x">
 <meta property="article:tag" content=".NET Core">
 <meta property="article:tag" content="ASP.NET Core">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://doc.dimsum.com/2020/03/31/DependencyInjectionScopeAndDisposable_document/index.html">
+  <link rel="canonical" href="http://doc.dimsum.com/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/index.html">
   
     <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
   
@@ -184,7 +184,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -194,7 +194,7 @@
   <div class="widget">
     <h3 class="widget-title">标签</h3>
     <div class="widget-body">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">8</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -204,7 +204,7 @@
   <div class="widget">
     <h3 class="widget-title">标签云</h3>
     <div class="widget-body tagcloud">
-      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 14px;">教程备忘</a>
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 14px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a>
     </div>
   </div>
 
@@ -213,7 +213,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
     </div>
   </div>
 
@@ -229,13 +229,13 @@
             
             <div class="item-inner">
               <p class="item-category">
-                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+                <a class="category-link" href="/categories/StepByStep/">StepByStep</a>
               </p>
               <p class="item-title">
-                <a href="/2020/04/01/ConfigurationEnvironmentVariables_Document/" class="title">.NET Core开发实战课程备忘(7) -- 环境变量配置提供程序：容器环境下配置注入的最佳途径</a>
+                <a href="/2020/04/01/StepByStep/" class="title">特基础教程系列</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-03-31T16:00:00.000Z" itemprop="datePublished">2020-04-01</time>
+                <time datetime="2020-04-01T14:18:00.000Z" itemprop="datePublished">2020-04-01</time>
               </p>
             </div>
           </li>
@@ -247,10 +247,10 @@
                 <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
               </p>
               <p class="item-title">
-                <a href="/2020/04/01/ConfigurationFile_document/" class="title">.NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式</a>
+                <a href="/2020/04/01/10.Option_document/" class="title">.NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-03-31T16:00:00.000Z" itemprop="datePublished">2020-04-01</time>
+                <time datetime="2020-04-01T05:13:13.000Z" itemprop="datePublished">2020-04-01</time>
               </p>
             </div>
           </li>
@@ -262,10 +262,10 @@
                 <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
               </p>
               <p class="item-title">
-                <a href="/2020/03/31/Configuration_document/" class="title">.NET Core开发实战课程备忘(5) -- 配置框架：让服务无缝适应各种环境</a>
+                <a href="/2020/04/01/9.ConfigurationCustom_document/" class="title">.NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-03-30T16:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+                <time datetime="2020-04-01T04:12:12.000Z" itemprop="datePublished">2020-04-01</time>
               </p>
             </div>
           </li>
@@ -277,10 +277,10 @@
                 <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
               </p>
               <p class="item-title">
-                <a href="/2020/03/31/ConfigurationCommandLine_document/" class="title">.NET Core开发实战课程备忘(6) -- 命令行配置提供程序：最简单快捷的配置注入方法</a>
+                <a href="/2020/04/01/8.ConfigurationFile_document/" class="title">.NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-03-30T16:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+                <time datetime="2020-04-01T03:11:11.000Z" itemprop="datePublished">2020-04-01</time>
               </p>
             </div>
           </li>
@@ -292,10 +292,10 @@
                 <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
               </p>
               <p class="item-title">
-                <a href="/2020/03/31/DependencyInjectionAutofac_document/" class="title">.NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力</a>
+                <a href="/2020/04/01/7.ConfigurationEnvironmentVariables_Document/" class="title">.NET Core开发实战课程备忘(7) -- 环境变量配置提供程序：容器环境下配置注入的最佳途径</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-03-30T16:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+                <time datetime="2020-04-01T02:10:10.000Z" itemprop="datePublished">2020-04-01</time>
               </p>
             </div>
           </li>
@@ -313,7 +313,7 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-DependencyInjectionScopeAndDisposable_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-3.DependencyInjectionScopeAndDisposable_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
@@ -328,8 +328,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2020/03/31/DependencyInjectionScopeAndDisposable_document/" class="article-date">
-	  <time datetime="2020-03-30T16:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+	<a href="/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/" class="article-date">
+	  <time datetime="2020-03-31T04:12:12.000Z" itemprop="datePublished">2020-03-31</time>
 	</a>
 </span>
         
@@ -354,7 +354,7 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/31/DependencyInjectionScopeAndDisposable_document/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/#comments" class="article-comment-link">评论</a></span>
         
 	
 		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.5k(字)</span>
@@ -438,7 +438,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://doc.dimsum.com/2020/03/31/DependencyInjectionScopeAndDisposable_document/" title=".NET Core开发实战课程备忘(3) -- 作用域与对象释放行为" target="_blank" rel="external">http://doc.dimsum.com/2020/03/31/DependencyInjectionScopeAndDisposable_document/</a>
+      <a href="http://doc.dimsum.com/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/" title=".NET Core开发实战课程备忘(3) -- 作用域与对象释放行为" target="_blank" rel="external">http://doc.dimsum.com/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -485,12 +485,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2020/03/31/DependencyInjectionAutofac_document/" title=".NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2020/03/31/4.DependencyInjectionAutofac_document/" title=".NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2020/03/30/DependencyInjection_document/" title=".NET Core开发实战课程备忘(2) -- 依赖注入：良好架构的起点"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2020/03/30/2.DependencyInjection_document/" title=".NET Core开发实战课程备忘(2) -- 依赖注入：良好架构的起点"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
