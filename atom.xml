@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://doc.dimsum.com/"/>
+  <link href="http://www.dimsum.fun/"/>
   <updated>2020-04-01T16:49:32.267Z</updated>
-  <id>http://doc.dimsum.com/</id>
+  <id>http://www.dimsum.fun/</id>
   
   <author>
     <name>Jiamiao.x</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>特基础教程系列</title>
-    <link href="http://doc.dimsum.com/2020/04/01/StepByStep/"/>
-    <id>http://doc.dimsum.com/2020/04/01/StepByStep/</id>
+    <link href="http://www.dimsum.fun/2020/04/01/StepByStep/"/>
+    <id>http://www.dimsum.fun/2020/04/01/StepByStep/</id>
     <published>2020-04-01T14:18:00.000Z</published>
     <updated>2020-04-01T16:49:32.267Z</updated>
     
@@ -38,19 +38,19 @@
     </summary>
     
     
-      <category term="StepByStep" scheme="http://doc.dimsum.com/categories/StepByStep/"/>
+      <category term="StepByStep" scheme="http://www.dimsum.fun/categories/StepByStep/"/>
     
     
-      <category term="Visual Studio Code" scheme="http://doc.dimsum.com/tags/Visual-Studio-Code/"/>
+      <category term="Visual Studio Code" scheme="http://www.dimsum.fun/tags/Visual-Studio-Code/"/>
     
-      <category term="特基础" scheme="http://doc.dimsum.com/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/"/>
+      <category term="特基础" scheme="http://www.dimsum.fun/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现</title>
-    <link href="http://doc.dimsum.com/2020/04/01/10.Option_document/"/>
-    <id>http://doc.dimsum.com/2020/04/01/10.Option_document/</id>
+    <link href="http://www.dimsum.fun/2020/04/01/10.Option_document/"/>
+    <id>http://www.dimsum.fun/2020/04/01/10.Option_document/</id>
     <published>2020-04-01T05:13:13.000Z</published>
     <updated>2020-04-01T09:04:58.074Z</updated>
     
@@ -68,19 +68,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案</title>
-    <link href="http://doc.dimsum.com/2020/04/01/9.ConfigurationCustom_document/"/>
-    <id>http://doc.dimsum.com/2020/04/01/9.ConfigurationCustom_document/</id>
+    <link href="http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/"/>
+    <id>http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/</id>
     <published>2020-04-01T04:12:12.000Z</published>
     <updated>2020-04-01T09:04:52.857Z</updated>
     
@@ -99,19 +99,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式</title>
-    <link href="http://doc.dimsum.com/2020/04/01/8.ConfigurationFile_document/"/>
-    <id>http://doc.dimsum.com/2020/04/01/8.ConfigurationFile_document/</id>
+    <link href="http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/"/>
+    <id>http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/</id>
     <published>2020-04-01T03:11:11.000Z</published>
     <updated>2020-04-01T09:04:48.264Z</updated>
     
@@ -129,19 +129,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(7) -- 环境变量配置提供程序：容器环境下配置注入的最佳途径</title>
-    <link href="http://doc.dimsum.com/2020/04/01/7.ConfigurationEnvironmentVariables_Document/"/>
-    <id>http://doc.dimsum.com/2020/04/01/7.ConfigurationEnvironmentVariables_Document/</id>
+    <link href="http://www.dimsum.fun/2020/04/01/7.ConfigurationEnvironmentVariables_Document/"/>
+    <id>http://www.dimsum.fun/2020/04/01/7.ConfigurationEnvironmentVariables_Document/</id>
     <published>2020-04-01T02:10:10.000Z</published>
     <updated>2020-04-01T09:04:43.281Z</updated>
     
@@ -159,19 +159,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(6) -- 命令行配置提供程序：最简单快捷的配置注入方法</title>
-    <link href="http://doc.dimsum.com/2020/03/31/6.ConfigurationCommandLine_document/"/>
-    <id>http://doc.dimsum.com/2020/03/31/6.ConfigurationCommandLine_document/</id>
+    <link href="http://www.dimsum.fun/2020/03/31/6.ConfigurationCommandLine_document/"/>
+    <id>http://www.dimsum.fun/2020/03/31/6.ConfigurationCommandLine_document/</id>
     <published>2020-03-31T07:15:15.000Z</published>
     <updated>2020-04-01T09:04:35.678Z</updated>
     
@@ -189,19 +189,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(5) -- 配置框架：让服务无缝适应各种环境</title>
-    <link href="http://doc.dimsum.com/2020/03/31/5.Configuration_document/"/>
-    <id>http://doc.dimsum.com/2020/03/31/5.Configuration_document/</id>
+    <link href="http://www.dimsum.fun/2020/03/31/5.Configuration_document/"/>
+    <id>http://www.dimsum.fun/2020/03/31/5.Configuration_document/</id>
     <published>2020-03-31T06:14:14.000Z</published>
     <updated>2020-04-01T09:04:29.535Z</updated>
     
@@ -219,19 +219,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(4) -- 用Autofac增强容器能力</title>
-    <link href="http://doc.dimsum.com/2020/03/31/4.DependencyInjectionAutofac_document/"/>
-    <id>http://doc.dimsum.com/2020/03/31/4.DependencyInjectionAutofac_document/</id>
+    <link href="http://www.dimsum.fun/2020/03/31/4.DependencyInjectionAutofac_document/"/>
+    <id>http://www.dimsum.fun/2020/03/31/4.DependencyInjectionAutofac_document/</id>
     <published>2020-03-31T05:13:13.000Z</published>
     <updated>2020-04-01T09:04:21.075Z</updated>
     
@@ -249,19 +249,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(3) -- 作用域与对象释放行为</title>
-    <link href="http://doc.dimsum.com/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/"/>
-    <id>http://doc.dimsum.com/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/</id>
+    <link href="http://www.dimsum.fun/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/"/>
+    <id>http://www.dimsum.fun/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/</id>
     <published>2020-03-31T04:12:12.000Z</published>
     <updated>2020-04-01T09:04:14.822Z</updated>
     
@@ -278,19 +278,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(2) -- 依赖注入：良好架构的起点</title>
-    <link href="http://doc.dimsum.com/2020/03/30/2.DependencyInjection_document/"/>
-    <id>http://doc.dimsum.com/2020/03/30/2.DependencyInjection_document/</id>
+    <link href="http://www.dimsum.fun/2020/03/30/2.DependencyInjection_document/"/>
+    <id>http://www.dimsum.fun/2020/03/30/2.DependencyInjection_document/</id>
     <published>2020-03-30T02:12:12.000Z</published>
     <updated>2020-04-01T09:04:05.594Z</updated>
     
@@ -307,19 +307,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core开发实战课程备忘(1) -- ASP.NET Core的启动流程</title>
-    <link href="http://doc.dimsum.com/2020/03/29/1.StartupDemo_document/"/>
-    <id>http://doc.dimsum.com/2020/03/29/1.StartupDemo_document/</id>
+    <link href="http://www.dimsum.fun/2020/03/29/1.StartupDemo_document/"/>
+    <id>http://www.dimsum.fun/2020/03/29/1.StartupDemo_document/</id>
     <published>2020-03-29T02:11:21.000Z</published>
     <updated>2020-04-01T09:03:58.277Z</updated>
     
@@ -338,19 +338,19 @@
     </summary>
     
     
-      <category term=".NET Core开发实战课程备忘" scheme="http://doc.dimsum.com/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term=".NET Core开发实战课程备忘" scheme="http://www.dimsum.fun/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
     
-      <category term="ASP.NET Core" scheme="http://doc.dimsum.com/tags/ASP-NET-Core/"/>
+      <category term="ASP.NET Core" scheme="http://www.dimsum.fun/tags/ASP-NET-Core/"/>
     
-      <category term="教程备忘" scheme="http://doc.dimsum.com/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
+      <category term="教程备忘" scheme="http://www.dimsum.fun/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/"/>
     
   </entry>
   
   <entry>
     <title>.NET Core使用Cap</title>
-    <link href="http://doc.dimsum.com/2020/03/27/dotnet-core-cap/"/>
-    <id>http://doc.dimsum.com/2020/03/27/dotnet-core-cap/</id>
+    <link href="http://www.dimsum.fun/2020/03/27/dotnet-core-cap/"/>
+    <id>http://www.dimsum.fun/2020/03/27/dotnet-core-cap/</id>
     <published>2020-03-27T05:13:13.000Z</published>
     <updated>2020-04-01T09:05:51.498Z</updated>
     
@@ -369,21 +369,21 @@
     </summary>
     
     
-      <category term=".NET" scheme="http://doc.dimsum.com/categories/NET/"/>
+      <category term=".NET" scheme="http://www.dimsum.fun/categories/NET/"/>
     
     
-      <category term=".NET Core" scheme="http://doc.dimsum.com/tags/NET-Core/"/>
+      <category term=".NET Core" scheme="http://www.dimsum.fun/tags/NET-Core/"/>
     
-      <category term="CAP" scheme="http://doc.dimsum.com/tags/CAP/"/>
+      <category term="CAP" scheme="http://www.dimsum.fun/tags/CAP/"/>
     
-      <category term="MicroServices" scheme="http://doc.dimsum.com/tags/MicroServices/"/>
+      <category term="MicroServices" scheme="http://www.dimsum.fun/tags/MicroServices/"/>
     
   </entry>
   
   <entry>
     <title>开发常用的docker镜像</title>
-    <link href="http://doc.dimsum.com/2020/03/27/chang-yong-docker/"/>
-    <id>http://doc.dimsum.com/2020/03/27/chang-yong-docker/</id>
+    <link href="http://www.dimsum.fun/2020/03/27/chang-yong-docker/"/>
+    <id>http://www.dimsum.fun/2020/03/27/chang-yong-docker/</id>
     <published>2020-03-27T04:12:12.000Z</published>
     <updated>2020-04-01T09:05:19.348Z</updated>
     
@@ -402,12 +402,12 @@
     </summary>
     
     
-      <category term="Docker" scheme="http://doc.dimsum.com/categories/Docker/"/>
+      <category term="Docker" scheme="http://www.dimsum.fun/categories/Docker/"/>
     
     
-      <category term="docker" scheme="http://doc.dimsum.com/tags/docker/"/>
+      <category term="docker" scheme="http://www.dimsum.fun/tags/docker/"/>
     
-      <category term="elasticsearch" scheme="http://doc.dimsum.com/tags/elasticsearch/"/>
+      <category term="elasticsearch" scheme="http://www.dimsum.fun/tags/elasticsearch/"/>
     
   </entry>
   
