@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>.NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案 | Hexo</title>
+  <meta name="description" content="拓展步骤 代码实现 创建项目 创建自定义数据源Provider 创建自定义数据源Source 创建IConfigurationBuilder扩展方法 引用自定义配置源并监听配置源变化    拓展步骤 实现IConfigurationSource 实现IConfigurationProvider 实现AddXXX扩展方法  代码实现创建项目创建名字为ConfigurationCustomDemo的">
+<meta property="og:type" content="article">
+<meta property="og:title" content=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案">
+<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="拓展步骤 代码实现 创建项目 创建自定义数据源Provider 创建自定义数据源Source 创建IConfigurationBuilder扩展方法 引用自定义配置源并监听配置源变化    拓展步骤 实现IConfigurationSource 实现IConfigurationProvider 实现AddXXX扩展方法  代码实现创建项目创建名字为ConfigurationCustomDemo的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-01T04:12:12.000Z">
+<meta property="article:modified_time" content="2020-04-01T09:04:52.857Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content=".NET Core">
+<meta property="article:tag" content="ASP.NET Core">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 14px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/02/11.LoggingSimple_document/" class="title">.NET Core开发实战课程备忘(11) -- 日志框架：聊聊记日志的最佳姿势</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-02T03:12:00.000Z" itemprop="datePublished">2020-04-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/02/12.LoggingSerilog_document/" class="title">.NET Core开发实战课程备忘(12) -- 结构化日志组件Serilog：记录对查询分析友好的日志</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-02T03:12:00.000Z" itemprop="datePublished">2020-04-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/StepByStep/">StepByStep</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/01/StepByStep/" class="title">特基础教程系列</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-01T14:18:00.000Z" itemprop="datePublished">2020-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/01/10.Option_document/" class="title">.NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-01T05:13:13.000Z" itemprop="datePublished">2020-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/01/9.ConfigurationCustom_document/" class="title">.NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-01T04:12:12.000Z" itemprop="datePublished">2020-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-9.ConfigurationCustom_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      .NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/01/9.ConfigurationCustom_document/" class="article-date">
+	  <time datetime="2020-04-01T04:12:12.000Z" itemprop="datePublished">2020-04-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a>, <a class="article-tag-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/9.ConfigurationCustom_document/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 524(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#%e6%8b%93%e5%b1%95%e6%ad%a5%e9%aa%a4">拓展步骤</a></li>
+<li><a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">代码实现</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae">创建项目</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%87%aa%e5%ae%9a%e4%b9%89%e6%95%b0%e6%8d%ae%e6%ba%90provider">创建自定义数据源<code>Provider</code></a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%87%aa%e5%ae%9a%e4%b9%89%e6%95%b0%e6%8d%ae%e6%ba%90source">创建自定义数据源<code>Source</code></a></li>
+<li><a href="#%e5%88%9b%e5%bb%baiconfigurationbuilder%e6%89%a9%e5%b1%95%e6%96%b9%e6%b3%95">创建<code>IConfigurationBuilder</code>扩展方法</a></li>
+<li><a href="#%e5%bc%95%e7%94%a8%e8%87%aa%e5%ae%9a%e4%b9%89%e9%85%8d%e7%bd%ae%e6%ba%90%e5%b9%b6%e7%9b%91%e5%90%ac%e9%85%8d%e7%bd%ae%e6%ba%90%e5%8f%98%e5%8c%96">引用自定义配置源并监听配置源变化</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="拓展步骤"><a href="#拓展步骤" class="headerlink" title="拓展步骤"></a>拓展步骤</h1><ul>
+<li>实现<code>IConfigurationSource</code></li>
+<li>实现<code>IConfigurationProvider</code></li>
+<li>实现<code>AddXXX</code>扩展方法</li>
+</ul>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>ConfigurationCustomDemo</code>的<code>控制台应用</code>，通过<code>nuget</code>引入以下两个包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Microsoft.Extensions.Configuration</span><br><span class="line">Microsoft.Extensions.Configuration.Abstractions</span><br></pre></td></tr></table></figure>
+<h2 id="创建自定义数据源Provider"><a href="#创建自定义数据源Provider" class="headerlink" title="创建自定义数据源Provider"></a>创建自定义数据源<code>Provider</code></h2><p>创建<code>MyConfigurationProvider</code>，继承<code>ConfigurationProvider</code>这个抽象类，调用基类的<code>OnReload</code>方法能触发重新加载配置，这里因为要自动修改和触发配置，所以这个类里用了<code>Timer</code>对象来模拟配置变化的操作，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Timers;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">MyConfigurationProvider</span>:<span class="title">ConfigurationProvider</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> Timer timer;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyConfigurationProvider</span>(<span class="params"></span>):<span class="title">base</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            timer = <span class="keyword">new</span> Timer();</span><br><span class="line">            timer.Elapsed += Timer_Elapsed;</span><br><span class="line">            timer.Interval = <span class="number">3000</span>;</span><br><span class="line">            timer.Start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Timer_Elapsed</span>(<span class="params"><span class="keyword">object</span> sender, ElapsedEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Load(<span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Load</span>(<span class="params"><span class="keyword">bool</span> reload</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">this</span>.Data[<span class="string">"lastTime"</span>] = DateTime.Now.ToString();</span><br><span class="line">            <span class="keyword">if</span> (reload)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">base</span>.OnReload();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建自定义数据源Source"><a href="#创建自定义数据源Source" class="headerlink" title="创建自定义数据源Source"></a>创建自定义数据源<code>Source</code></h2><p>创建<code>MyConfigurationSource</code>，实现<code>IConfigurationSource</code>接口，在<code>Build</code>方法直接返回上面创建的<code>Provider</code>，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">MyConfigurationSource</span>:<span class="title">IConfigurationSource</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> IConfigurationProvider <span class="title">Build</span>(<span class="params">IConfigurationBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyConfigurationProvider();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建IConfigurationBuilder扩展方法"><a href="#创建IConfigurationBuilder扩展方法" class="headerlink" title="创建IConfigurationBuilder扩展方法"></a>创建<code>IConfigurationBuilder</code>扩展方法</h2><p>可以看到上面两个类的都是用<code>internal</code>的访问修饰符，这是因为一般在<code>Provider</code>和<code>Source</code>都是通过拓展方法来调用，而不会将自己直接暴露被调用者，所以接下来要创建一个<code>IConfigurationBuilder</code>的扩展方法，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">MyConfigurationBuilderExtension</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IConfigurationBuilder <span class="title">AddMyConfiguration</span>(<span class="params"><span class="keyword">this</span> IConfigurationBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            builder.Add(<span class="keyword">new</span> MyConfigurationSource());</span><br><span class="line">            <span class="keyword">return</span> builder;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="引用自定义配置源并监听配置源变化"><a href="#引用自定义配置源并监听配置源变化" class="headerlink" title="引用自定义配置源并监听配置源变化"></a>引用自定义配置源并监听配置源变化</h2><p><code>Program.Main</code>方法修改如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Primitives;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> builder = <span class="keyword">new</span> ConfigurationBuilder();</span><br><span class="line">            builder.AddMyConfiguration();</span><br><span class="line">            <span class="keyword">var</span> configurationRoot = builder.Build();</span><br><span class="line"></span><br><span class="line">            ChangeToken.OnChange(() =&gt; configurationRoot.GetReloadToken(), () =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> lastTime = configurationRoot[<span class="string">"lastTime"</span>];</span><br><span class="line">                Console.WriteLine(<span class="string">$"lastTime=<span class="subst">&#123;lastTime&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">"======"</span>);</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，可以看到控制台3秒钟打印一次当前时间的效果</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/" title=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/04/01/10.Option_document/" title=".NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/04/01/8.ConfigurationFile_document/" title=".NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

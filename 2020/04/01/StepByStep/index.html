@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>特基础教程系列 | Hexo</title>
+  <meta name="description" content="Visual Studio Code 下载安装 关于安装扩展插件 关于汉化   平时写静态页流程 todo:常用的vscode插件 todo:常用的vscode代码段  Visual Studio Code下载安装下载地址：https:&#x2F;&#x2F;code.visualstudio.com&#x2F;，下载之后双击安装即可 关于安装扩展插件如下图，点击左边的插件tab，输入插件名称进行搜索，然后点击install">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特基础教程系列">
+<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/StepByStep/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="Visual Studio Code 下载安装 关于安装扩展插件 关于汉化   平时写静态页流程 todo:常用的vscode插件 todo:常用的vscode代码段  Visual Studio Code下载安装下载地址：https:&#x2F;&#x2F;code.visualstudio.com&#x2F;，下载之后双击安装即可 关于安装扩展插件如下图，点击左边的插件tab，输入插件名称进行搜索，然后点击install">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/04/01/ONqmZth8iAbfECX.png">
+<meta property="og:image" content="https://i.loli.net/2020/04/02/TjLXCdGEiIoOxSR.png">
+<meta property="og:image" content="https://i.loli.net/2020/04/02/kaPc2qStsbyi3DI.png">
+<meta property="article:published_time" content="2020-04-01T14:18:00.000Z">
+<meta property="article:modified_time" content="2020-04-01T16:49:32.267Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="Visual Studio Code">
+<meta property="article:tag" content="特基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/04/01/ONqmZth8iAbfECX.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/StepByStep/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 14px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/02/11.LoggingSimple_document/" class="title">.NET Core开发实战课程备忘(11) -- 日志框架：聊聊记日志的最佳姿势</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-02T03:12:00.000Z" itemprop="datePublished">2020-04-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/02/12.LoggingSerilog_document/" class="title">.NET Core开发实战课程备忘(12) -- 结构化日志组件Serilog：记录对查询分析友好的日志</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-02T03:12:00.000Z" itemprop="datePublished">2020-04-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/StepByStep/">StepByStep</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/01/StepByStep/" class="title">特基础教程系列</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-01T14:18:00.000Z" itemprop="datePublished">2020-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/01/10.Option_document/" class="title">.NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-01T05:13:13.000Z" itemprop="datePublished">2020-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/01/9.ConfigurationCustom_document/" class="title">.NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-01T04:12:12.000Z" itemprop="datePublished">2020-04-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-StepByStep" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      特基础教程系列
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/01/StepByStep/" class="article-date">
+	  <time datetime="2020-04-01T14:18:00.000Z" itemprop="datePublished">2020-04-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/StepByStep/">StepByStep</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a>, <a class="article-tag-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/StepByStep/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 601(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#visual-studio-code">Visual Studio Code</a><ul>
+<li><a href="#%e4%b8%8b%e8%bd%bd%e5%ae%89%e8%a3%85">下载安装</a></li>
+<li><a href="#%e5%85%b3%e4%ba%8e%e5%ae%89%e8%a3%85%e6%89%a9%e5%b1%95%e6%8f%92%e4%bb%b6">关于安装扩展插件</a></li>
+<li><a href="#%e5%85%b3%e4%ba%8e%e6%b1%89%e5%8c%96">关于汉化</a></li>
+</ul>
+</li>
+<li><a href="#%e5%b9%b3%e6%97%b6%e5%86%99%e9%9d%99%e6%80%81%e9%a1%b5%e6%b5%81%e7%a8%8b">平时写静态页流程</a></li>
+<li><a href="#todo%e5%b8%b8%e7%94%a8%e7%9a%84vscode%e6%8f%92%e4%bb%b6">todo:常用的<code>vscode</code>插件</a></li>
+<li><a href="#todo%e5%b8%b8%e7%94%a8%e7%9a%84vscode%e4%bb%a3%e7%a0%81%e6%ae%b5">todo:常用的<code>vscode</code>代码段</a></li>
+</ul>
+<h1 id="Visual-Studio-Code"><a href="#Visual-Studio-Code" class="headerlink" title="Visual Studio Code"></a>Visual Studio Code</h1><h2 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h2><p>下载地址：<a href="https://code.visualstudio.com/" target="_blank" rel="noopener">https://code.visualstudio.com/</a>，下载之后双击安装即可</p>
+<h2 id="关于安装扩展插件"><a href="#关于安装扩展插件" class="headerlink" title="关于安装扩展插件"></a>关于安装扩展插件</h2><p>如下图，点击左边的插件tab，输入插件名称进行搜索，然后点击<code>install</code>即可进行安装<br><img src="https://i.loli.net/2020/04/01/ONqmZth8iAbfECX.png" alt="微信截图_20200401235919.png"></p>
+<h2 id="关于汉化"><a href="#关于汉化" class="headerlink" title="关于汉化"></a>关于汉化</h2><p><code>vscode</code>的汉化包使用的也是通过插件的形式来安装，搜索<code>chinese</code>，找到<code>Chinese (Simplified) Language Pack for Visual Studio Code</code>这个插件进行安装，安装完重启即可</p>
+<h1 id="平时写静态页流程"><a href="#平时写静态页流程" class="headerlink" title="平时写静态页流程"></a>平时写静态页流程</h1><ol>
+<li><p>一般我会在电脑指定一个盘创建一个文件夹，指定这个文件夹存放自己的源码，无论个人电脑还是公司电脑，比如<code>G</code>盘里创建了<code>repo</code>的文件夹作为我统一管理源码的文件夹</p>
+</li>
+<li><p>通常自己写代码会分两种级别，一种是为了学习测试而写的demo，一种是比较有一定业务逻辑需求的小项目，所以一般会在<code>repo</code>文件夹下再创建两个文件夹，分别为<code>jiamiao.x.demo</code>和<code>jiamiao.x.project</code></p>
+</li>
+<li><p>注意一点，<strong>无论是在写<code>demo</code>还是写<code>project</code>，都不要出现类似<code>demo1</code>、<code>demo2</code>、<code>project1</code>、<code>project2</code>这种没意义的名字</strong>，以下以我写一段表单<code>demo</code>为例子：</p>
+</li>
+<li><p>在<code>G:/repo/jiamiao.x.demo</code>的文件夹中创建文件夹<code>form_demo</code>，然后再<code>form_demo</code>文件夹上右键，点击<code>通过Code打开</code></p>
+</li>
+<li><p>打开之后可以看到左边有文件夹的目录，当前现在是一片空白，如下图：</p>
+<p><img src="https://i.loli.net/2020/04/02/TjLXCdGEiIoOxSR.png" alt="微信截图_20200402002810.png"></p>
+</li>
+<li><p>接下来在<code>vscode</code>中操作，在<code>FORM_DEMO</code>下方空白处右键，点击<code>新建文件</code>，输入<code>index.html</code>回车，可以看到创建了<code>index.html</code>文件，在右边的编辑区则可以进行编码，只要文件扩展名<code>.html</code>正确，则可以代码高亮和智能提示</p>
+</li>
+<li><p>当静态页需要引用图片、样式、脚本等，可以在<code>FORM_DEMO</code>下方空白处右键，点击<code>新建文件夹</code>，对应输入<code>image/style/script</code>等名字之后回车即可</p>
+</li>
+<li><p>写完页面之后，可以右键<code>index.html</code>文件，点击<code>Open In Default Browser</code>(需要安装插件<code>Open in Browser</code>)，直接打开浏览器来查看页面效果，如下图：</p>
+<p><img src="https://i.loli.net/2020/04/02/kaPc2qStsbyi3DI.png" alt="dcfc42a87e4a4804531ffe3de29fd60.png"></p>
+</li>
+</ol>
+<h1 id="todo-常用的vscode插件"><a href="#todo-常用的vscode插件" class="headerlink" title="todo:常用的vscode插件"></a>todo:常用的<code>vscode</code>插件</h1><h1 id="todo-常用的vscode代码段"><a href="#todo-常用的vscode代码段" class="headerlink" title="todo:常用的vscode代码段"></a>todo:常用的<code>vscode</code>代码段</h1>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/04/01/StepByStep/" title="特基础教程系列" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/StepByStep/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/04/02/12.LoggingSerilog_document/" title=".NET Core开发实战课程备忘(12) -- 结构化日志组件Serilog：记录对查询分析友好的日志"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/04/01/10.Option_document/" title=".NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
