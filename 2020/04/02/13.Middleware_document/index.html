@@ -17,22 +17,22 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>.NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案 | Hexo</title>
-  <meta name="description" content="拓展步骤 代码实现 创建项目 创建自定义数据源Provider 创建自定义数据源Source 创建IConfigurationBuilder扩展方法 引用自定义配置源并监听配置源变化    拓展步骤 实现IConfigurationSource 实现IConfigurationProvider 实现AddXXX扩展方法  代码实现创建项目创建名字为ConfigurationCustomDemo的">
+  <title>.NET Core开发实战课程备忘(13) -- 中间件：掌握请求处理过程的关键 | Hexo</title>
+  <meta name="description" content="核心对象 代码实现 创建项目 直接注入委托 对特定路径注册特定中间件 对特定路径注册中间件升级版 使用扩展方法来注册中间件(最佳姿势)    核心对象 IApplicationBuilder：让我们注册我们自己的中间件 RequestDelegate：我们处理整个请求的委托  代码实现创建项目创建名字为MiddlewareDemo的ASP.NET Core项目，类型为API 直接注入委托Star">
 <meta property="og:type" content="article">
-<meta property="og:title" content=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案">
-<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/index.html">
+<meta property="og:title" content=".NET Core开发实战课程备忘(13) -- 中间件：掌握请求处理过程的关键">
+<meta property="og:url" content="http://www.dimsum.fun/2020/04/02/13.Middleware_document/index.html">
 <meta property="og:site_name" content="dimsum">
-<meta property="og:description" content="拓展步骤 代码实现 创建项目 创建自定义数据源Provider 创建自定义数据源Source 创建IConfigurationBuilder扩展方法 引用自定义配置源并监听配置源变化    拓展步骤 实现IConfigurationSource 实现IConfigurationProvider 实现AddXXX扩展方法  代码实现创建项目创建名字为ConfigurationCustomDemo的">
+<meta property="og:description" content="核心对象 代码实现 创建项目 直接注入委托 对特定路径注册特定中间件 对特定路径注册中间件升级版 使用扩展方法来注册中间件(最佳姿势)    核心对象 IApplicationBuilder：让我们注册我们自己的中间件 RequestDelegate：我们处理整个请求的委托  代码实现创建项目创建名字为MiddlewareDemo的ASP.NET Core项目，类型为API 直接注入委托Star">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-01T04:12:12.000Z">
-<meta property="article:modified_time" content="2020-04-01T09:04:52.857Z">
+<meta property="article:published_time" content="2020-04-02T10:12:00.000Z">
+<meta property="article:modified_time" content="2020-04-02T17:11:23.323Z">
 <meta property="article:author" content="Jiamiao.x">
 <meta property="article:tag" content=".NET Core">
 <meta property="article:tag" content="ASP.NET Core">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/index.html">
+  <link rel="canonical" href="http://www.dimsum.fun/2020/04/02/13.Middleware_document/index.html">
   
     <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
   
@@ -313,14 +313,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-9.ConfigurationCustom_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-13.Middleware_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      .NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案
+      .NET Core开发实战课程备忘(13) -- 中间件：掌握请求处理过程的关键
     </h1>
   
 
@@ -328,8 +328,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2020/04/01/9.ConfigurationCustom_document/" class="article-date">
-	  <time datetime="2020-04-01T04:12:12.000Z" itemprop="datePublished">2020-04-01</time>
+	<a href="/2020/04/02/13.Middleware_document/" class="article-date">
+	  <time datetime="2020-04-02T10:12:00.000Z" itemprop="datePublished">2020-04-02</time>
 	</a>
 </span>
         
@@ -354,13 +354,13 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/9.ConfigurationCustom_document/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/02/13.Middleware_document/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 524(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 809(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
 	
 
       </div>
@@ -368,33 +368,42 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <ul>
-<li><a href="#%e6%8b%93%e5%b1%95%e6%ad%a5%e9%aa%a4">拓展步骤</a></li>
+<li><a href="#%e6%a0%b8%e5%bf%83%e5%af%b9%e8%b1%a1">核心对象</a></li>
 <li><a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">代码实现</a><ul>
 <li><a href="#%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae">创建项目</a></li>
-<li><a href="#%e5%88%9b%e5%bb%ba%e8%87%aa%e5%ae%9a%e4%b9%89%e6%95%b0%e6%8d%ae%e6%ba%90provider">创建自定义数据源<code>Provider</code></a></li>
-<li><a href="#%e5%88%9b%e5%bb%ba%e8%87%aa%e5%ae%9a%e4%b9%89%e6%95%b0%e6%8d%ae%e6%ba%90source">创建自定义数据源<code>Source</code></a></li>
-<li><a href="#%e5%88%9b%e5%bb%baiconfigurationbuilder%e6%89%a9%e5%b1%95%e6%96%b9%e6%b3%95">创建<code>IConfigurationBuilder</code>扩展方法</a></li>
-<li><a href="#%e5%bc%95%e7%94%a8%e8%87%aa%e5%ae%9a%e4%b9%89%e9%85%8d%e7%bd%ae%e6%ba%90%e5%b9%b6%e7%9b%91%e5%90%ac%e9%85%8d%e7%bd%ae%e6%ba%90%e5%8f%98%e5%8c%96">引用自定义配置源并监听配置源变化</a></li>
+<li><a href="#%e7%9b%b4%e6%8e%a5%e6%b3%a8%e5%85%a5%e5%a7%94%e6%89%98">直接注入委托</a></li>
+<li><a href="#%e5%af%b9%e7%89%b9%e5%ae%9a%e8%b7%af%e5%be%84%e6%b3%a8%e5%86%8c%e7%89%b9%e5%ae%9a%e4%b8%ad%e9%97%b4%e4%bb%b6">对特定路径注册特定中间件</a></li>
+<li><a href="#%e5%af%b9%e7%89%b9%e5%ae%9a%e8%b7%af%e5%be%84%e6%b3%a8%e5%86%8c%e4%b8%ad%e9%97%b4%e4%bb%b6%e5%8d%87%e7%ba%a7%e7%89%88">对特定路径注册中间件升级版</a></li>
+<li><a href="#%e4%bd%bf%e7%94%a8%e6%89%a9%e5%b1%95%e6%96%b9%e6%b3%95%e6%9d%a5%e6%b3%a8%e5%86%8c%e4%b8%ad%e9%97%b4%e4%bb%b6%e6%9c%80%e4%bd%b3%e5%a7%bf%e5%8a%bf">使用扩展方法来注册中间件(最佳姿势)</a></li>
 </ul>
 </li>
 </ul>
-<h1 id="拓展步骤"><a href="#拓展步骤" class="headerlink" title="拓展步骤"></a>拓展步骤</h1><ul>
-<li>实现<code>IConfigurationSource</code></li>
-<li>实现<code>IConfigurationProvider</code></li>
-<li>实现<code>AddXXX</code>扩展方法</li>
+<h1 id="核心对象"><a href="#核心对象" class="headerlink" title="核心对象"></a>核心对象</h1><ul>
+<li><code>IApplicationBuilder</code>：让我们注册我们自己的中间件</li>
+<li><code>RequestDelegate</code>：我们处理整个请求的委托</li>
 </ul>
-<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>ConfigurationCustomDemo</code>的<code>控制台应用</code>，通过<code>nuget</code>引入以下两个包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Microsoft.Extensions.Configuration</span><br><span class="line">Microsoft.Extensions.Configuration.Abstractions</span><br></pre></td></tr></table></figure>
-<h2 id="创建自定义数据源Provider"><a href="#创建自定义数据源Provider" class="headerlink" title="创建自定义数据源Provider"></a>创建自定义数据源<code>Provider</code></h2><p>创建<code>MyConfigurationProvider</code>，继承<code>ConfigurationProvider</code>这个抽象类，调用基类的<code>OnReload</code>方法能触发重新加载配置，这里因为要自动修改和触发配置，所以这个类里用了<code>Timer</code>对象来模拟配置变化的操作，具体代码如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Timers;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">MyConfigurationProvider</span>:<span class="title">ConfigurationProvider</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> Timer timer;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyConfigurationProvider</span>(<span class="params"></span>):<span class="title">base</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            timer = <span class="keyword">new</span> Timer();</span><br><span class="line">            timer.Elapsed += Timer_Elapsed;</span><br><span class="line">            timer.Interval = <span class="number">3000</span>;</span><br><span class="line">            timer.Start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Timer_Elapsed</span>(<span class="params"><span class="keyword">object</span> sender, ElapsedEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Load(<span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Load</span>(<span class="params"><span class="keyword">bool</span> reload</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">this</span>.Data[<span class="string">"lastTime"</span>] = DateTime.Now.ToString();</span><br><span class="line">            <span class="keyword">if</span> (reload)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">base</span>.OnReload();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="创建自定义数据源Source"><a href="#创建自定义数据源Source" class="headerlink" title="创建自定义数据源Source"></a>创建自定义数据源<code>Source</code></h2><p>创建<code>MyConfigurationSource</code>，实现<code>IConfigurationSource</code>接口，在<code>Build</code>方法直接返回上面创建的<code>Provider</code>，具体代码如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">MyConfigurationSource</span>:<span class="title">IConfigurationSource</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> IConfigurationProvider <span class="title">Build</span>(<span class="params">IConfigurationBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyConfigurationProvider();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="创建IConfigurationBuilder扩展方法"><a href="#创建IConfigurationBuilder扩展方法" class="headerlink" title="创建IConfigurationBuilder扩展方法"></a>创建<code>IConfigurationBuilder</code>扩展方法</h2><p>可以看到上面两个类的都是用<code>internal</code>的访问修饰符，这是因为一般在<code>Provider</code>和<code>Source</code>都是通过拓展方法来调用，而不会将自己直接暴露被调用者，所以接下来要创建一个<code>IConfigurationBuilder</code>的扩展方法，代码如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">MyConfigurationBuilderExtension</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IConfigurationBuilder <span class="title">AddMyConfiguration</span>(<span class="params"><span class="keyword">this</span> IConfigurationBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            builder.Add(<span class="keyword">new</span> MyConfigurationSource());</span><br><span class="line">            <span class="keyword">return</span> builder;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>MiddlewareDemo</code>的<code>ASP.NET Core</code>项目，类型为<code>API</code></p>
+<h2 id="直接注入委托"><a href="#直接注入委托" class="headerlink" title="直接注入委托"></a>直接注入委托</h2><p><code>Startup.Configure</code>方法里，在<code>app.UseHttpsRedirection()</code>中间件之前添加以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">app.Use(<span class="keyword">async</span> (context, next) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">    <span class="keyword">await</span> context.Response.WriteAsync(<span class="string">"Hello world -- my middleware in delegate"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>运行代码访问<code>/WeatherForecast</code>，可以看到原本的json后面会添加<code>Hello world -- my middleware in delegate</code>这句话</p>
+<h2 id="对特定路径注册特定中间件"><a href="#对特定路径注册特定中间件" class="headerlink" title="对特定路径注册特定中间件"></a>对特定路径注册特定中间件</h2><p>注释掉上面的代码，在原处新增以下代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">app.Map(<span class="string">"/abc"</span>, builder =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    builder.Use(<span class="keyword">async</span> (context, next) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> next();</span><br><span class="line">        <span class="keyword">await</span> context.Response.WriteAsync(<span class="string">"Hello world abc -- from map middleware"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>运行代码访问<code>/WeatherForecast</code>，结果与初始项目运行一致，访问<code>/abc</code>，页面会返回<code>Hello world abc -- from map middleware</code></p>
+<h2 id="对特定路径注册中间件升级版"><a href="#对特定路径注册中间件升级版" class="headerlink" title="对特定路径注册中间件升级版"></a>对特定路径注册中间件升级版</h2><p>当这个特定路径的判断比较复杂，可以使用<code>MapWhen</code>来注册，注释掉上一步代码，在原处新增以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">app.MapWhen(context =&gt; &#123; <span class="keyword">return</span> context.Request.Query.Keys.Contains(<span class="string">"abc"</span>); &#125;, builder =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    builder.Use(<span class="keyword">async</span> (context, next) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> next();</span><br><span class="line">        <span class="keyword">await</span> context.Response.WriteAsync(<span class="string">"Hello world query abc -- from mapWhen middleware"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里表示当url参数里包含<code>abc</code>这个函数，则触发指定的中间件，运行代码，运行代码访问<code>/WeatherForecast</code>，结果与初始项目运行一致，访问<code>/WeatherForecast?abc=aaa</code>，会在原有的返回结果后面添加<code>Hello world query abc -- from mapWhen middleware</code></p>
+<h2 id="使用扩展方法来注册中间件-最佳姿势"><a href="#使用扩展方法来注册中间件-最佳姿势" class="headerlink" title="使用扩展方法来注册中间件(最佳姿势)"></a>使用扩展方法来注册中间件(最佳姿势)</h2><p>自定义中间件是按约定来调用的，即中间件里需要包含一个<code>InvokeAsync</code>方法，方法参数为<code>HttpContext</code>，通常中间件不直接对外暴露，所以类的访问修饰符通常是默认的<code>internal</code>，然后通过<code>IApplicationBuilder</code>的扩展方法向外暴露</p>
+<p>在根目录创建文件夹<code>Middlewares/MyMiddleware</code>，在目录下创建两个文件<code>MyMiddleware.cs</code>和<code>MyMiddlewareExtension.cs</code>，具体代码如下：</p>
+<p><code>MyMiddleware.cs</code>代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Http;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Logging;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">MiddlewareDemo.Middlewares.MyMiddleware</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">MyMiddleware</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">readonly</span> RequestDelegate _next;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">readonly</span> ILogger&lt;MyMiddleware&gt; _logger;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyMiddleware</span>(<span class="params">RequestDelegate next,ILogger&lt;MyMiddleware&gt; logger</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            _next = next;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">InvokeAsync</span>(<span class="params">HttpContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">using</span> (_logger.BeginScope(<span class="string">"TraceIdentifier:&#123;TraceIdentifier&#125;"</span>,context.TraceIdentifier))</span><br><span class="line">            &#123;</span><br><span class="line">                _logger.LogDebug(<span class="string">"开始执行MyMiddleware中间件"</span>);</span><br><span class="line">                <span class="keyword">await</span> _next(context);</span><br><span class="line">                _logger.LogDebug(<span class="string">"执行MyMiddleware中间件结束"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="引用自定义配置源并监听配置源变化"><a href="#引用自定义配置源并监听配置源变化" class="headerlink" title="引用自定义配置源并监听配置源变化"></a>引用自定义配置源并监听配置源变化</h2><p><code>Program.Main</code>方法修改如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Primitives;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationCustomDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> builder = <span class="keyword">new</span> ConfigurationBuilder();</span><br><span class="line">            builder.AddMyConfiguration();</span><br><span class="line">            <span class="keyword">var</span> configurationRoot = builder.Build();</span><br><span class="line"></span><br><span class="line">            ChangeToken.OnChange(() =&gt; configurationRoot.GetReloadToken(), () =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> lastTime = configurationRoot[<span class="string">"lastTime"</span>];</span><br><span class="line">                Console.WriteLine(<span class="string">$"lastTime=<span class="subst">&#123;lastTime&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">"======"</span>);</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行代码，可以看到控制台3秒钟打印一次当前时间的效果</p>
+<p><code>MyMiddlewareExtension.cs</code>代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Builder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">MiddlewareDemo.Middlewares.MyMiddleware</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">MyMiddlewareExtension</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IApplicationBuilder <span class="title">UseMyMiddleware</span>(<span class="params"><span class="keyword">this</span> IApplicationBuilder app</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> app.UseMiddleware&lt;MyMiddleware&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为这里使用了日志作用域，所以还需要到<code>appsettings.json</code>里修改以下日志配置，具体内容如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"Logging"</span>: &#123;</span><br><span class="line">    <span class="attr">"LogLevel"</span>: &#123;</span><br><span class="line">      <span class="attr">"Default"</span>: <span class="string">"Trace"</span>,</span><br><span class="line">      <span class="attr">"Microsoft"</span>: <span class="string">"Warning"</span>,</span><br><span class="line">      <span class="attr">"Microsoft.Hosting.Lifetime"</span>: <span class="string">"Information"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"Console"</span>: &#123;</span><br><span class="line">      <span class="attr">"IncludeScopes"</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">"LogLevel"</span>: &#123;</span><br><span class="line">        <span class="attr">"MiddlewareDemo.Middlewares.MyMiddleware.MyMiddleware"</span>: <span class="string">"Trace"</span></span><br><span class="line">      &#125; </span><br><span class="line">    &#125; </span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"AllowedHosts"</span>: <span class="string">"*"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>回到<code>Startup.Configure</code>，注释掉前面的测试代码，在原处新增以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.UseMyMiddleware();</span><br></pre></td></tr></table></figure>
+<p>运行项目，访问<code>/WeatherForecast</code>，可以看到控制台打印出了对应的日志</p>
 
       
     </div>
@@ -404,7 +413,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/" title=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/</a>
+      <a href="http://www.dimsum.fun/2020/04/02/13.Middleware_document/" title=".NET Core开发实战课程备忘(13) -- 中间件：掌握请求处理过程的关键" target="_blank" rel="external">http://www.dimsum.fun/2020/04/02/13.Middleware_document/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -451,12 +460,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2020/04/01/10.Option_document/" title=".NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2020/04/02/14.ExceptionDemo/" title=".NET Core开发实战课程备忘(14) -- 异常处理中间件：区分真异常与逻辑一场"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2020/04/01/8.ConfigurationFile_document/" title=".NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2020/04/02/12.LoggingSerilog_document/" title=".NET Core开发实战课程备忘(12) -- 结构化日志组件Serilog：记录对查询分析友好的日志"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
