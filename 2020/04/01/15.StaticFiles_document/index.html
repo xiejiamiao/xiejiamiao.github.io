@@ -17,22 +17,22 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>.NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式 | Hexo</title>
-  <meta name="description" content="文件配置提供程序 特性 代码示例 创建项目 创建测试配置项appSetting.json 获取appSetting.json里的配置 获取ini配置文件    文件配置提供程序读取不同文件格式或从不同位置读取配置  Microsoft.Extensions.Configuration.Ini Microsoft.Extensions.Configuration.Json Microsoft.Ex">
+  <title>.NET Core开发实战课程备忘(15) -- 静态文件中间件：前后端分离开发合并部署骚操作 | Hexo</title>
+  <meta name="description" content="静态文件中间件的能力 代码实现 创建项目 创建测试用的静态文件 默认静态文件中间件 设置默认文件为index.html 支持目录浏览 多目录映射   功能实现  静态文件中间件的能力 支持指定相对路径 支持目录浏览 支持设置默认文档 支持多目录映射  代码实现创建项目创建名字为StaticFilesDemo的ASP.NET Core项目，类型为API 创建测试用的静态文件在根目录创建wwwroo">
 <meta property="og:type" content="article">
-<meta property="og:title" content=".NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式">
-<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/index.html">
+<meta property="og:title" content=".NET Core开发实战课程备忘(15) -- 静态文件中间件：前后端分离开发合并部署骚操作">
+<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/15.StaticFiles_document/index.html">
 <meta property="og:site_name" content="dimsum">
-<meta property="og:description" content="文件配置提供程序 特性 代码示例 创建项目 创建测试配置项appSetting.json 获取appSetting.json里的配置 获取ini配置文件    文件配置提供程序读取不同文件格式或从不同位置读取配置  Microsoft.Extensions.Configuration.Ini Microsoft.Extensions.Configuration.Json Microsoft.Ex">
+<meta property="og:description" content="静态文件中间件的能力 代码实现 创建项目 创建测试用的静态文件 默认静态文件中间件 设置默认文件为index.html 支持目录浏览 多目录映射   功能实现  静态文件中间件的能力 支持指定相对路径 支持目录浏览 支持设置默认文档 支持多目录映射  代码实现创建项目创建名字为StaticFilesDemo的ASP.NET Core项目，类型为API 创建测试用的静态文件在根目录创建wwwroo">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-01T03:11:11.000Z">
-<meta property="article:modified_time" content="2020-04-01T09:04:48.264Z">
+<meta property="article:published_time" content="2020-04-01T02:30:00.000Z">
+<meta property="article:modified_time" content="2020-04-03T08:32:55.160Z">
 <meta property="article:author" content="Jiamiao.x">
 <meta property="article:tag" content=".NET Core">
 <meta property="article:tag" content="ASP.NET Core">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/index.html">
+  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/15.StaticFiles_document/index.html">
   
     <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
   
@@ -313,14 +313,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-8.ConfigurationFile_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-15.StaticFiles_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      .NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式
+      .NET Core开发实战课程备忘(15) -- 静态文件中间件：前后端分离开发合并部署骚操作
     </h1>
   
 
@@ -328,8 +328,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2020/04/01/8.ConfigurationFile_document/" class="article-date">
-	  <time datetime="2020-04-01T03:11:11.000Z" itemprop="datePublished">2020-04-01</time>
+	<a href="/2020/04/01/15.StaticFiles_document/" class="article-date">
+	  <time datetime="2020-04-01T02:30:00.000Z" itemprop="datePublished">2020-04-01</time>
 	</a>
 </span>
         
@@ -354,13 +354,13 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/8.ConfigurationFile_document/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/15.StaticFiles_document/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 844(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 999(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
 	
 
       </div>
@@ -368,49 +368,59 @@
     <div class="article-entry marked-body" itemprop="articleBody">
       
         <ul>
-<li><a href="#%e6%96%87%e4%bb%b6%e9%85%8d%e7%bd%ae%e6%8f%90%e4%be%9b%e7%a8%8b%e5%ba%8f">文件配置提供程序</a></li>
-<li><a href="#%e7%89%b9%e6%80%a7">特性</a></li>
-<li><a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">代码示例</a><ul>
+<li><a href="#%e9%9d%99%e6%80%81%e6%96%87%e4%bb%b6%e4%b8%ad%e9%97%b4%e4%bb%b6%e7%9a%84%e8%83%bd%e5%8a%9b">静态文件中间件的能力</a></li>
+<li><a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">代码实现</a><ul>
 <li><a href="#%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae">创建项目</a></li>
-<li><a href="#%e5%88%9b%e5%bb%ba%e6%b5%8b%e8%af%95%e9%85%8d%e7%bd%ae%e9%a1%b9appsettingjson">创建测试配置项<code>appSetting.json</code></a></li>
-<li><a href="#%e8%8e%b7%e5%8f%96appsettingjson%e9%87%8c%e7%9a%84%e9%85%8d%e7%bd%ae">获取<code>appSetting.json</code>里的配置</a></li>
-<li><a href="#%e8%8e%b7%e5%8f%96ini%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">获取<code>ini</code>配置文件</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e6%b5%8b%e8%af%95%e7%94%a8%e7%9a%84%e9%9d%99%e6%80%81%e6%96%87%e4%bb%b6">创建测试用的静态文件</a></li>
+<li><a href="#%e9%bb%98%e8%ae%a4%e9%9d%99%e6%80%81%e6%96%87%e4%bb%b6%e4%b8%ad%e9%97%b4%e4%bb%b6">默认静态文件中间件</a></li>
+<li><a href="#%e8%ae%be%e7%bd%ae%e9%bb%98%e8%ae%a4%e6%96%87%e4%bb%b6%e4%b8%baindexhtml">设置默认文件为index.html</a></li>
+<li><a href="#%e6%94%af%e6%8c%81%e7%9b%ae%e5%bd%95%e6%b5%8f%e8%a7%88">支持目录浏览</a></li>
+<li><a href="#%e5%a4%9a%e7%9b%ae%e5%bd%95%e6%98%a0%e5%b0%84">多目录映射</a></li>
 </ul>
 </li>
+<li><a href="#%e5%8a%9f%e8%83%bd%e5%ae%9e%e7%8e%b0">功能实现</a></li>
 </ul>
-<h1 id="文件配置提供程序"><a href="#文件配置提供程序" class="headerlink" title="文件配置提供程序"></a>文件配置提供程序</h1><p>读取不同文件格式或从不同位置读取配置</p>
-<ul>
-<li>Microsoft.Extensions.Configuration.Ini</li>
-<li>Microsoft.Extensions.Configuration.Json</li>
-<li>Microsoft.Extensions.Configuration.UserSecrets</li>
-<li>Microsoft.Extensions.Configuration.Xml</li>
+<h1 id="静态文件中间件的能力"><a href="#静态文件中间件的能力" class="headerlink" title="静态文件中间件的能力"></a>静态文件中间件的能力</h1><ul>
+<li>支持指定相对路径</li>
+<li>支持目录浏览</li>
+<li>支持设置默认文档</li>
+<li>支持多目录映射</li>
 </ul>
-<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><ul>
-<li>指定文件可选、必选</li>
-<li>指定是否监视文件的变更</li>
-</ul>
-<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>ConfigurationFileDemo</code>的<code>控制台应用</code>，通过<code>nuget</code>引入以下四个包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Microsoft.Extensions.Configuration.Ini</span><br><span class="line">Microsoft.Extensions.Configuration.Json</span><br><span class="line">Microsoft.Extensions.Configuration.UserSecrets</span><br><span class="line">Microsoft.Extensions.Configuration.Xml</span><br></pre></td></tr></table></figure>
-<p>这里不用引用<code>Microsoft.Extensions.Configuration</code>和<code>Microsoft.Extensions.Configuration.Abstractions</code>两个基础包，是因为其他包已经包含了两个基础包</p>
-<h2 id="创建测试配置项appSetting-json"><a href="#创建测试配置项appSetting-json" class="headerlink" title="创建测试配置项appSetting.json"></a>创建测试配置项<code>appSetting.json</code></h2><p>在项目根目录创建<code>appSetting.json</code>文件，内容如下：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"Key1"</span>: <span class="string">"value1"</span>,</span><br><span class="line">  <span class="attr">"Key2"</span>: <span class="string">"value2"</span>,</span><br><span class="line">  <span class="attr">"Key3"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"Key4"</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在<code>Visual Studio 2019</code>中通过右键<code>appSetting.json</code>文件-&gt;属性-复制到输出目录选择<code>如果较新则复制</code></li>
-<li>在<code>Visual Studio Code</code>中通过修改<code>ConfigurationFileDemo.csproj</code>文件，新增文件输出到配置，具体代码如下：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span> <span class="attr">Sdk</span>=<span class="string">"Microsoft.NET.Sdk"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OutputType</span>&gt;</span>Exe<span class="tag">&lt;/<span class="name">OutputType</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>netcoreapp3.1<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.Ini"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.Json"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.UserSecrets"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.Xml"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">None</span> <span class="attr">Update</span>=<span class="string">"appSetting.json"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">CopyToOutputDirectory</span>&gt;</span>PreserveNewest<span class="tag">&lt;/<span class="name">CopyToOutputDirectory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">None</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="获取appSetting-json里的配置"><a href="#获取appSetting-json里的配置" class="headerlink" title="获取appSetting.json里的配置"></a>获取<code>appSetting.json</code>里的配置</h2>修改<code>Program.Main</code>方法，内容如下：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationFileDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> builder = <span class="keyword">new</span> ConfigurationBuilder();</span><br><span class="line">            builder.AddJsonFile(<span class="string">"appSetting.json"</span>,optional:<span class="literal">false</span>,reloadOnChange:<span class="literal">true</span>);</span><br><span class="line">            <span class="keyword">var</span> configurationRoot = builder.Build();</span><br><span class="line">            Console.WriteLine(<span class="string">"开始了。。输入随意字符串返回配置项，直接回车推出"</span>);</span><br><span class="line">            <span class="keyword">var</span> isStop = Console.ReadLine();</span><br><span class="line">            <span class="keyword">while</span> (!<span class="keyword">string</span>.IsNullOrEmpty(isStop))</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key1=<span class="subst">&#123;configurationRoot[<span class="string">"Key1"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key2=<span class="subst">&#123;configurationRoot[<span class="string">"Key2"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key3=<span class="subst">&#123;configurationRoot[<span class="string">"Key3"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key4=<span class="subst">&#123;configurationRoot[<span class="string">"Key4"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">"=====分割线====="</span>);</span><br><span class="line">                isStop = Console.ReadLine();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-optional：表示文件是否可选，false=没文件会报错，true=可以没有文件</li>
-</ul>
-<p>reloadOnChange：表示监视配置文件的变动，配置文件变动会进行重新读取</p>
-<p>运行代码，然后在控制台随意输入字符串回车，可以看到以下信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Key1&#x3D;value1</span><br><span class="line">Key2&#x3D;value2</span><br><span class="line">Key3&#x3D;False</span><br><span class="line">Key4&#x3D;10</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;分割线&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
-<p>进入项目根目录/bin/Debug/netcoreapp3.1里，找到<code>appSetting.json</code>文件，修改里面的配置值，再回到控制台输入随意字符串回车，可以看到打印出来的值已经有所变化</p>
-<h2 id="获取ini配置文件"><a href="#获取ini配置文件" class="headerlink" title="获取ini配置文件"></a>获取<code>ini</code>配置文件</h2><p>在项目根目录创建<code>appSetting.ini</code>文件，内容如下：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Key4</span>=Hello world</span><br><span class="line"><span class="attr">Key5</span>=value5</span><br></pre></td></tr></table></figure>
-<p>类似<code>appSetting.json</code>那样配置拷贝到输出目录，修改<code>Program.Main</code>方法，在<code>AddJsonFile</code>方法下面新增添加<code>ini</code>配置源的调用，代码如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">builder.AddIniFile(<span class="string">"appSetting.ini"</span>, optional: <span class="literal">false</span>, reloadOnChange: <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
-<p>运行代码，然后在控制台输入随意字符串回车，可以看到以下信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Key1&#x3D;value1</span><br><span class="line">Key2&#x3D;value2</span><br><span class="line">Key3&#x3D;False</span><br><span class="line">Key4&#x3D;Hello world</span><br><span class="line">Key5&#x3D;value5</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;分割线&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
-<p>可以看到<code>ini</code>文件里的配置已经加载进去了，同时<strong>后面加载的配置项如果与前面已经加载的配置项名称一致，会覆盖掉前面加载的配置项</strong></p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>StaticFilesDemo</code>的<code>ASP.NET Core</code>项目，类型为<code>API</code></p>
+<h2 id="创建测试用的静态文件"><a href="#创建测试用的静态文件" class="headerlink" title="创建测试用的静态文件"></a>创建测试用的静态文件</h2><p>在根目录创建<code>wwwroot</code>文件夹，参照下面结构进行对应文件创建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wwwroot</span><br><span class="line">    |-- app.js</span><br><span class="line">    |-- index.html</span><br><span class="line">    |-- a</span><br><span class="line">        |-- a.js</span><br><span class="line">        |-- index.html</span><br></pre></td></tr></table></figure>
+<p>具体代码如下：</p>
+<p>/wwwroot/index.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>静态首页<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/app.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>这是静态首页 wwwroot/index.html<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>/wwwroot/app.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alert(<span class="string">"这是/index.html"</span>)</span><br></pre></td></tr></table></figure>
+<p>/wwwroot/a/index.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"a.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>这是/a/index.html<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>/wwwroot/a/a.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alert(<span class="string">"这是/a/index.html"</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="默认静态文件中间件"><a href="#默认静态文件中间件" class="headerlink" title="默认静态文件中间件"></a>默认静态文件中间件</h2><p>在<code>Startup.Configure</code>中，将以下代码添加到<code>app.UseHttpsRedirection();</code>下一行</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.UseStaticFiles();</span><br></pre></td></tr></table></figure>
+<p>运行项目访问<code>https://localhost:5001/index.html</code>和<code>https://localhost:5001/a/index.html</code>可看到静态页面信息</p>
+<h2 id="设置默认文件为index-html"><a href="#设置默认文件为index-html" class="headerlink" title="设置默认文件为index.html"></a>设置默认文件为index.html</h2><p>能起到的效果如下：</p>
+<p><code>https://localhost:5001</code> = <code>https://localhost:5001/index.html</code></p>
+<p><code>https://localhost:5001/a</code> = <code>https://localhost:5001/a/index.html</code></p>
+<p>在<code>app.UseStaticFiles();</code>前面添加以下代码即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.UseDefaultFiles();</span><br></pre></td></tr></table></figure>
+<p>运行项目访问<code>https://localhost:5001</code>和<code>https://localhost:5001/a</code>可看到静态页面信息</p>
+<h2 id="支持目录浏览"><a href="#支持目录浏览" class="headerlink" title="支持目录浏览"></a>支持目录浏览</h2><p>注释掉默认文件的那个中间件，添加目录浏览的中间件，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.UseDirectoryBrowser();</span><br></pre></td></tr></table></figure>
+<p>然后在<code>Startup.ConfigureServices</code>配置目录浏览的服务，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.AddDirectoryBrowser();</span><br></pre></td></tr></table></figure>
+<p>运行项目访问<code>https://localhost:5001</code>，可以看到<code>wwwroot</code>的目录结构</p>
+<h2 id="多目录映射"><a href="#多目录映射" class="headerlink" title="多目录映射"></a>多目录映射</h2><p>当文件支持存在放<code>wwwroot</code>这个文件夹的时候，可以使用静态文件中间件的重载来映射其他文件夹，注释掉上一步的代码，将<code>Startup.Configure</code>修改如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (env.IsDevelopment())</span><br><span class="line">    &#123;</span><br><span class="line">        app.UseDeveloperExceptionPage();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    app.UseHttpsRedirection();</span><br><span class="line">    app.UseStaticFiles();</span><br><span class="line">    app.UseStaticFiles(<span class="keyword">new</span> StaticFileOptions()</span><br><span class="line">    &#123;</span><br><span class="line">        FileProvider = <span class="keyword">new</span> PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), <span class="string">"file"</span>))</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    app.UseRouting();</span><br><span class="line"></span><br><span class="line">    app.UseAuthorization();</span><br><span class="line"></span><br><span class="line">    app.UseEndpoints(endpoints =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        endpoints.MapControllers();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在项目根目录创建<code>file</code>文件夹，在里面创建个<code>file_page.html</code>文件，随便写点东西，运行项目，访问<code>https://localhost:5001/file_page.html</code>，可以看到静态页内容。注意，如果出现同名文件，则先注册的路径优先权更高，如果需要在访问指定文件夹有指定url地址，可以使用<code>StaticFileOptions</code>对象的<code>RequestPath</code>属性，假设这里的<code>RequestPath=&quot;/myfiles&quot;</code>，则说明要想访问<code>file</code>文件夹的内容，路径前面得加上<code>myfiles</code>，例如<code>https://localhost:5001/myfiles/file_page.html</code></p>
+<h1 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h1><p>有这样一个需求，接口里所有接口的路由都由<code>api</code>开始，即<code>/api/xxx</code>，静态文件放在默认的<code>wwwroot</code>文件夹中，如果访问的地址不是接口，同时也找不到对应的静态文件，则重写到<code>/index.html</code>页面，具体代码如下：</p>
+<p>修改<code>WeatherForecastController</code>，将原本的<code>[Route(&quot;[controller]&quot;)]</code>修改为<code>[Route(&quot;/api/[controller]&quot;)]</code></p>
+<p>修改<code>Startup.Configure</code>方法，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (env.IsDevelopment())</span><br><span class="line">    &#123;</span><br><span class="line">        app.UseDeveloperExceptionPage();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    app.UseHttpsRedirection();</span><br><span class="line">    app.UseStaticFiles();</span><br><span class="line">    app.MapWhen(context =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> !context.Request.Path.Value.StartsWith(<span class="string">"/api"</span>);</span><br><span class="line">    &#125;, appBuilder =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> option = <span class="keyword">new</span> RewriteOptions();</span><br><span class="line">        option.AddRewrite(regex: <span class="string">".*"</span>, replacement: <span class="string">"/index.html"</span>, skipRemainingRules: <span class="literal">true</span>);</span><br><span class="line">        appBuilder.UseRewriter(option);</span><br><span class="line">        appBuilder.UseStaticFiles();</span><br><span class="line">    &#125;);</span><br><span class="line">    app.UseRouting();</span><br><span class="line">    app.UseAuthorization();</span><br><span class="line">    app.UseEndpoints(endpoints =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        endpoints.MapControllers();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行项目，访问<code>https://localhost:5001/api/WeatherForecast</code>，可以看到正常返回接口信息，访问<code>https://localhost:5001/a/index.html</code>可以看到正常访问到<code>/a/index.html</code>文件内容，访问<code>https://localhost:5001/order/get</code>则会返回<code>/index.html</code>文件内容</p>
 
       
     </div>
@@ -420,7 +430,7 @@ optional：表示文件是否可选，false=没文件会报错，true=可以没�
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/" title=".NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/</a>
+      <a href="http://www.dimsum.fun/2020/04/01/15.StaticFiles_document/" title=".NET Core开发实战课程备忘(15) -- 静态文件中间件：前后端分离开发合并部署骚操作" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/15.StaticFiles_document/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -467,12 +477,12 @@ optional：表示文件是否可选，false=没文件会报错，true=可以没�
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2020/04/01/9.ConfigurationCustom_document/" title=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2020/04/01/8.ConfigurationFile_document/" title=".NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2020/04/01/15.StaticFiles_document/" title=".NET Core开发实战课程备忘(15) -- 静态文件中间件：前后端分离开发合并部署骚操作"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2020/04/01/7.ConfigurationEnvironmentVariables_Document/" title=".NET Core开发实战课程备忘(7) -- 环境变量配置提供程序：容器环境下配置注入的最佳途径"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     

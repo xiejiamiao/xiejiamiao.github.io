@@ -17,22 +17,22 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>.NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式 | Hexo</title>
-  <meta name="description" content="文件配置提供程序 特性 代码示例 创建项目 创建测试配置项appSetting.json 获取appSetting.json里的配置 获取ini配置文件    文件配置提供程序读取不同文件格式或从不同位置读取配置  Microsoft.Extensions.Configuration.Ini Microsoft.Extensions.Configuration.Json Microsoft.Ex">
+  <title>.NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方 | Hexo</title>
+  <meta name="description" content="核心类型 IFileProvider：用来访问各种各样文件的提供程序的接口，通过这样抽象的定义，让我们与具体的文件的读取代码进行隔离，这样的好处是我们可以从不同的地方读取文件，不仅仅是本地物理文件，也可以是嵌入式文件，甚至是云端上面的其他API提供的文件 IFileInfo IDirectoryContents  内置文件提供程序 PhysicalFileProvider：物理文件的提供程序 Em">
 <meta property="og:type" content="article">
-<meta property="og:title" content=".NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式">
-<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/index.html">
+<meta property="og:title" content=".NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方">
+<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/16.FileProvider_document/index.html">
 <meta property="og:site_name" content="dimsum">
-<meta property="og:description" content="文件配置提供程序 特性 代码示例 创建项目 创建测试配置项appSetting.json 获取appSetting.json里的配置 获取ini配置文件    文件配置提供程序读取不同文件格式或从不同位置读取配置  Microsoft.Extensions.Configuration.Ini Microsoft.Extensions.Configuration.Json Microsoft.Ex">
+<meta property="og:description" content="核心类型 IFileProvider：用来访问各种各样文件的提供程序的接口，通过这样抽象的定义，让我们与具体的文件的读取代码进行隔离，这样的好处是我们可以从不同的地方读取文件，不仅仅是本地物理文件，也可以是嵌入式文件，甚至是云端上面的其他API提供的文件 IFileInfo IDirectoryContents  内置文件提供程序 PhysicalFileProvider：物理文件的提供程序 Em">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-01T03:11:11.000Z">
-<meta property="article:modified_time" content="2020-04-01T09:04:48.264Z">
+<meta property="article:published_time" content="2020-04-01T04:30:00.000Z">
+<meta property="article:modified_time" content="2020-04-03T08:32:55.160Z">
 <meta property="article:author" content="Jiamiao.x">
 <meta property="article:tag" content=".NET Core">
 <meta property="article:tag" content="ASP.NET Core">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/index.html">
+  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/16.FileProvider_document/index.html">
   
     <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
   
@@ -313,14 +313,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-8.ConfigurationFile_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-16.FileProvider_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      .NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式
+      .NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方
     </h1>
   
 
@@ -328,8 +328,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2020/04/01/8.ConfigurationFile_document/" class="article-date">
-	  <time datetime="2020-04-01T03:11:11.000Z" itemprop="datePublished">2020-04-01</time>
+	<a href="/2020/04/01/16.FileProvider_document/" class="article-date">
+	  <time datetime="2020-04-01T04:30:00.000Z" itemprop="datePublished">2020-04-01</time>
 	</a>
 </span>
         
@@ -354,63 +354,44 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/8.ConfigurationFile_document/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/16.FileProvider_document/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 844(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 540(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
 	
 
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <ul>
-<li><a href="#%e6%96%87%e4%bb%b6%e9%85%8d%e7%bd%ae%e6%8f%90%e4%be%9b%e7%a8%8b%e5%ba%8f">文件配置提供程序</a></li>
-<li><a href="#%e7%89%b9%e6%80%a7">特性</a></li>
-<li><a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b">代码示例</a><ul>
-<li><a href="#%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae">创建项目</a></li>
-<li><a href="#%e5%88%9b%e5%bb%ba%e6%b5%8b%e8%af%95%e9%85%8d%e7%bd%ae%e9%a1%b9appsettingjson">创建测试配置项<code>appSetting.json</code></a></li>
-<li><a href="#%e8%8e%b7%e5%8f%96appsettingjson%e9%87%8c%e7%9a%84%e9%85%8d%e7%bd%ae">获取<code>appSetting.json</code>里的配置</a></li>
-<li><a href="#%e8%8e%b7%e5%8f%96ini%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6">获取<code>ini</code>配置文件</a></li>
+        <h1 id="核心类型"><a href="#核心类型" class="headerlink" title="核心类型"></a>核心类型</h1><ul>
+<li><code>IFileProvider</code>：用来访问各种各样文件的提供程序的接口，通过这样抽象的定义，让我们与具体的文件的读取代码进行隔离，这样的好处是我们可以从不同的地方读取文件，不仅仅是本地物理文件，也可以是嵌入式文件，甚至是云端上面的其他API提供的文件</li>
+<li><code>IFileInfo</code></li>
+<li><code>IDirectoryContents</code></li>
 </ul>
-</li>
+<h1 id="内置文件提供程序"><a href="#内置文件提供程序" class="headerlink" title="内置文件提供程序"></a>内置文件提供程序</h1><ul>
+<li><code>PhysicalFileProvider</code>：物理文件的提供程序</li>
+<li><code>EmbeddedFileProvider</code>：嵌入式的提供程序</li>
+<li><code>CompositeFileProvider</code>：组合文件的提供程序，当我们由多个数据源来提供文件的手，可以将这些源合并为一个目录</li>
 </ul>
-<h1 id="文件配置提供程序"><a href="#文件配置提供程序" class="headerlink" title="文件配置提供程序"></a>文件配置提供程序</h1><p>读取不同文件格式或从不同位置读取配置</p>
-<ul>
-<li>Microsoft.Extensions.Configuration.Ini</li>
-<li>Microsoft.Extensions.Configuration.Json</li>
-<li>Microsoft.Extensions.Configuration.UserSecrets</li>
-<li>Microsoft.Extensions.Configuration.Xml</li>
-</ul>
-<h1 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h1><ul>
-<li>指定文件可选、必选</li>
-<li>指定是否监视文件的变更</li>
-</ul>
-<h1 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>ConfigurationFileDemo</code>的<code>控制台应用</code>，通过<code>nuget</code>引入以下四个包：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Microsoft.Extensions.Configuration.Ini</span><br><span class="line">Microsoft.Extensions.Configuration.Json</span><br><span class="line">Microsoft.Extensions.Configuration.UserSecrets</span><br><span class="line">Microsoft.Extensions.Configuration.Xml</span><br></pre></td></tr></table></figure>
-<p>这里不用引用<code>Microsoft.Extensions.Configuration</code>和<code>Microsoft.Extensions.Configuration.Abstractions</code>两个基础包，是因为其他包已经包含了两个基础包</p>
-<h2 id="创建测试配置项appSetting-json"><a href="#创建测试配置项appSetting-json" class="headerlink" title="创建测试配置项appSetting.json"></a>创建测试配置项<code>appSetting.json</code></h2><p>在项目根目录创建<code>appSetting.json</code>文件，内容如下：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"Key1"</span>: <span class="string">"value1"</span>,</span><br><span class="line">  <span class="attr">"Key2"</span>: <span class="string">"value2"</span>,</span><br><span class="line">  <span class="attr">"Key3"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"Key4"</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在<code>Visual Studio 2019</code>中通过右键<code>appSetting.json</code>文件-&gt;属性-复制到输出目录选择<code>如果较新则复制</code></li>
-<li>在<code>Visual Studio Code</code>中通过修改<code>ConfigurationFileDemo.csproj</code>文件，新增文件输出到配置，具体代码如下：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span> <span class="attr">Sdk</span>=<span class="string">"Microsoft.NET.Sdk"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OutputType</span>&gt;</span>Exe<span class="tag">&lt;/<span class="name">OutputType</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>netcoreapp3.1<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.Ini"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.Json"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.UserSecrets"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">PackageReference</span> <span class="attr">Include</span>=<span class="string">"Microsoft.Extensions.Configuration.Xml"</span> <span class="attr">Version</span>=<span class="string">"3.1.3"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">None</span> <span class="attr">Update</span>=<span class="string">"appSetting.json"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">CopyToOutputDirectory</span>&gt;</span>PreserveNewest<span class="tag">&lt;/<span class="name">CopyToOutputDirectory</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">None</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ItemGroup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="获取appSetting-json里的配置"><a href="#获取appSetting-json里的配置" class="headerlink" title="获取appSetting.json里的配置"></a>获取<code>appSetting.json</code>里的配置</h2>修改<code>Program.Main</code>方法，内容如下：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Configuration;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConfigurationFileDemo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> builder = <span class="keyword">new</span> ConfigurationBuilder();</span><br><span class="line">            builder.AddJsonFile(<span class="string">"appSetting.json"</span>,optional:<span class="literal">false</span>,reloadOnChange:<span class="literal">true</span>);</span><br><span class="line">            <span class="keyword">var</span> configurationRoot = builder.Build();</span><br><span class="line">            Console.WriteLine(<span class="string">"开始了。。输入随意字符串返回配置项，直接回车推出"</span>);</span><br><span class="line">            <span class="keyword">var</span> isStop = Console.ReadLine();</span><br><span class="line">            <span class="keyword">while</span> (!<span class="keyword">string</span>.IsNullOrEmpty(isStop))</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key1=<span class="subst">&#123;configurationRoot[<span class="string">"Key1"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key2=<span class="subst">&#123;configurationRoot[<span class="string">"Key2"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key3=<span class="subst">&#123;configurationRoot[<span class="string">"Key3"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">$"Key4=<span class="subst">&#123;configurationRoot[<span class="string">"Key4"</span>]&#125;</span>"</span>);</span><br><span class="line">                Console.WriteLine(<span class="string">"=====分割线====="</span>);</span><br><span class="line">                isStop = Console.ReadLine();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-optional：表示文件是否可选，false=没文件会报错，true=可以没有文件</li>
-</ul>
-<p>reloadOnChange：表示监视配置文件的变动，配置文件变动会进行重新读取</p>
-<p>运行代码，然后在控制台随意输入字符串回车，可以看到以下信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Key1&#x3D;value1</span><br><span class="line">Key2&#x3D;value2</span><br><span class="line">Key3&#x3D;False</span><br><span class="line">Key4&#x3D;10</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;分割线&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
-<p>进入项目根目录/bin/Debug/netcoreapp3.1里，找到<code>appSetting.json</code>文件，修改里面的配置值，再回到控制台输入随意字符串回车，可以看到打印出来的值已经有所变化</p>
-<h2 id="获取ini配置文件"><a href="#获取ini配置文件" class="headerlink" title="获取ini配置文件"></a>获取<code>ini</code>配置文件</h2><p>在项目根目录创建<code>appSetting.ini</code>文件，内容如下：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Key4</span>=Hello world</span><br><span class="line"><span class="attr">Key5</span>=value5</span><br></pre></td></tr></table></figure>
-<p>类似<code>appSetting.json</code>那样配置拷贝到输出目录，修改<code>Program.Main</code>方法，在<code>AddJsonFile</code>方法下面新增添加<code>ini</code>配置源的调用，代码如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">builder.AddIniFile(<span class="string">"appSetting.ini"</span>, optional: <span class="literal">false</span>, reloadOnChange: <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
-<p>运行代码，然后在控制台输入随意字符串回车，可以看到以下信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Key1&#x3D;value1</span><br><span class="line">Key2&#x3D;value2</span><br><span class="line">Key3&#x3D;False</span><br><span class="line">Key4&#x3D;Hello world</span><br><span class="line">Key5&#x3D;value5</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;分割线&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
-<p>可以看到<code>ini</code>文件里的配置已经加载进去了，同时<strong>后面加载的配置项如果与前面已经加载的配置项名称一致，会覆盖掉前面加载的配置项</strong></p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>FileProviderDemo</code>的<code>控制台应用</code>，通过<code>nuget</code>引入以下四个包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Microsoft.Extensions.FileProviders.Abstractions</span><br><span class="line">Microsoft.Extensions.FileProviders.Composite</span><br><span class="line">Microsoft.Extensions.FileProviders.Embedded</span><br><span class="line">Microsoft.Extensions.FileProviders.Physical</span><br></pre></td></tr></table></figure>
+<h2 id="创建PhysicalFileProvider"><a href="#创建PhysicalFileProvider" class="headerlink" title="创建PhysicalFileProvider"></a>创建<code>PhysicalFileProvider</code></h2><p>在<code>Program.Main</code>方法中新增以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> phyProvider = <span class="keyword">new</span> PhysicalFileProvider(AppDomain.CurrentDomain.BaseDirectory);</span><br><span class="line"><span class="keyword">var</span> contents = phyProvider.GetDirectoryContents(<span class="string">"/"</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> contents)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(item.Name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，可以看到控制台打印出类似以下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FileProviderDemo.runtimeconfig.dev.json</span><br><span class="line">FileProviderDemo.runtimeconfig.json</span><br><span class="line">Microsoft.Extensions.FileProviders.Abstractions.dll</span><br><span class="line">Microsoft.Extensions.FileProviders.Composite.dll</span><br><span class="line">Microsoft.Extensions.FileProviders.Embedded.dll</span><br><span class="line">Microsoft.Extensions.FileProviders.Physical.dll</span><br><span class="line">Microsoft.Extensions.FileSystemGlobbing.dll</span><br><span class="line">Microsoft.Extensions.Primitives.dll</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建EmbeddedFileProvider"><a href="#创建EmbeddedFileProvider" class="headerlink" title="创建EmbeddedFileProvider"></a>创建<code>EmbeddedFileProvider</code></h2><p>在项目根目录创建一个<code>emb.html</code>的文件，右键<code>emb.html</code>文件-&gt;属性-&gt;生成操作选择为<code>嵌入的资源</code>，然后在上面的测试代码后面追加以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> embProvider = <span class="keyword">new</span> EmbeddedFileProvider(<span class="keyword">typeof</span>(Program).Assembly);</span><br><span class="line"><span class="keyword">var</span> html = embProvider.GetFileInfo(<span class="string">"emb.html"</span>);</span><br><span class="line">Console.WriteLine(<span class="string">$"获取到嵌入式文件:<span class="subst">&#123;html.Exists&#125;</span>"</span>);</span><br></pre></td></tr></table></figure>
+<p>运行代码可以看到除了上一步打印的信息外，还有打印出了以下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">获取到嵌入式文件:True</span><br></pre></td></tr></table></figure>
+<h2 id="创建CompositeFileProvider"><a href="#创建CompositeFileProvider" class="headerlink" title="创建CompositeFileProvider"></a>创建<code>CompositeFileProvider</code></h2><p>继续上面的测试代码后面新增以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">"=====↓CompositeFileProvider↓====="</span>);</span><br><span class="line"><span class="keyword">var</span> compositeProvider = <span class="keyword">new</span> CompositeFileProvider(phyProvider, embProvider);</span><br><span class="line"><span class="keyword">var</span> comContent = compositeProvider.GetDirectoryContents(<span class="string">"/"</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> comContent)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(item.Name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码可以看到除了前两步打印的信息外，还打印了以下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;↓CompositeFileProvider↓&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">FileProviderDemo.deps.json</span><br><span class="line">FileProviderDemo.dll</span><br><span class="line">FileProviderDemo.exe</span><br><span class="line">FileProviderDemo.pdb</span><br><span class="line">FileProviderDemo.runtimeconfig.dev.json</span><br><span class="line">FileProviderDemo.runtimeconfig.json</span><br><span class="line">Microsoft.Extensions.FileProviders.Abstractions.dll</span><br><span class="line">Microsoft.Extensions.FileProviders.Composite.dll</span><br><span class="line">Microsoft.Extensions.FileProviders.Embedded.dll</span><br><span class="line">Microsoft.Extensions.FileProviders.Physical.dll</span><br><span class="line">Microsoft.Extensions.FileSystemGlobbing.dll</span><br><span class="line">Microsoft.Extensions.Primitives.dll</span><br><span class="line">emb.html</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -420,7 +401,7 @@ optional：表示文件是否可选，false=没文件会报错，true=可以没�
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/" title=".NET Core开发实战课程备忘(8) -- 文件配置提供程序：自由选择配置的格式" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/</a>
+      <a href="http://www.dimsum.fun/2020/04/01/16.FileProvider_document/" title=".NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/16.FileProvider_document/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -467,12 +448,12 @@ optional：表示文件是否可选，false=没文件会报错，true=可以没�
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2020/04/01/9.ConfigurationCustom_document/" title=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2020/04/01/10.Option_document/" title=".NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2020/04/01/15.StaticFiles_document/" title=".NET Core开发实战课程备忘(15) -- 静态文件中间件：前后端分离开发合并部署骚操作"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2020/04/01/9.ConfigurationCustom_document/" title=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
