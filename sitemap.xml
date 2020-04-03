@@ -2,23 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/01/16.FileProvider_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/02/17.Routing_document/</loc>
     
-    <lastmod>2020-04-03T08:32:55.160Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.dimsum.fun/2020/04/01/15.StaticFiles_document/</loc>
-    
-    <lastmod>2020-04-03T08:32:55.160Z</lastmod>
+    <lastmod>2020-04-03T08:34:59.335Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/01/17.Routing_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/02/16.FileProvider_document/</loc>
     
-    <lastmod>2020-04-03T08:32:55.160Z</lastmod>
+    <lastmod>2020-04-03T08:34:56.257Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/04/02/15.StaticFiles_document/</loc>
+    
+    <lastmod>2020-04-03T08:34:52.046Z</lastmod>
     
   </url>
   
@@ -149,6 +149,13 @@
   </url>
   
   <url>
+    <loc>http://www.dimsum.fun/categories/index.html</loc>
+    
+    <lastmod>2020-03-27T07:22:15.609Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/links/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
@@ -157,13 +164,6 @@
   
   <url>
     <loc>http://www.dimsum.fun/repository/index.html</loc>
-    
-    <lastmod>2020-03-27T07:22:15.609Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.dimsum.fun/categories/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     

@@ -1,14 +1,14 @@
 http://www.dimsum.fun/2020/04/02/14.ExceptionDemo/
 http://www.dimsum.fun/2020/04/02/13.Middleware_document/
+http://www.dimsum.fun/2020/04/02/17.Routing_document/
 http://www.dimsum.fun/2020/04/02/12.LoggingSerilog_document/
+http://www.dimsum.fun/2020/04/02/16.FileProvider_document/
 http://www.dimsum.fun/2020/04/02/11.LoggingSimple_document/
+http://www.dimsum.fun/2020/04/02/15.StaticFiles_document/
 http://www.dimsum.fun/2020/04/01/StepByStep/
-http://www.dimsum.fun/2020/04/01/17.Routing_document/
 http://www.dimsum.fun/2020/04/01/10.Option_document/
-http://www.dimsum.fun/2020/04/01/16.FileProvider_document/
 http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/
 http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/
-http://www.dimsum.fun/2020/04/01/15.StaticFiles_document/
 http://www.dimsum.fun/2020/04/01/7.ConfigurationEnvironmentVariables_Document/
 http://www.dimsum.fun/2020/03/31/6.ConfigurationCommandLine_document/
 http://www.dimsum.fun/2020/03/31/5.Configuration_document/

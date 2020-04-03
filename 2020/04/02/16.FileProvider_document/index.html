@@ -21,18 +21,18 @@
   <meta name="description" content="核心类型 IFileProvider：用来访问各种各样文件的提供程序的接口，通过这样抽象的定义，让我们与具体的文件的读取代码进行隔离，这样的好处是我们可以从不同的地方读取文件，不仅仅是本地物理文件，也可以是嵌入式文件，甚至是云端上面的其他API提供的文件 IFileInfo IDirectoryContents  内置文件提供程序 PhysicalFileProvider：物理文件的提供程序 Em">
 <meta property="og:type" content="article">
 <meta property="og:title" content=".NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方">
-<meta property="og:url" content="http://www.dimsum.fun/2020/04/01/16.FileProvider_document/index.html">
+<meta property="og:url" content="http://www.dimsum.fun/2020/04/02/16.FileProvider_document/index.html">
 <meta property="og:site_name" content="dimsum">
 <meta property="og:description" content="核心类型 IFileProvider：用来访问各种各样文件的提供程序的接口，通过这样抽象的定义，让我们与具体的文件的读取代码进行隔离，这样的好处是我们可以从不同的地方读取文件，不仅仅是本地物理文件，也可以是嵌入式文件，甚至是云端上面的其他API提供的文件 IFileInfo IDirectoryContents  内置文件提供程序 PhysicalFileProvider：物理文件的提供程序 Em">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-01T04:30:00.000Z">
-<meta property="article:modified_time" content="2020-04-03T08:32:55.160Z">
+<meta property="article:published_time" content="2020-04-02T04:30:00.000Z">
+<meta property="article:modified_time" content="2020-04-03T08:34:56.257Z">
 <meta property="article:author" content="Jiamiao.x">
 <meta property="article:tag" content=".NET Core">
 <meta property="article:tag" content="ASP.NET Core">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://www.dimsum.fun/2020/04/01/16.FileProvider_document/index.html">
+  <link rel="canonical" href="http://www.dimsum.fun/2020/04/02/16.FileProvider_document/index.html">
   
     <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
   
@@ -262,6 +262,21 @@
                 <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
               </p>
               <p class="item-title">
+                <a href="/2020/04/02/17.Routing_document/" class="title">.NET Core开发实战课程备忘(17) -- 路由与终结点：如何规划好你的Web API</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-02T08:02:00.000Z" itemprop="datePublished">2020-04-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
                 <a href="/2020/04/02/12.LoggingSerilog_document/" class="title">.NET Core开发实战课程备忘(12) -- 结构化日志组件Serilog：记录对查询分析友好的日志</a>
               </p>
               <p class="item-date">
@@ -277,25 +292,10 @@
                 <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
               </p>
               <p class="item-title">
-                <a href="/2020/04/02/11.LoggingSimple_document/" class="title">.NET Core开发实战课程备忘(11) -- 日志框架：聊聊记日志的最佳姿势</a>
+                <a href="/2020/04/02/16.FileProvider_document/" class="title">.NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方</a>
               </p>
               <p class="item-date">
-                <time datetime="2020-04-02T03:12:00.000Z" itemprop="datePublished">2020-04-02</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/StepByStep/">StepByStep</a>
-              </p>
-              <p class="item-title">
-                <a href="/2020/04/01/StepByStep/" class="title">特基础教程系列</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2020-04-01T14:18:00.000Z" itemprop="datePublished">2020-04-01</time>
+                <time datetime="2020-04-02T04:30:00.000Z" itemprop="datePublished">2020-04-02</time>
               </p>
             </div>
           </li>
@@ -328,8 +328,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2020/04/01/16.FileProvider_document/" class="article-date">
-	  <time datetime="2020-04-01T04:30:00.000Z" itemprop="datePublished">2020-04-01</time>
+	<a href="/2020/04/02/16.FileProvider_document/" class="article-date">
+	  <time datetime="2020-04-02T04:30:00.000Z" itemprop="datePublished">2020-04-02</time>
 	</a>
 </span>
         
@@ -354,7 +354,7 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/01/16.FileProvider_document/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/02/16.FileProvider_document/#comments" class="article-comment-link">评论</a></span>
         
 	
 		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 540(字)</span>
@@ -401,7 +401,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://www.dimsum.fun/2020/04/01/16.FileProvider_document/" title=".NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方" target="_blank" rel="external">http://www.dimsum.fun/2020/04/01/16.FileProvider_document/</a>
+      <a href="http://www.dimsum.fun/2020/04/02/16.FileProvider_document/" title=".NET Core开发实战课程备忘(16) -- 文件提供程序：让你可以将文件放在任何地方" target="_blank" rel="external">http://www.dimsum.fun/2020/04/02/16.FileProvider_document/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -448,12 +448,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2020/04/01/10.Option_document/" title=".NET Core开发实战课程备忘(10) -- 选项框架：服务组件集成配置的最佳实现"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2020/04/02/12.LoggingSerilog_document/" title=".NET Core开发实战课程备忘(12) -- 结构化日志组件Serilog：记录对查询分析友好的日志"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2020/04/01/9.ConfigurationCustom_document/" title=".NET Core开发实战课程备忘(9) -- 自定义配置数据源：低成本实现定制配置方案"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2020/04/02/11.LoggingSimple_document/" title=".NET Core开发实战课程备忘(11) -- 日志框架：聊聊记日志的最佳姿势"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
