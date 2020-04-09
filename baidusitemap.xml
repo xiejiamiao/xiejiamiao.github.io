@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.dimsum.fun/2020/04/07/18.MicroService01_document/</loc>
+    <lastmod>2020-04-09</lastmod>
+  </url>  <url>
+    <loc>http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/</loc>
+    <lastmod>2020-04-09</lastmod>
+  </url>  <url>
     <loc>http://www.dimsum.fun/2020/04/02/17.Routing_document/</loc>
     <lastmod>2020-04-03</lastmod>
   </url>  <url>

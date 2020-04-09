@@ -1,3 +1,5 @@
+http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/
+http://www.dimsum.fun/2020/04/07/18.MicroService01_document/
 http://www.dimsum.fun/2020/04/02/14.ExceptionDemo/
 http://www.dimsum.fun/2020/04/02/13.Middleware_document/
 http://www.dimsum.fun/2020/04/02/17.Routing_document/
