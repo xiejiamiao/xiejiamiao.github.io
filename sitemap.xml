@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.dimsum.fun/2020/04/15/21.MediatR_document/</loc>
+    
+    <lastmod>2020-04-15T15:49:20.106Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/04/10/20.EFCore_Concurrency_document/</loc>
     
     <lastmod>2020-04-10T10:31:51.922Z</lastmod>
@@ -177,14 +184,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/links/index.html</loc>
+    <loc>http://www.dimsum.fun/repository/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/repository/index.html</loc>
+    <loc>http://www.dimsum.fun/links/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
