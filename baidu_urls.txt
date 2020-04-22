@@ -27,9 +27,9 @@ http://www.dimsum.fun/2020/03/31/5.Configuration_document/
 http://www.dimsum.fun/2020/03/31/4.DependencyInjectionAutofac_document/
 http://www.dimsum.fun/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/
 http://www.dimsum.fun/2020/03/31/ConfigurationCommandLine_document/
+http://www.dimsum.fun/2020/03/31/DependencyInjectionScopeAndDisposable_document/
 http://www.dimsum.fun/2020/03/31/Configuration_document/
 http://www.dimsum.fun/2020/03/31/DependencyInjectionAutofac_document/
-http://www.dimsum.fun/2020/03/31/DependencyInjectionScopeAndDisposable_document/
 http://www.dimsum.fun/2020/03/30/2.DependencyInjection_document/
 http://www.dimsum.fun/2020/03/30/DependencyInjection_document/
 http://www.dimsum.fun/2020/03/30/StartupDemo_document/
