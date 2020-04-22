@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.dimsum.fun/2020/04/20/22.gRPC_document/</loc>
+    
+    <lastmod>2020-04-22T16:39:50.247Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/04/15/21.MediatR_document/</loc>
     
     <lastmod>2020-04-15T15:49:20.106Z</lastmod>
@@ -51,6 +58,13 @@
   </url>
   
   <url>
+    <loc>http://www.dimsum.fun/2020/04/02/14.Exception_document/</loc>
+    
+    <lastmod>2020-04-03T08:32:55.159Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/04/02/12.LoggingSerilog_document/</loc>
     
     <lastmod>2020-04-02T17:12:26.749Z</lastmod>
@@ -59,6 +73,13 @@
   
   <url>
     <loc>http://www.dimsum.fun/2020/04/02/14.ExceptionDemo/</loc>
+    
+    <lastmod>2020-04-02T17:11:23.324Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/04/02/LoggingSerilog_document/</loc>
     
     <lastmod>2020-04-02T17:11:23.324Z</lastmod>
     
@@ -79,9 +100,23 @@
   </url>
   
   <url>
+    <loc>http://www.dimsum.fun/2020/04/02/LoggingSimple_document/</loc>
+    
+    <lastmod>2020-04-02T08:46:34.054Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/04/01/StepByStep/</loc>
     
     <lastmod>2020-04-01T16:49:32.267Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/04/01/Option_document/</loc>
+    
+    <lastmod>2020-04-01T16:49:32.266Z</lastmod>
     
   </url>
   
@@ -170,6 +205,69 @@
   </url>
   
   <url>
+    <loc>http://www.dimsum.fun/2020/04/01/ConfigurationFile_document/</loc>
+    
+    <lastmod>2020-04-01T08:54:13.649Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/04/01/ConfigurationCustom_document/</loc>
+    
+    <lastmod>2020-04-01T08:54:13.648Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/03/30/StartupDemo_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.279Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/03/30/DependencyInjection_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.278Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/03/31/DependencyInjectionScopeAndDisposable_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.277Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/03/31/DependencyInjectionAutofac_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.270Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/04/01/ConfigurationEnvironmentVariables_Document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.269Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/03/31/Configuration_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.269Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/03/31/ConfigurationCommandLine_document/</loc>
+    
+    <lastmod>2020-03-31T17:11:39.268Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/tags/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.610Z</lastmod>
@@ -184,14 +282,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/repository/index.html</loc>
+    <loc>http://www.dimsum.fun/links/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/links/index.html</loc>
+    <loc>http://www.dimsum.fun/repository/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     

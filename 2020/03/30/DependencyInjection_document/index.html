@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>.NET Core开发实战课程备忘(1) -- 依赖注入：良好架构的起点 | Hexo</title>
+  <meta name="description" content="为什么要使用依赖注入框架(IoC框架) 依赖注入框架组件包 依赖注入框架核心类型 生命周期   代码演示 项目 示例服务类 验证不同生命周期的实现 注册不同生命周期的服务 在方法参数中获得服务进行验证   其他方式注册服务(以单例模式为例) 直接new对象 通过工厂模式注册对象   尝试注册服务 移除和替换服务 移除服务 替换服务   泛型服务注册   服务对象的获取  为什么要使用依赖注入框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content=".NET Core开发实战课程备忘(1) -- 依赖注入：良好架构的起点">
+<meta property="og:url" content="http://www.dimsum.fun/2020/03/30/DependencyInjection_document/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="为什么要使用依赖注入框架(IoC框架) 依赖注入框架组件包 依赖注入框架核心类型 生命周期   代码演示 项目 示例服务类 验证不同生命周期的实现 注册不同生命周期的服务 在方法参数中获得服务进行验证   其他方式注册服务(以单例模式为例) 直接new对象 通过工厂模式注册对象   尝试注册服务 移除和替换服务 移除服务 替换服务   泛型服务注册   服务对象的获取  为什么要使用依赖注入框架">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-31T17:11:39.278Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content=".NET Core">
+<meta property="article:tag" content="ASP.NET Core">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/03/30/DependencyInjection_document/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">35</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.5px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/20/22.gRPC_document/" class="title">gRPC in ASP.NET Core</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-20T10:30:00.000Z" itemprop="datePublished">2020-04-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/21.MediatR_document/" class="title">MediatR：轻松实现命令查询职责分离模式(CQRS)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T07:00:00.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/10/20.EFCore_Concurrency_document/" class="title">EntityFramework Core的并发处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-10T08:21:00.000Z" itemprop="datePublished">2020-04-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/09/19.Docker_AspNetCore_document/" class="title">ASP.NET Core发布到Docker中(使用Dockerfile)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-09T07:49:00.000Z" itemprop="datePublished">2020-04-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/07/18.MicroService01_document/" class="title">.NET Core开发实战课程备忘(18) -- 微服务之工程结构概览：定义应用分层及依赖关系</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-07T10:18:00.000Z" itemprop="datePublished">2020-04-07</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-DependencyInjection_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      .NET Core开发实战课程备忘(1) -- 依赖注入：良好架构的起点
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/30/DependencyInjection_document/" class="article-date">
+	  <time datetime="2020-03-29T16:00:00.000Z" itemprop="datePublished">2020-03-30</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a>, <a class="article-tag-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/30/DependencyInjection_document/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.7k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e4%bd%bf%e7%94%a8%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5%e6%a1%86%e6%9e%b6ioc%e6%a1%86%e6%9e%b6">为什么要使用依赖注入框架(IoC框架)</a><ul>
+<li><a href="#%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5%e6%a1%86%e6%9e%b6%e7%bb%84%e4%bb%b6%e5%8c%85">依赖注入框架组件包</a></li>
+<li><a href="#%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5%e6%a1%86%e6%9e%b6%e6%a0%b8%e5%bf%83%e7%b1%bb%e5%9e%8b">依赖注入框架核心类型</a></li>
+<li><a href="#%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f">生命周期</a></li>
+</ul>
+</li>
+<li><a href="#%e4%bb%a3%e7%a0%81%e6%bc%94%e7%a4%ba">代码演示</a><ul>
+<li><a href="#%e9%a1%b9%e7%9b%ae">项目</a></li>
+<li><a href="#%e7%a4%ba%e4%be%8b%e6%9c%8d%e5%8a%a1%e7%b1%bb">示例服务类</a></li>
+<li><a href="#%e9%aa%8c%e8%af%81%e4%b8%8d%e5%90%8c%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f%e7%9a%84%e5%ae%9e%e7%8e%b0">验证不同生命周期的实现</a><ul>
+<li><a href="#%e6%b3%a8%e5%86%8c%e4%b8%8d%e5%90%8c%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f%e7%9a%84%e6%9c%8d%e5%8a%a1">注册不同生命周期的服务</a></li>
+<li><a href="#%e5%9c%a8%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0%e4%b8%ad%e8%8e%b7%e5%be%97%e6%9c%8d%e5%8a%a1%e8%bf%9b%e8%a1%8c%e9%aa%8c%e8%af%81">在方法参数中获得服务进行验证</a></li>
+</ul>
+</li>
+<li><a href="#%e5%85%b6%e4%bb%96%e6%96%b9%e5%bc%8f%e6%b3%a8%e5%86%8c%e6%9c%8d%e5%8a%a1%e4%bb%a5%e5%8d%95%e4%be%8b%e6%a8%a1%e5%bc%8f%e4%b8%ba%e4%be%8b">其他方式注册服务(以单例模式为例)</a><ul>
+<li><a href="#%e7%9b%b4%e6%8e%a5new%e5%af%b9%e8%b1%a1">直接new对象</a></li>
+<li><a href="#%e9%80%9a%e8%bf%87%e5%b7%a5%e5%8e%82%e6%a8%a1%e5%bc%8f%e6%b3%a8%e5%86%8c%e5%af%b9%e8%b1%a1">通过工厂模式注册对象</a></li>
+</ul>
+</li>
+<li><a href="#%e5%b0%9d%e8%af%95%e6%b3%a8%e5%86%8c%e6%9c%8d%e5%8a%a1">尝试注册服务</a></li>
+<li><a href="#%e7%a7%bb%e9%99%a4%e5%92%8c%e6%9b%bf%e6%8d%a2%e6%9c%8d%e5%8a%a1">移除和替换服务</a><ul>
+<li><a href="#%e7%a7%bb%e9%99%a4%e6%9c%8d%e5%8a%a1">移除服务</a></li>
+<li><a href="#%e6%9b%bf%e6%8d%a2%e6%9c%8d%e5%8a%a1">替换服务</a></li>
+</ul>
+</li>
+<li><a href="#%e6%b3%9b%e5%9e%8b%e6%9c%8d%e5%8a%a1%e6%b3%a8%e5%86%8c">泛型服务注册</a></li>
+</ul>
+</li>
+<li><a href="#%e6%9c%8d%e5%8a%a1%e5%af%b9%e8%b1%a1%e7%9a%84%e8%8e%b7%e5%8f%96">服务对象的获取</a></li>
+</ul>
+<h1 id="为什么要使用依赖注入框架-IoC框架"><a href="#为什么要使用依赖注入框架-IoC框架" class="headerlink" title="为什么要使用依赖注入框架(IoC框架)"></a>为什么要使用依赖注入框架(IoC框架)</h1><ul>
+<li>借助依赖注入框架，我们可以轻松管理类之间的依赖，帮助我们在构建应用是遵循设计规则，确保代码的可维护性和可拓展性</li>
+<li>ASP.NET Core的整个架构中，依赖注入框架提供了对象创建和生命周期管理的核心能力，各个组件相互写作，也是由依赖注入框架的能力来实现的</li>
+</ul>
+<h2 id="依赖注入框架组件包"><a href="#依赖注入框架组件包" class="headerlink" title="依赖注入框架组件包"></a>依赖注入框架组件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Microsoft.Extensions.DependencyInjection.Abstractions &#x2F;&#x2F;抽象包</span><br><span class="line">Microsoft.Extensions.DependencyInjection  &#x2F;&#x2F;具体实现</span><br></pre></td></tr></table></figure>
+<h2 id="依赖注入框架核心类型"><a href="#依赖注入框架核心类型" class="headerlink" title="依赖注入框架核心类型"></a>依赖注入框架核心类型</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IServiceCollection &#x2F;&#x2F;负责服务的注册</span><br><span class="line">ServiceDescriptor &#x2F;&#x2F;每个服务注册时的信息</span><br><span class="line">IServiceProvider  &#x2F;&#x2F;具体的容器，也是由ServiceCollection Build出来</span><br><span class="line">IServiceScope  &#x2F;&#x2F;表示一个容器的子容器的生命周期</span><br></pre></td></tr></table></figure>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Singleton  &#x2F;&#x2F;单例：在整个根容器的生命周期内获得的都是同一个单例对象</span><br><span class="line">Scoped     &#x2F;&#x2F;作用域：在我的Scope的生命周期内，如果我的容器释放掉，则意味着我的对象释放掉，在这个生命周期范围内获得到的是一个单例对象</span><br><span class="line">Transient  &#x2F;&#x2F;瞬时：每一次从容器里获取对象时都产生一个新的对象</span><br></pre></td></tr></table></figure>
+
+<h1 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h1><h2 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h2><p>创建名为<code>DependencyInjectionDemo</code>的<code>ASP.NET Core</code>项目，类型为<code>API</code></p>
+<h2 id="示例服务类"><a href="#示例服务类" class="headerlink" title="示例服务类"></a>示例服务类</h2><p>一共有5个示例服务类接口，分别为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">IGenericService&lt;T&gt;</span><br><span class="line">    |-- GenericService&lt;T&gt;   &#x2F;&#x2F;对应实现类</span><br><span class="line">IMyScopeService</span><br><span class="line">    |-- MyScopeService      &#x2F;&#x2F;对应实现类</span><br><span class="line">IMySingletonService</span><br><span class="line">    |-- MySingletonService  &#x2F;&#x2F;对应实现类</span><br><span class="line">IMyTransientService</span><br><span class="line">    |-- MyTransientService  &#x2F;&#x2F;对应实现类</span><br><span class="line">IOrderService</span><br><span class="line">    |-- OrderService        &#x2F;&#x2F;对应实现类</span><br><span class="line">    |-- OrderServiceEX      &#x2F;&#x2F;对应实现类</span><br></pre></td></tr></table></figure>
+<p>因为是示例服务类，所以所有类和服务均没有属性和方法，纯粹为了验证服务注册和服务对象</p>
+<h2 id="验证不同生命周期的实现"><a href="#验证不同生命周期的实现" class="headerlink" title="验证不同生命周期的实现"></a>验证不同生命周期的实现</h2><h3 id="注册不同生命周期的服务"><a href="#注册不同生命周期的服务" class="headerlink" title="注册不同生命周期的服务"></a>注册不同生命周期的服务</h3><p>在<code>Startup.ConfigureServices</code>方法中新增以下代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注册Singleton服务</span></span><br><span class="line">services.AddSingleton&lt;IMySingletonService, MySingletonService&gt;();</span><br><span class="line"><span class="comment">// 注册Scope服务</span></span><br><span class="line">services.AddScoped&lt;IMyScopeService, MyScopeService&gt;();</span><br><span class="line"><span class="comment">// 注册Transient服务</span></span><br><span class="line">services.AddTransient&lt;IMyTransientService, MyTransientService&gt;();</span><br></pre></td></tr></table></figure>
+<h3 id="在方法参数中获得服务进行验证"><a href="#在方法参数中获得服务进行验证" class="headerlink" title="在方法参数中获得服务进行验证"></a>在方法参数中获得服务进行验证</h3><ol>
+<li>修改<code>WeatherForecastController</code>类的<code>Route</code>标识为<code>[Route(&quot;[controller]/[action]&quot;)]</code>，方便进行测试</li>
+<li>在<code>WeatherForecastController</code>新增<code>GetService</code>方法，代码如下：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">GetService</span>(<span class="params">[FromServices] IMySingletonService singletonService1,</span></span></span><br><span class="line"><span class="function"><span class="params">    [FromServices] IMySingletonService singletonService2,</span></span></span><br><span class="line"><span class="function"><span class="params">    [FromServices] IMyScopeService scopeService1,</span></span></span><br><span class="line"><span class="function"><span class="params">    [FromServices] IMyScopeService scopeService2,</span></span></span><br><span class="line"><span class="function"><span class="params">    [FromServices] IMyTransientService transientService1,</span></span></span><br><span class="line"><span class="function"><span class="params">    [FromServices] IMyTransientService transientService2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;<span class="keyword">nameof</span>(singletonService1)&#125;</span>:<span class="subst">&#123;singletonService1.GetHashCode()&#125;</span>"</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;<span class="keyword">nameof</span>(singletonService2)&#125;</span>:<span class="subst">&#123;singletonService2.GetHashCode()&#125;</span>"</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;<span class="keyword">nameof</span>(scopeService1)&#125;</span>:<span class="subst">&#123;scopeService1.GetHashCode()&#125;</span>"</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;<span class="keyword">nameof</span>(scopeService2)&#125;</span>:<span class="subst">&#123;scopeService2.GetHashCode()&#125;</span>"</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;<span class="keyword">nameof</span>(transientService1)&#125;</span>:<span class="subst">&#123;transientService1.GetHashCode()&#125;</span>"</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;<span class="keyword">nameof</span>(transientService2)&#125;</span>:<span class="subst">&#123;transientService2.GetHashCode()&#125;</span>"</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">"=========请求结束========"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>运行项目，访问<code>/WeatherForecast/GetService</code>，控制台会打印出类似以下信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">singletonService1:23488915</span><br><span class="line">singletonService2:23488915</span><br><span class="line">scopeService1:24854661</span><br><span class="line">scopeService2:24854661</span><br><span class="line">transientService1:38972574</span><br><span class="line">transientService2:14645893</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;请求结束&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+可以看出<code>IMySingletonService</code>的实现对象属于同一个对象，<code>IMyTransientService</code>的实现对象有多个，目前看<code>IMyScopeService</code>的实现对象为同一个，但是再次访问<code>/WeatherForecast/GetService</code>接口，就可以发现<code>IMyScopeService</code>的实现对象为新的对象，而<code>IMySingletonService</code>的实现对象还是上次访问的那个，打印信息如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">singletonService1:23488915</span><br><span class="line">singletonService2:23488915</span><br><span class="line">scopeService1:6630602</span><br><span class="line">scopeService2:6630602</span><br><span class="line">transientService1:5024928</span><br><span class="line">transientService2:38414640</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;请求结束&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="其他方式注册服务-以单例模式为例"><a href="#其他方式注册服务-以单例模式为例" class="headerlink" title="其他方式注册服务(以单例模式为例)"></a>其他方式注册服务(以单例模式为例)</h2><h3 id="直接new对象"><a href="#直接new对象" class="headerlink" title="直接new对象"></a>直接new对象</h3><p>在<code>Startup.ConfigureServices</code>方法中新增以下代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.AddSingleton&lt;IOrderService&gt;(<span class="keyword">new</span> OrderService());</span><br></pre></td></tr></table></figure>
+<h3 id="通过工厂模式注册对象"><a href="#通过工厂模式注册对象" class="headerlink" title="通过工厂模式注册对象"></a>通过工厂模式注册对象</h3><p>使用工厂模式注册对象，可以在委托中使用IServiceProvider参数，这也就意味着可以从容器里获取多个对象，然后进行组装，得到我们最终需要的实现实例，可以把工厂类设计的比较复杂，比如说我们的实现类依赖了容器里面的另外一个类的情况，或者我们期望用另外一个类来包装我们原有的实现的时候<br>在<code>Startup.ConfigureServices</code>方法中新增以下代码</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">services.AddSingleton&lt;IOrderService&gt;(serviceProvider =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> OrderServiceEx();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="尝试注册服务"><a href="#尝试注册服务" class="headerlink" title="尝试注册服务"></a>尝试注册服务</h2><p>尝试注册服务有两种情况</p>
+<ol>
+<li>当指定接口已有实现类，则不再注册服务，代码如下：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.TryAddSingleton&lt;IOrderService, OrderServiceEx&gt;();</span><br></pre></td></tr></table></figure></li>
+<li>当指定接口已有实现类，但是已注册的实现类不包含当前指定的实现类，则注册进去，如果已经包含当前的实现类，则不再注册服务，代码如下：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.TryAddEnumerable(ServiceDescriptor.Singleton&lt;IOrderService,OrderService&gt;());</span><br></pre></td></tr></table></figure>
+在控制器里验证是否有多个实现类注册，可通过下面的方法验证(需要自行注释或修改Startup里面的服务注册情况)<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">GetServiceList</span>(<span class="params">[FromServices] IEnumerable&lt;IOrderService&gt; orderServices</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> orderServices)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"获取到服务实例：<span class="subst">&#123;item.ToString()&#125;</span>:<span class="subst">&#123;item.GetHashCode()&#125;</span>"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="移除和替换服务"><a href="#移除和替换服务" class="headerlink" title="移除和替换服务"></a>移除和替换服务</h2><h3 id="移除服务"><a href="#移除服务" class="headerlink" title="移除服务"></a>移除服务</h3>指的是直接从容器中移除指定接口的所有实现类，代码如下：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.RemoveAll&lt;IOrderService&gt;();</span><br></pre></td></tr></table></figure>
+<h3 id="替换服务"><a href="#替换服务" class="headerlink" title="替换服务"></a>替换服务</h3>指的是替换指定接口的实现类，同时也会替换该服务的生命周期，代码如下：<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.Replace(ServiceDescriptor.Singleton&lt;IOrderService, OrderServiceEx&gt;());</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="泛型服务注册"><a href="#泛型服务注册" class="headerlink" title="泛型服务注册"></a>泛型服务注册</h2><p>即对泛型服务注册，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">services.AddSingleton(<span class="keyword">typeof</span>(IGenericService&lt;&gt;), <span class="keyword">typeof</span>(GenericService&lt;&gt;));</span><br></pre></td></tr></table></figure>
+<p>可以通过在控制器的构造函数中获取到服务对象，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">WeatherForecastController</span>(<span class="params">ILogger&lt;WeatherForecastController&gt; logger,IOrderService orderService,IGenericService&lt;IOrderService&gt; genericService</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    _logger = logger;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以通过断点查看最终<code>IGenericService</code>的<code>IOrderService</code>为哪个实现类</p>
+<h1 id="服务对象的获取"><a href="#服务对象的获取" class="headerlink" title="服务对象的获取"></a>服务对象的获取</h1><p>通过上面可以看出，服务对象有两种获取方式，一种是通过构造函数直接注入，一种是通过函数参数，使用<code>[FromServices]</code>标签来注入</p>
+<p><strong>一般按照使用情况来确定用哪种方式，如果整个类使用地方比较多，则使用构造函数注入，如果只有某一个方法使用，则一般使用函数参数来注入</strong></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/03/30/DependencyInjection_document/" title=".NET Core开发实战课程备忘(1) -- 依赖注入：良好架构的起点" target="_blank" rel="external">http://www.dimsum.fun/2020/03/30/DependencyInjection_document/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/03/30/2.DependencyInjection_document/" title=".NET Core开发实战课程备忘(2) -- 依赖注入：良好架构的起点"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/03/30/StartupDemo_document/" title=".NET Core开发实战课程备忘(1) -- ASP.NET Core的启动流程"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

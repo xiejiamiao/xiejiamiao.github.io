@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>.NET Core开发实战课程备忘(14) -- 异常处理中间件：区分真异常与逻辑一场 | Hexo</title>
+  <meta name="description" content="处理异常的方式 代码实现 创建项目 注释掉系统自带的异常处理中间件 创建自定义的异常类 为什么要创建自定义的异常类 自定义异常类   异常处理页代码实现 异常处理匿名委托方法代码实现 IExceptionFilter代码实现 ExceptionFilterAttribute代码实现   总结  处理异常的方式 异常处理页 异常处理匿名委托方法 IExceptionFilter Exception">
+<meta property="og:type" content="article">
+<meta property="og:title" content=".NET Core开发实战课程备忘(14) -- 异常处理中间件：区分真异常与逻辑一场">
+<meta property="og:url" content="http://www.dimsum.fun/2020/04/02/14.Exception_document/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="处理异常的方式 代码实现 创建项目 注释掉系统自带的异常处理中间件 创建自定义的异常类 为什么要创建自定义的异常类 自定义异常类   异常处理页代码实现 异常处理匿名委托方法代码实现 IExceptionFilter代码实现 ExceptionFilterAttribute代码实现   总结  处理异常的方式 异常处理页 异常处理匿名委托方法 IExceptionFilter Exception">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-02T14:17:00.000Z">
+<meta property="article:modified_time" content="2020-04-03T08:32:55.159Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content=".NET Core">
+<meta property="article:tag" content="ASP.NET Core">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/04/02/14.Exception_document/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">35</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">31</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.5px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/20/22.gRPC_document/" class="title">gRPC in ASP.NET Core</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-20T10:30:00.000Z" itemprop="datePublished">2020-04-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/15/21.MediatR_document/" class="title">MediatR：轻松实现命令查询职责分离模式(CQRS)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-15T07:00:00.000Z" itemprop="datePublished">2020-04-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/10/20.EFCore_Concurrency_document/" class="title">EntityFramework Core的并发处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-10T08:21:00.000Z" itemprop="datePublished">2020-04-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/09/19.Docker_AspNetCore_document/" class="title">ASP.NET Core发布到Docker中(使用Dockerfile)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-09T07:49:00.000Z" itemprop="datePublished">2020-04-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/04/07/18.MicroService01_document/" class="title">.NET Core开发实战课程备忘(18) -- 微服务之工程结构概览：定义应用分层及依赖关系</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-07T10:18:00.000Z" itemprop="datePublished">2020-04-07</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-14.Exception_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      .NET Core开发实战课程备忘(14) -- 异常处理中间件：区分真异常与逻辑一场
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/02/14.Exception_document/" class="article-date">
+	  <time datetime="2020-04-02T14:17:00.000Z" itemprop="datePublished">2020-04-02</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a>, <a class="article-tag-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/02/14.Exception_document/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.2k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#%e5%a4%84%e7%90%86%e5%bc%82%e5%b8%b8%e7%9a%84%e6%96%b9%e5%bc%8f">处理异常的方式</a></li>
+<li><a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">代码实现</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae">创建项目</a></li>
+<li><a href="#%e6%b3%a8%e9%87%8a%e6%8e%89%e7%b3%bb%e7%bb%9f%e8%87%aa%e5%b8%a6%e7%9a%84%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e4%b8%ad%e9%97%b4%e4%bb%b6">注释掉系统自带的异常处理中间件</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%87%aa%e5%ae%9a%e4%b9%89%e7%9a%84%e5%bc%82%e5%b8%b8%e7%b1%bb">创建自定义的异常类</a><ul>
+<li><a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e5%88%9b%e5%bb%ba%e8%87%aa%e5%ae%9a%e4%b9%89%e7%9a%84%e5%bc%82%e5%b8%b8%e7%b1%bb">为什么要创建自定义的异常类</a></li>
+<li><a href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e5%bc%82%e5%b8%b8%e7%b1%bb">自定义异常类</a></li>
+</ul>
+</li>
+<li><a href="#%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e9%a1%b5%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">异常处理页代码实现</a></li>
+<li><a href="#%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86%e5%8c%bf%e5%90%8d%e5%a7%94%e6%89%98%e6%96%b9%e6%b3%95%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">异常处理匿名委托方法代码实现</a></li>
+<li><a href="#iexceptionfilter%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0"><code>IExceptionFilter</code>代码实现</a></li>
+<li><a href="#exceptionfilterattribute%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0"><code>ExceptionFilterAttribute</code>代码实现</a></li>
+</ul>
+</li>
+<li><a href="#%e6%80%bb%e7%bb%93">总结</a></li>
+</ul>
+<h1 id="处理异常的方式"><a href="#处理异常的方式" class="headerlink" title="处理异常的方式"></a>处理异常的方式</h1><ul>
+<li>异常处理页</li>
+<li>异常处理匿名委托方法</li>
+<li><code>IExceptionFilter</code></li>
+<li><code>ExceptionFilterAttribute</code></li>
+</ul>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建名字为<code>ExceptionDemo</code>的<code>ASP.NET Core</code>项目，类型为<code>API</code></p>
+<h2 id="注释掉系统自带的异常处理中间件"><a href="#注释掉系统自带的异常处理中间件" class="headerlink" title="注释掉系统自带的异常处理中间件"></a>注释掉系统自带的异常处理中间件</h2><p>在<code>Startup.Configure</code>中有<code>app.UseDeveloperExceptionPage();</code>这个中间件，这个就是<code>ASP.NET Core</code>自带的一个异常处理页，但是这个页面错误信息太多，只适合开发时对开发人员进行提示，不适合放到生产环境，所以这里注释掉这个中间件</p>
+<h2 id="创建自定义的异常类"><a href="#创建自定义的异常类" class="headerlink" title="创建自定义的异常类"></a>创建自定义的异常类</h2><h3 id="为什么要创建自定义的异常类"><a href="#为什么要创建自定义的异常类" class="headerlink" title="为什么要创建自定义的异常类"></a>为什么要创建自定义的异常类</h3><p>通常情况下我们系统里面的异常与我们业务逻辑里的异常是不同的，业务逻辑上的判断异常，比如输入的参数不合法、订单状态不符合条件，当前账户余额不足这样的错误信息，我们有两种处理方式，一种处理方式是对不同的逻辑输出不同的业务对象，还有一种方式就是对于这种业务逻辑输出一个异常，用异常来承载我们的逻辑的特殊分支，那这个时候<strong>我们就需要识别出哪些是我们的业务异常，哪些是我们不确定的未知异常</strong>，比如网络突发的无法连接、MySql的闪断之类的</p>
+<p>那这里怎么识别出哪些是业务异常，哪些是未知异常？</p>
+<p>首先通过定义一个接口，接口里有错误码和错误信息，当我们有一个业务出现异常，我们可以人为的抛出一个已经实现了这个接口的自定义异常类。然后在异常处理过程中，我们尝试将捕获到的异常转为我们定义的异常接口，如果能转成功，说明这个异常是我们认为抛出的业务异常，否则为系统抛出的未知异常</p>
+<h3 id="自定义异常类"><a href="#自定义异常类" class="headerlink" title="自定义异常类"></a>自定义异常类</h3><p>在项目根目录创建文件夹<code>Exceptions</code>，所有异常的自定义类都放在这里</p>
+<p>创建<code>IKnownException</code>接口，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">ExceptionDemo.Exceptions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IKnownException</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">string</span> Message &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> ErrorCode &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">object</span>[] ErrorData &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建<code>KnownException</code>类，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">ExceptionDemo.Exceptions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">KnownException</span>:<span class="title">IKnownException</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">KnownException</span>(<span class="params"><span class="keyword">object</span>[] errorData, <span class="keyword">int</span> errorCode, <span class="keyword">string</span> message</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            ErrorData = errorData;</span><br><span class="line">            ErrorCode = errorCode;</span><br><span class="line">            Message = message;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> Message &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> ErrorCode &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">object</span>[] ErrorData &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> IKnownException UnKnown = <span class="keyword">new</span> KnownException(errorData: <span class="keyword">new</span> <span class="keyword">object</span>[] &#123; &#125;, errorCode: <span class="number">9999</span>, message: <span class="string">"未知错误"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IKnownException <span class="title">FromKnownException</span>(<span class="params">IKnownException exception</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> KnownException(errorData: exception.ErrorData, errorCode: exception.ErrorCode, message: exception.Message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建测试用的<code>InvalidParameterException</code>类，用来模拟参数错误的异常，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ExceptionDemo.Exceptions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">InvalidParameterException</span>: <span class="title">Exception</span>,<span class="title">IKnownException</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">InvalidParameterException</span>(<span class="params"><span class="keyword">int</span> errorCode, <span class="keyword">string</span> message, <span class="keyword">params</span> <span class="keyword">object</span>[] errorData</span>) : <span class="title">base</span>(<span class="params">message</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            ErrorCode = errorCode;</span><br><span class="line">            ErrorData = errorData;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> ErrorCode &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">object</span>[] ErrorData &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="异常处理页代码实现"><a href="#异常处理页代码实现" class="headerlink" title="异常处理页代码实现"></a>异常处理页代码实现</h2><p>创建处理页面控制器<code>ErrorController</code>，在<code>Index</code>方法中获取到当前请求上下文的异常信息，并尝试进行转成<code>IKnownException</code>，如果转成功则表示为业务逻辑异常，如果失败则表示为未知异常，未知异常则通过<code>KnownException</code>的静态方法生成一个特定的未知异常对象，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> ExceptionDemo.Exceptions;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Diagnostics;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Mvc;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Logging;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ExceptionDemo.Controllers</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ErrorController</span> : <span class="title">Controller</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">readonly</span> ILogger&lt;ErrorController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ErrorController</span>(<span class="params">ILogger&lt;ErrorController&gt; logger</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">"/error"</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> IActionResult <span class="title">Index</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> exceptionHandlerPathFeature = HttpContext.Features.Get&lt;IExceptionHandlerPathFeature&gt;();</span><br><span class="line">            <span class="keyword">var</span> ex = exceptionHandlerPathFeature?.Error;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> knownException = ex <span class="keyword">as</span> IKnownException;</span><br><span class="line">            <span class="keyword">if</span> (knownException == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                 _logger.LogError(ex,ex.Message);</span><br><span class="line">                 knownException = KnownException.UnKnown;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                knownException = KnownException.FromKnownException(knownException);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> View(knownException);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的试图<code>Index.cshtml</code>代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@model ExceptionDemo.Exceptions.IKnownException</span><br><span class="line">@&#123;</span><br><span class="line">    Layout = null;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Index<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>错误码：@Model.ErrorCode<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>错误信息：@Model.Message<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>回到<code>Startup</code>，对<code>ConfigureServices</code>和<code>Configure</code>两个方法做出调整，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureServices</span>(<span class="params">IServiceCollection services</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    services.AddControllersWithViews();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    app.UseExceptionHandler(<span class="string">"/error"</span>);</span><br><span class="line">    app.UseHttpsRedirection();</span><br><span class="line">    app.UseRouting();</span><br><span class="line">    app.UseAuthorization();</span><br><span class="line">    app.UseEndpoints(endpoints =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        endpoints.MapControllers();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>切换到<code>WeatherForecastController</code>，在这里来主动抛出异常，将<code>Get</code>方法修改如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerable&lt;WeatherForecast&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> InvalidParameterException(<span class="number">65</span>, <span class="string">"参数有误"</span>, <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;() &#123;<span class="string">"exception info 1"</span>,<span class="string">"exception info 2"</span> &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行代码，访问<code>/weatherforecast</code>，可以看到返回了以下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">错误码：65</span><br><span class="line"></span><br><span class="line">错误信息：参数有误</span><br></pre></td></tr></table></figure>
+<p>将<code>WeatherForecastController.Get</code>里的异常换成一个普通的异常，在重新运行代码，可以看到页面会变成<code>未知错误</code>的提示，同时控制台打印出来的日志是完全的异常日志</p>
+<h2 id="异常处理匿名委托方法代码实现"><a href="#异常处理匿名委托方法代码实现" class="headerlink" title="异常处理匿名委托方法代码实现"></a>异常处理匿名委托方法代码实现</h2><p>将<code>Startup.Configure</code>方法中的<code>app.UseExceptionHandler(&quot;/error&quot;);</code>注释掉，原位置新增以下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">app.UseExceptionHandler(errApp =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    errApp.Run(<span class="keyword">async</span> context =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> exceptionHandlerPathFeature = context.Features.Get&lt;IExceptionHandlerPathFeature&gt;();</span><br><span class="line">        <span class="keyword">var</span> knownException = exceptionHandlerPathFeature.Error <span class="keyword">as</span> IKnownException;</span><br><span class="line">        <span class="keyword">if</span> (knownException == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> logger = context.RequestServices.GetService&lt;ILogger&lt;Startup&gt;&gt;();</span><br><span class="line">            logger.LogError(exceptionHandlerPathFeature.Error, exceptionHandlerPathFeature.Error.Message);</span><br><span class="line">            knownException = KnownException.UnKnown;</span><br><span class="line">            context.Response.StatusCode = StatusCodes.Status500InternalServerError;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            knownException = KnownException.FromKnownException(knownException);</span><br><span class="line">            context.Response.StatusCode = StatusCodes.Status200OK;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> jsonOptions = context.RequestServices.GetService&lt;IOptions&lt;JsonOptions&gt;&gt;();</span><br><span class="line">        context.Response.ContentType = <span class="string">"application/json; charset=utf-8"</span>;</span><br><span class="line">        <span class="keyword">await</span> context.Response.WriteAsync(JsonSerializer.Serialize(knownException, jsonOptions.Value.JsonSerializerOptions));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里的操作与异常处理页逻辑差不多，只是不再返回视图，而是返回<code>json</code>，同时设定好业务逻辑异常返回200状态码，未知异常返回500状态码(这样做的好处后面说明)，运行代码，访问<code>/weatherforecast</code>，通过修改抛出异常，可看到对应的返回结果</p>
+<h2 id="IExceptionFilter代码实现"><a href="#IExceptionFilter代码实现" class="headerlink" title="IExceptionFilter代码实现"></a><code>IExceptionFilter</code>代码实现</h2><p>在<code>Exceptions</code>文件夹新建<code>MyExceptionFilter.cs</code>，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Http;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Mvc;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Mvc.Filters;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Logging;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ExceptionDemo.Exceptions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyExceptionFilter</span>:<span class="title">IExceptionFilter</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnException</span>(<span class="params">ExceptionContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> knownException = context.Exception <span class="keyword">as</span> IKnownException;</span><br><span class="line">            <span class="keyword">if</span> (knownException == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> logger = context.HttpContext.RequestServices.GetService&lt;ILogger&lt;MyExceptionFilter&gt;&gt;();</span><br><span class="line">                logger.LogError(context.Exception,context.Exception.Message);</span><br><span class="line">                knownException = KnownException.UnKnown;</span><br><span class="line">                context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                knownException = KnownException.FromKnownException(knownException);</span><br><span class="line">                context.HttpContext.Response.StatusCode = StatusCodes.Status200OK;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            context.Result = <span class="keyword">new</span> JsonResult(knownException)</span><br><span class="line">            &#123;</span><br><span class="line">                ContentType = <span class="string">"application/json; charset=utf-8"</span></span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里对异常的处理逻辑与异常处理匿名委托方法一样</p>
+<p>修改<code>Startup</code>的<code>ConfigureServices</code>、<code>Configure</code>，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureServices</span>(<span class="params">IServiceCollection services</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    services.AddControllersWithViews(options =&gt; &#123; options.Filters.Add&lt;MyExceptionFilter&gt;(); &#125;).AddJsonOptions(</span><br><span class="line">        options =&gt; &#123; options.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping; &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    app.UseHttpsRedirection();</span><br><span class="line"></span><br><span class="line">    app.UseRouting();</span><br><span class="line"></span><br><span class="line">    app.UseAuthorization();</span><br><span class="line"></span><br><span class="line">    app.UseEndpoints(endpoints =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        endpoints.MapControllers();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，访问<code>/weatherforecast</code>，通过修改抛出异常，可看到对应的返回结果</p>
+<h2 id="ExceptionFilterAttribute代码实现"><a href="#ExceptionFilterAttribute代码实现" class="headerlink" title="ExceptionFilterAttribute代码实现"></a><code>ExceptionFilterAttribute</code>代码实现</h2><p>在<code>Exceptions</code>中新建<code>MyExceptionFilterAttribute.cs</code>，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Http;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Mvc;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Mvc.Filters;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Logging;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ExceptionDemo.Exceptions</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyExceptionFilterAttribute</span> : <span class="title">ExceptionFilterAttribute</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnException</span>(<span class="params">ExceptionContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> knownException = context.Exception <span class="keyword">as</span> IKnownException;</span><br><span class="line">            <span class="keyword">if</span> (knownException == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> logger = context.HttpContext.RequestServices.GetService&lt;ILogger&lt;MyExceptionFilterAttribute&gt;&gt;();</span><br><span class="line">                logger.LogError(context.Exception, context.Exception.Message);</span><br><span class="line">                knownException = KnownException.UnKnown;</span><br><span class="line">                context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                knownException = KnownException.FromKnownException(knownException);</span><br><span class="line">                context.HttpContext.Response.StatusCode = StatusCodes.Status200OK;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            context.Result = <span class="keyword">new</span> JsonResult(knownException)</span><br><span class="line">            &#123;</span><br><span class="line">                ContentType = <span class="string">"application/json; charset=utf-8"</span></span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改<code>Startup</code>的<code>ConfigureServices</code>、<code>Configure</code>，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureServices</span>(<span class="params">IServiceCollection services</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    services.AddControllersWithViews();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Configure</span>(<span class="params">IApplicationBuilder app, IWebHostEnvironment env</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    app.UseHttpsRedirection();</span><br><span class="line">    app.UseRouting();</span><br><span class="line">    app.UseAuthorization();</span><br><span class="line">    app.UseEndpoints(endpoints =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        endpoints.MapControllers();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>WeatherForecastController</code>中添加类特性，具体代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> ExceptionDemo.Exceptions;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Mvc;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Logging;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ExceptionDemo.Controllers</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">ApiController</span>]</span><br><span class="line">    [<span class="meta">Route(<span class="meta-string">"[controller]"</span>)</span>]</span><br><span class="line">    [<span class="meta">MyExceptionFilter</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">WeatherForecastController</span> : <span class="title">ControllerBase</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="keyword">string</span>[] Summaries = <span class="keyword">new</span>[]</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"Freezing"</span>, <span class="string">"Bracing"</span>, <span class="string">"Chilly"</span>, <span class="string">"Cool"</span>, <span class="string">"Mild"</span>, <span class="string">"Warm"</span>, <span class="string">"Balmy"</span>, <span class="string">"Hot"</span>, <span class="string">"Sweltering"</span>, <span class="string">"Scorching"</span></span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">readonly</span> ILogger&lt;WeatherForecastController&gt; _logger;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">WeatherForecastController</span>(<span class="params">ILogger&lt;WeatherForecastController&gt; logger</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            _logger = logger;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> IEnumerable&lt;WeatherForecast&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidParameterException(<span class="number">65</span>, <span class="string">"参数有误！！！"</span>, <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;() &#123;<span class="string">"exception info 1"</span>,<span class="string">"exception info 2"</span> &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，访问<code>/weatherforecast</code>，通过修改抛出异常，可看到对应的返回结果</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>用特定的异常类或接口表示业务逻辑异常</li>
+<li>为业务逻辑异常定义全局错误码</li>
+<li>为未知异常定义特定的输出信息和错误码，不应该输出系统内部的异常堆栈</li>
+<li>对已知的业务逻辑异常相应<code>HTTP 200</code>，这样对监控系统友好，不会区分不开真异常和逻辑异常</li>
+<li>对于未预见的异常相应<code>HTTP 500</code></li>
+<li>为所有异常记录详细的日志</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/04/02/14.Exception_document/" title=".NET Core开发实战课程备忘(14) -- 异常处理中间件：区分真异常与逻辑一场" target="_blank" rel="external">http://www.dimsum.fun/2020/04/02/14.Exception_document/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/04/02/14.ExceptionDemo/" title=".NET Core开发实战课程备忘(14) -- 异常处理中间件：区分真异常与逻辑一场"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/04/02/13.Middleware_document/" title=".NET Core开发实战课程备忘(13) -- 中间件：掌握请求处理过程的关键"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
