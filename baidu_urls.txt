@@ -1,3 +1,4 @@
+http://www.dimsum.fun/2020/04/23/23.C#Base/
 http://www.dimsum.fun/2020/04/20/22.gRPC_document/
 http://www.dimsum.fun/2020/04/15/21.MediatR_document/
 http://www.dimsum.fun/2020/04/10/20.EFCore_Concurrency_document/
@@ -19,8 +20,8 @@ http://www.dimsum.fun/2020/04/01/9.ConfigurationCustom_document/
 http://www.dimsum.fun/2020/04/01/8.ConfigurationFile_document/
 http://www.dimsum.fun/2020/04/01/7.ConfigurationEnvironmentVariables_Document/
 http://www.dimsum.fun/2020/04/01/ConfigurationCustom_document/
-http://www.dimsum.fun/2020/04/01/ConfigurationEnvironmentVariables_Document/
 http://www.dimsum.fun/2020/04/01/ConfigurationFile_document/
+http://www.dimsum.fun/2020/04/01/ConfigurationEnvironmentVariables_Document/
 http://www.dimsum.fun/2020/04/01/Option_document/
 http://www.dimsum.fun/2020/03/31/6.ConfigurationCommandLine_document/
 http://www.dimsum.fun/2020/03/31/5.Configuration_document/
@@ -28,8 +29,8 @@ http://www.dimsum.fun/2020/03/31/4.DependencyInjectionAutofac_document/
 http://www.dimsum.fun/2020/03/31/3.DependencyInjectionScopeAndDisposable_document/
 http://www.dimsum.fun/2020/03/31/ConfigurationCommandLine_document/
 http://www.dimsum.fun/2020/03/31/Configuration_document/
-http://www.dimsum.fun/2020/03/31/DependencyInjectionScopeAndDisposable_document/
 http://www.dimsum.fun/2020/03/31/DependencyInjectionAutofac_document/
+http://www.dimsum.fun/2020/03/31/DependencyInjectionScopeAndDisposable_document/
 http://www.dimsum.fun/2020/03/30/2.DependencyInjection_document/
 http://www.dimsum.fun/2020/03/30/DependencyInjection_document/
 http://www.dimsum.fun/2020/03/30/StartupDemo_document/
