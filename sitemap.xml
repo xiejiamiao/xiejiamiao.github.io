@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.dimsum.fun/2020/05/14/24.InterviewBackup/</loc>
+    
+    <lastmod>2020-05-14T14:59:34.334Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/04/01/StepByStep/</loc>
+    
+    <lastmod>2020-05-14T14:59:34.334Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/03/27/chang-yong-docker/</loc>
+    
+    <lastmod>2020-05-14T14:56:46.515Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/04/02/14.Exception_document/</loc>
     
-    <lastmod>2020-04-26T03:21:59.068Z</lastmod>
+    <lastmod>2020-05-14T14:56:30.036Z</lastmod>
     
   </url>
   
@@ -93,23 +114,9 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/01/StepByStep/</loc>
-    
-    <lastmod>2020-04-01T16:49:32.267Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.dimsum.fun/2020/03/27/dotnet-core-cap/</loc>
     
     <lastmod>2020-04-01T09:05:51.498Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.dimsum.fun/2020/03/27/chang-yong-docker/</loc>
-    
-    <lastmod>2020-04-01T09:05:19.348Z</lastmod>
     
   </url>
   
