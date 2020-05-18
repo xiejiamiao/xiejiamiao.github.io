@@ -4,7 +4,7 @@
   <url>
     <loc>http://www.dimsum.fun/2020/05/14/24.InterviewBackup/</loc>
     
-    <lastmod>2020-05-14T14:59:34.334Z</lastmod>
+    <lastmod>2020-05-18T15:04:48.124Z</lastmod>
     
   </url>
   
@@ -58,14 +58,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/07/18.MicroService01_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/</loc>
     
     <lastmod>2020-04-09T09:20:56.918Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/07/18.MicroService01_document/</loc>
     
     <lastmod>2020-04-09T09:20:56.918Z</lastmod>
     
@@ -198,13 +198,6 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/categories/index.html</loc>
-    
-    <lastmod>2020-03-27T07:22:15.609Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.dimsum.fun/links/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
@@ -213,6 +206,13 @@
   
   <url>
     <loc>http://www.dimsum.fun/repository/index.html</loc>
+    
+    <lastmod>2020-03-27T07:22:15.609Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/categories/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     

@@ -18,15 +18,15 @@
   
   
   <title>面试备忘 | Hexo</title>
-  <meta name="description" content="ASP.NET Core 数据库相关 其他  一些面试题的备忘 ASP.NET Core 服务的注册方式和获取方式  autofac和自带的IoC框架的区别  WebAPI的CQRS策略  JWT的组成和加密方式  ViewData、ViewBag、TempData的区别 解答：  ViewBag是在ViewData上面加一层dynamic，如果用同个key，比如ViewBag.Info&#x3D;&amp;qu">
+  <meta name="description" content="ASP.NET Core 数据库相关 其他  一些面试题的备忘 ASP.NET Core 服务的注册方式和获取方式 解答  使用框架自带的IoC框架是通过Startup的ConfigureService方法里的IServiceCollerction进行注册 一般通过接口与实现类的方式实现，也可以通过工厂的方式进行注册服务，不推荐直接new服务进行注册，这样IoC框架是不会进行该服务的生命周期管理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试备忘">
 <meta property="og:url" content="http://www.dimsum.fun/2020/05/14/24.InterviewBackup/index.html">
 <meta property="og:site_name" content="dimsum">
-<meta property="og:description" content="ASP.NET Core 数据库相关 其他  一些面试题的备忘 ASP.NET Core 服务的注册方式和获取方式  autofac和自带的IoC框架的区别  WebAPI的CQRS策略  JWT的组成和加密方式  ViewData、ViewBag、TempData的区别 解答：  ViewBag是在ViewData上面加一层dynamic，如果用同个key，比如ViewBag.Info&#x3D;&amp;qu">
+<meta property="og:description" content="ASP.NET Core 数据库相关 其他  一些面试题的备忘 ASP.NET Core 服务的注册方式和获取方式 解答  使用框架自带的IoC框架是通过Startup的ConfigureService方法里的IServiceCollerction进行注册 一般通过接口与实现类的方式实现，也可以通过工厂的方式进行注册服务，不推荐直接new服务进行注册，这样IoC框架是不会进行该服务的生命周期管理">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-14T09:51:00.000Z">
-<meta property="article:modified_time" content="2020-05-14T14:59:34.334Z">
+<meta property="article:modified_time" content="2020-05-18T15:04:48.124Z">
 <meta property="article:author" content="Jiamiao.x">
 <meta property="article:tag" content="ASP.NET Core">
 <meta property="article:tag" content="面试">
@@ -359,10 +359,10 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/14/24.InterviewBackup/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 674(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 965(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
 	
 
       </div>
@@ -377,30 +377,56 @@
 <p>一些面试题的备忘</p>
 <h1 id="ASP-NET-Core"><a href="#ASP-NET-Core" class="headerlink" title="ASP.NET Core"></a>ASP.NET Core</h1><ol>
 <li><p>服务的注册方式和获取方式</p>
+<p><strong>解答</strong></p>
+<ol>
+<li>使用框架自带的<code>IoC</code>框架是通过<code>Startup</code>的<code>ConfigureService</code>方法里的<code>IServiceCollerction</code>进行注册</li>
+<li>一般通过接口与实现类的方式实现，也可以通过工厂的方式进行注册服务，不推荐直接<code>new</code>服务进行注册，这样<code>IoC</code>框架是不会进行该服务的生命周期管理</li>
+<li>获取方式一般可以通过构造函数、参数的<code>[FromService]</code>、通过<code>BuilderServiceProvider</code>获取<code>serviceProvider</code>对象，在<code>serviceProvider</code>里获取服务</li>
+</ol>
 </li>
 <li><p><code>autofac</code>和自带的<code>IoC</code>框架的区别</p>
+<p><strong>解答</strong></p>
+<ol>
+<li>Autofac新增基于名称的注入、属性注入、AOP</li>
+<li>注册服务的地方是在<code>Startup</code>里新增的<code>ConfigureContainer</code>方法里</li>
+</ol>
 </li>
 <li><p><code>WebAPI</code>的<code>CQRS</code>策略</p>
 </li>
 <li><p><code>JWT</code>的组成和加密方式</p>
+<p><strong>解答</strong></p>
+<ol>
+<li>加密方式.经过base64转码的消息主体.签名</li>
+<li>使用HS256的签名加密方式</li>
+</ol>
 </li>
 <li><p><code>ViewData</code>、<code>ViewBag</code>、<code>TempData</code>的区别</p>
 <p><strong>解答：</strong></p>
-<blockquote>
-<p><code>ViewBag</code>是在<code>ViewData</code>上面加一层<code>dynamic</code>，如果用同个<code>key</code>，比如<code>ViewBag.Info=&quot;ABC&quot;</code>，在页面其实也可以通过<code>ViewData[&quot;Info&quot;]</code>来获取，同时也以为着<code>ViewBag=&quot;ABC&quot;;ViewData[&quot;info&quot;]=&quot;123&quot;</code>，后面会覆盖前面的；</p>
-</blockquote>
-<blockquote>
-<p><code>TempData</code>是存放在<code>session</code>里面，意味着可以跨<code>action</code>来取值，比如<code>ActionA</code>中赋值了<code>TempData[&quot;Info&quot;]=&quot;ABC&quot;</code>，在<code>ActionA</code>对应的<code>ViewA</code>中点击跳转到<code>ActionB</code>，则可以直接在<code>ActionB</code>中通过<code>TempData[&quot;Info&quot;]</code>来取得<code>&quot;ABC&quot;</code></p>
-</blockquote>
-<blockquote>
-<p>但是要注意，<code>TempData</code>在被取值之后就会被删除，所以上面的场景如果在<code>ActionA</code>对应的<code>ViewA</code>中把<code>TempData[&quot;Info&quot;]</code>取出来，则在<code>ActionB</code>中就获取不到<code>TempData[&quot;Info&quot;]</code>的值，获取到的是个<code>null</code></p>
-</blockquote>
+<ol>
+<li><code>ViewBag</code>是在<code>ViewData</code>上面加一层<code>dynamic</code>，如果用同个<code>key</code>，比如<code>ViewBag.Info=&quot;ABC&quot;</code>，在页面其实也可以通过<code>ViewData[&quot;Info&quot;]</code>来获取，同时也以为着<code>ViewBag=&quot;ABC&quot;;ViewData[&quot;info&quot;]=&quot;123&quot;</code>，后面会覆盖前面的；</li>
+<li><code>TempData</code>是存放在<code>session</code>里面，意味着可以跨<code>action</code>来取值，比如<code>ActionA</code>中赋值了<code>TempData[&quot;Info&quot;]=&quot;ABC&quot;</code>，在<code>ActionA</code>对应的<code>ViewA</code>中点击跳转到<code>ActionB</code>，则可以直接在<code>ActionB</code>中通过<code>TempData[&quot;Info&quot;]</code>来取得<code>&quot;ABC&quot;</code></li>
+<li>但是要注意，<code>TempData</code>在被取值之后就会被删除，所以上面的场景如果在<code>ActionA</code>对应的<code>ViewA</code>中把<code>TempData[&quot;Info&quot;]</code>取出来，则在<code>ActionB</code>中就获取不到<code>TempData[&quot;Info&quot;]</code>的值，获取到的是个<code>null</code></li>
+</ol>
 </li>
 <li><p><code>API</code>的版本管理</p>
+<p><strong>解答</strong></p>
+<ol>
+<li>使用URL带版本的方式，在<code>Controller</code>里使用<code>[Route(&#39;&#39;)]</code>来指定版本</li>
+</ol>
 </li>
 <li><p>使用中间件Use/Run/Map的区别</p>
+<p><strong>解答</strong></p>
+<ol>
+<li>通常使用的<code>Use</code></li>
+<li><code>Run</code>起到的是断路器的作用，即不再执行后面的中间件</li>
+<li><code>Map</code>一般是针对特殊的路径使用特殊的中间件管道</li>
+</ol>
 </li>
 <li><p>中间件里面怎么获取服务</p>
+<p><strong>解答</strong></p>
+<ol>
+<li>使用中间件的<code>Invoke</code>方法中的<code>HttpContext</code>对象<code>context.RequestServices.GetService&lt;T&gt;()</code>来获取</li>
+</ol>
 </li>
 <li><p><code>EFCore</code>的<code>TPH</code></p>
 </li>
@@ -410,18 +436,12 @@
 <h1 id="数据库相关"><a href="#数据库相关" class="headerlink" title="数据库相关"></a>数据库相关</h1><ol>
 <li><p><code>delete</code>、<code>truncate</code>的区别</p>
 <p><strong>解答：</strong></p>
-<blockquote>
-<p><code>delete</code>可以带<code>where</code>，<code>truncate</code>不能带<code>where</code></p>
-</blockquote>
-<blockquote>
-<p><code>delete</code>慢，<code>truncate</code>快</p>
-</blockquote>
-<blockquote>
-<p><code>delete</code>每删一条数据都会在数据库日志里记录这条记录，<code>truncate</code>只会记录整表做了清除记录，这意味这<code>delete</code>可以被回滚，<code>truncate</code>是不能回滚的</p>
-</blockquote>
-<blockquote>
-<p><code>delete</code>会触发<code>delete</code>触发器，<code>truncate</code>是不会触发任何触发器的</p>
-</blockquote>
+<ol>
+<li><code>delete</code>可以带<code>where</code>，<code>truncate</code>不能带<code>where</code></li>
+<li><code>delete</code>慢，<code>truncate</code>快</li>
+<li><code>delete</code>每删一条数据都会在数据库日志里记录这条记录，<code>truncate</code>只会记录整表做了清除记录，这意味这<code>delete</code>可以被回滚，<code>truncate</code>是不能回滚的</li>
+<li><code>delete</code>会触发<code>delete</code>触发器，<code>truncate</code>是不会触发任何触发器的</li>
+</ol>
 </li>
 </ol>
 <ol start="2">
@@ -440,6 +460,7 @@
  print @@rowcount</code></pre>
 上面的执行结果是什么</li>
 <li>存储过程中<code>@</code>、<code>#</code>、<code>##</code>、<code>CTE</code>的区别</li>
+<li>聚集索引与非聚集所以区别</li>
 </ol>
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ol>
 <li><p><code>.xsd</code>、<code>XML</code>的<code>schemas</code></p>
@@ -456,9 +477,9 @@
 </li>
 <li><p>编译的时候<code>Debug模式</code>和<code>Release模式</code>的区别</p>
 <p><strong>解答：</strong></p>
-<blockquote>
-<p>在<code>Debug</code>模式可以使用<code>#IF DEBUG</code>来跑一些调试模式下的特殊代码，在打包成<code>Release</code>的<code>DLL</code>的时候，<code>#IF DEBUG</code>的代码会被忽略</p>
-</blockquote>
+<ol>
+<li>在<code>Debug</code>模式可以使用<code>#IF DEBUG</code>来跑一些调试模式下的特殊代码，在打包成<code>Release</code>的<code>DLL</code>的时候，<code>#IF DEBUG</code>的代码会被忽略</li>
+</ol>
 </li>
 <li><p>编译时选择<code>Any CPU</code>、<code>x86</code>、<code>x64</code>的区别</p>
 </li>
