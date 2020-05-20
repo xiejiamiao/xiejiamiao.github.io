@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.dimsum.fun/2020/05/20/27.TsqlReview03/</loc>
+    
+    <lastmod>2020-05-20T11:09:09.094Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/05/20/28.TSqlReview04/</loc>
+    
+    <lastmod>2020-05-20T11:09:09.094Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/05/20/29.TSqlReview05/</loc>
+    
+    <lastmod>2020-05-20T11:09:09.094Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/05/20/26.TSqlReview02/</loc>
+    
+    <lastmod>2020-05-20T11:09:09.093Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</loc>
+    
+    <lastmod>2020-05-20T11:09:09.093Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/05/14/24.InterviewBackup/</loc>
     
     <lastmod>2020-05-18T15:04:48.124Z</lastmod>
@@ -58,14 +93,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/07/18.MicroService01_document/</loc>
     
     <lastmod>2020-04-09T09:20:56.918Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/07/18.MicroService01_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/</loc>
     
     <lastmod>2020-04-09T09:20:56.918Z</lastmod>
     
@@ -198,7 +233,7 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/links/index.html</loc>
+    <loc>http://www.dimsum.fun/categories/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
@@ -212,7 +247,7 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/categories/index.html</loc>
+    <loc>http://www.dimsum.fun/links/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     

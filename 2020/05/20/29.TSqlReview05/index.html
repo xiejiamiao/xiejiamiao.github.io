@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>T-SQL复习05--基础查询 | Hexo</title>
+  <meta name="description" content="SELECT语句语法 查询执行顺序 使用SELECT…WHERE查询数据 使用通配符*查询所有列 查询指定的列 使用as给列或表指定别名 where使用   模糊查询 OR&#x2F;AND逻辑运算 BETWEEN…AND IN IS NULL ORDER BY 排名函数RANK 排名函数ROW_NUMBER 过滤重复数据 判断对象(表&#x2F;存储过程&#x2F;视图等)是否存在 判断表是否存在方式1 判断表是否存在方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="T-SQL复习05--基础查询">
+<meta property="og:url" content="http://www.dimsum.fun/2020/05/20/29.TSqlReview05/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="SELECT语句语法 查询执行顺序 使用SELECT…WHERE查询数据 使用通配符*查询所有列 查询指定的列 使用as给列或表指定别名 where使用   模糊查询 OR&#x2F;AND逻辑运算 BETWEEN…AND IN IS NULL ORDER BY 排名函数RANK 排名函数ROW_NUMBER 过滤重复数据 判断对象(表&#x2F;存储过程&#x2F;视图等)是否存在 判断表是否存在方式1 判断表是否存在方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-20T06:49:00.000Z">
+<meta property="article:modified_time" content="2020-05-20T11:09:09.094Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="SQL Server">
+<meta property="article:tag" content="T-SQL">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/05/20/29.TSqlReview05/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/C/" style="font-size: 13px;">C#</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/SQL-Server/" style="font-size: 13.33px;">SQL Server</a> <a href="/tags/T-SQL/" style="font-size: 13.33px;">T-SQL</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.67px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/29.TSqlReview05/" class="title">T-SQL复习05--基础查询</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T06:49:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/28.TSqlReview04/" class="title">T-SQL复习04--临时表的使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T04:07:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/27.TsqlReview03/" class="title">T-SQL复习03--数据操作语言DML</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T03:48:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/26.TSqlReview02/" class="title">T-SQL复习02--数据表操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T02:21:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/25.TSqlReview01/" class="title">T-SQL复习01--数据库操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T01:32:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-29.TSqlReview05" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      T-SQL复习05--基础查询
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/20/29.TSqlReview05/" class="article-date">
+	  <time datetime="2020-05-20T06:49:00.000Z" itemprop="datePublished">2020-05-20</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/SQL-Server/">SQL Server</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a>, <a class="article-tag-link" href="/tags/T-SQL/" rel="tag">T-SQL</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/20/29.TSqlReview05/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.1k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 8(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#select%e8%af%ad%e5%8f%a5%e8%af%ad%e6%b3%95">SELECT语句语法</a></li>
+<li><a href="#%e6%9f%a5%e8%af%a2%e6%89%a7%e8%a1%8c%e9%a1%ba%e5%ba%8f">查询执行顺序</a></li>
+<li><a href="#%e4%bd%bf%e7%94%a8selectwhere%e6%9f%a5%e8%af%a2%e6%95%b0%e6%8d%ae">使用SELECT…WHERE查询数据</a><ul>
+<li><a href="#%e4%bd%bf%e7%94%a8%e9%80%9a%e9%85%8d%e7%ac%a6%e6%9f%a5%e8%af%a2%e6%89%80%e6%9c%89%e5%88%97">使用通配符<code>*</code>查询所有列</a></li>
+<li><a href="#%e6%9f%a5%e8%af%a2%e6%8c%87%e5%ae%9a%e7%9a%84%e5%88%97">查询指定的列</a></li>
+<li><a href="#%e4%bd%bf%e7%94%a8as%e7%bb%99%e5%88%97%e6%88%96%e8%a1%a8%e6%8c%87%e5%ae%9a%e5%88%ab%e5%90%8d">使用<code>as</code>给列或表指定别名</a></li>
+<li><a href="#where%e4%bd%bf%e7%94%a8"><code>where</code>使用</a></li>
+</ul>
+</li>
+<li><a href="#%e6%a8%a1%e7%b3%8a%e6%9f%a5%e8%af%a2">模糊查询</a></li>
+<li><a href="#orand%e9%80%bb%e8%be%91%e8%bf%90%e7%ae%97">OR/AND逻辑运算</a></li>
+<li><a href="#betweenand">BETWEEN…AND</a></li>
+<li><a href="#in">IN</a></li>
+<li><a href="#is-null">IS NULL</a></li>
+<li><a href="#order-by">ORDER BY</a></li>
+<li><a href="#%e6%8e%92%e5%90%8d%e5%87%bd%e6%95%b0rank">排名函数RANK</a></li>
+<li><a href="#%e6%8e%92%e5%90%8d%e5%87%bd%e6%95%b0rownumber">排名函数ROW_NUMBER</a></li>
+<li><a href="#%e8%bf%87%e6%bb%a4%e9%87%8d%e5%a4%8d%e6%95%b0%e6%8d%ae">过滤重复数据</a></li>
+<li><a href="#%e5%88%a4%e6%96%ad%e5%af%b9%e8%b1%a1%e8%a1%a8%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b%e8%a7%86%e5%9b%be%e7%ad%89%e6%98%af%e5%90%a6%e5%ad%98%e5%9c%a8">判断对象(表/存储过程/视图等)是否存在</a><ul>
+<li><a href="#%e5%88%a4%e6%96%ad%e8%a1%a8%e6%98%af%e5%90%a6%e5%ad%98%e5%9c%a8%e6%96%b9%e5%bc%8f1">判断表是否存在方式1</a></li>
+<li><a href="#%e5%88%a4%e6%96%ad%e8%a1%a8%e6%98%af%e5%90%a6%e5%ad%98%e5%9c%a8%e6%96%b9%e5%bc%8f2">判断表是否存在方式2</a></li>
+</ul>
+</li>
+<li><a href="#selectinto">SELECT…INTO</a></li>
+<li><a href="#insertselect">INSERT…SELECT</a></li>
+<li><a href="#mergeinto">MERGE..INTO</a></li>
+</ul>
+<h1 id="SELECT语句语法"><a href="#SELECT语句语法" class="headerlink" title="SELECT语句语法"></a>SELECT语句语法</h1><p>基本语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 选择列表(查询所显示的内容)</span><br><span class="line"><span class="keyword">from</span> 表名(查询内容所在的表)</span><br><span class="line"><span class="keyword">where</span> 查询条件(查询内容的条件)</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 条件(分组汇总的条件)</span><br><span class="line"><span class="keyword">having</span> 条件(筛选条件)</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> 列名(排序基准)</span><br></pre></td></tr></table></figure>
+<p>解析：</p>
+<ol>
+<li>选择列表：可以包括几个列名或者表达式，用逗号隔开，用于指示应该返回哪些数据</li>
+<li>from子句包含提供数据的表或视图名称</li>
+<li>where子句用于给出查询条件</li>
+<li>聚合函数对数据进行汇总计算，使用having进行筛选</li>
+<li>order by子句决定结果集的排列顺序</li>
+</ol>
+<h1 id="查询执行顺序"><a href="#查询执行顺序" class="headerlink" title="查询执行顺序"></a>查询执行顺序</h1><ol>
+<li>FROM：查询首先回根据<code>select</code>语句的<code>from</code>子句组装初始数据集</li>
+<li>WHERE：筛选阶段实际上是根据<code>where</code>子句进行筛选</li>
+<li>聚合：SQL语句对数据集执行聚合运算</li>
+<li>ORDER BY：根据<code>from</code>子句和<code>where</code>子句筛选出满足条件的行后，按照<code>order by</code>子句指定方式排序</li>
+<li>谓词：可以只显示前几行或只返回指定行</li>
+</ol>
+<h1 id="使用SELECT…WHERE查询数据"><a href="#使用SELECT…WHERE查询数据" class="headerlink" title="使用SELECT…WHERE查询数据"></a>使用SELECT…WHERE查询数据</h1><h2 id="使用通配符-查询所有列"><a href="#使用通配符-查询所有列" class="headerlink" title="使用通配符*查询所有列"></a>使用通配符<code>*</code>查询所有列</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.STUDENT</span><br></pre></td></tr></table></figure>
+<h2 id="查询指定的列"><a href="#查询指定的列" class="headerlink" title="查询指定的列"></a>查询指定的列</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">NAME</span>,AGE <span class="keyword">FROM</span> dbo.STUDENT</span><br></pre></td></tr></table></figure>
+<h2 id="使用as给列或表指定别名"><a href="#使用as给列或表指定别名" class="headerlink" title="使用as给列或表指定别名"></a>使用<code>as</code>给列或表指定别名</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">NAME</span> <span class="keyword">AS</span> 姓名,AGE <span class="keyword">AS</span> 性别 <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">AS</span> 学生表</span><br></pre></td></tr></table></figure>
+<p>其中AS可以直接省略，例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">NAME</span> 姓名,AGE 性别 <span class="keyword">FROM</span> dbo.STUDENT 学生表</span><br></pre></td></tr></table></figure>
+<h2 id="where使用"><a href="#where使用" class="headerlink" title="where使用"></a><code>where</code>使用</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'李筱思'</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> AGE&gt;<span class="number">16</span></span><br></pre></td></tr></table></figure>
+<p><em>注：字符类型和时间类型的数据需要加引号标识</em></p>
+<h1 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查找学生姓名以'李'开头的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">LIKE</span> <span class="string">'李%'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查找学生姓名以'李'或以'赵'开头的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">LIKE</span> <span class="string">'[李赵]%'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查找学生姓名不以'李'开头的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">'李%'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查找学生姓名不以'李'或以'赵'开头的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">LIKE</span> <span class="string">'[^李赵]%'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查找学生姓名以'李'开头，名字只有一个字符的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">LIKE</span> <span class="string">'[李]_'</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="OR-AND逻辑运算"><a href="#OR-AND逻辑运算" class="headerlink" title="OR/AND逻辑运算"></a>OR/AND逻辑运算</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询姓名以'李'开头或年龄是13岁的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">LIKE</span> <span class="string">'李%'</span> <span class="keyword">OR</span> AGE=<span class="number">13</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询姓名以'李'开头，或年龄是13岁性别为女的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">LIKE</span> <span class="string">'李%'</span> <span class="keyword">OR</span> (AGE=<span class="number">13</span> <span class="keyword">AND</span> SEX=<span class="string">'女'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询姓名以'李'开头且性别为女,或年龄13岁且性别为女的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> (<span class="keyword">NAME</span> <span class="keyword">LIKE</span> <span class="string">'李%'</span> <span class="keyword">AND</span> SEX=<span class="string">'女'</span>) <span class="keyword">OR</span> (AGE=<span class="number">13</span> <span class="keyword">AND</span> SEX=<span class="string">'女'</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="BETWEEN…AND"><a href="#BETWEEN…AND" class="headerlink" title="BETWEEN…AND"></a>BETWEEN…AND</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询年龄在11到13范围内的学生</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> AGE <span class="keyword">BETWEEN</span> <span class="number">11</span> <span class="keyword">AND</span> <span class="number">13</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询年龄不在11到13范围内的学生</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> AGE <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="number">11</span> <span class="keyword">AND</span> <span class="number">13</span></span><br></pre></td></tr></table></figure>
+<p><em>注：BETWEEN…AND是包括边界的</em></p>
+<h1 id="IN"><a href="#IN" class="headerlink" title="IN"></a>IN</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询年龄为10岁或15岁的学生</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> AGE <span class="keyword">IN</span> (<span class="number">10</span>,<span class="number">15</span>)</span><br><span class="line"><span class="comment">-- 其实这里跟使用OR是一个效果</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询年龄不为10岁或15岁的学生</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> AGE <span class="keyword">NOT</span> <span class="keyword">IN</span> (<span class="number">10</span>,<span class="number">15</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="IS-NULL"><a href="#IS-NULL" class="headerlink" title="IS NULL"></a>IS NULL</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询地址为空的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> ADDRESS <span class="keyword">IS</span> <span class="literal">NULL</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询地址不为空的学生信息</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">WHERE</span> ADDRESS <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="ORDER-BY"><a href="#ORDER-BY" class="headerlink" title="ORDER BY"></a>ORDER BY</h1><p><code>ORDER BY ... DESC/ASC</code>：降序排序/升序排序，默认是<code>ASC</code><br>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询所有学生，按年龄降序排序</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">DESC</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询所有学生，按年龄升序排序</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">ASC</span></span><br></pre></td></tr></table></figure>
+<p>同时对多个字段排序：若以多个字段排序时，以第一个排序的字段为主，当第一个字段出现相等值时对第二个字段排序</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 同时对学生性别、年龄排序</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> STUDENT <span class="keyword">ORDER</span> <span class="keyword">BY</span> SEX <span class="keyword">DESC</span>,AGE <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="排名函数RANK"><a href="#排名函数RANK" class="headerlink" title="排名函数RANK"></a>排名函数RANK</h1><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RANK() OVER(PARTITION BY 表达式 ORDER BY 表达式)</span><br></pre></td></tr></table></figure>
+<p><em>注：针对分区内的每行数据排名，若排序字符按值相等，则排名相同，PARTITION BY子句可选</em><br>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 按照学生年龄降序排名</span></span><br><span class="line"><span class="keyword">SELECT</span> *,<span class="keyword">RANK</span>() <span class="keyword">OVER</span>(<span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">DESC</span>) <span class="keyword">AS</span> 排名 <span class="keyword">FROM</span> dbo.STUDENT</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 按照性别分组，在分组内按照年龄降序排名</span></span><br><span class="line"><span class="keyword">SELECT</span> *,<span class="keyword">RANK</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> SEX <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">DESC</span>) 排名 <span class="keyword">FROM</span> dbo.STUDENT</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 按照性别分组，在分组内按照年龄降序排名，对结果集按照年龄升序排序</span></span><br><span class="line"><span class="keyword">SELECT</span> *,<span class="keyword">RANK</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> SEX <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">DESC</span>) 排名 <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">ASC</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="排名函数ROW-NUMBER"><a href="#排名函数ROW-NUMBER" class="headerlink" title="排名函数ROW_NUMBER"></a>排名函数ROW_NUMBER</h1><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROW_NUMBER() OVER(PARTITION BY 表达式 ORDER BY 表达式)</span><br></pre></td></tr></table></figure>
+<p><em>注：对分区内的每行数据排名，若排序字段值相等，则排名累计，PARTITION BY子句可选</em><br>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 按照学生年龄降序排名</span></span><br><span class="line"><span class="keyword">SELECT</span> *,ROW_NUMBER() <span class="keyword">OVER</span>(<span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">DESC</span>) <span class="keyword">AS</span> 排名 <span class="keyword">FROM</span> dbo.STUDENT</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 按照性别分组，在分组内按照年龄降序排名</span></span><br><span class="line"><span class="keyword">SELECT</span> *,ROW_NUMBER() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> SEX <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">DESC</span>) 排名 <span class="keyword">FROM</span> dbo.STUDENT</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 按照性别分组，在分组内按照年龄降序排名，对结果集按照年龄升序排序</span></span><br><span class="line"><span class="keyword">SELECT</span> *,ROW_NUMBER() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> SEX <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">DESC</span>) 排名 <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">ORDER</span> <span class="keyword">BY</span> AGE <span class="keyword">ASC</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="过滤重复数据"><a href="#过滤重复数据" class="headerlink" title="过滤重复数据"></a>过滤重复数据</h1><p><code>DISTINCT</code>消除重复项</p>
+<p><code>DISTINCT</code>关键字可以从<code>SELECT</code>语句的结果中消除重复的行，如果没有指定<code>DISTINCT</code>，将返回所有行，包括重复的行</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> ADDRESS <span class="keyword">FROM</span> dbo.STUDENT</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="判断对象-表-存储过程-视图等-是否存在"><a href="#判断对象-表-存储过程-视图等-是否存在" class="headerlink" title="判断对象(表/存储过程/视图等)是否存在"></a>判断对象(表/存储过程/视图等)是否存在</h1><h2 id="判断表是否存在方式1"><a href="#判断表是否存在方式1" class="headerlink" title="判断表是否存在方式1"></a>判断表是否存在方式1</h2><p>使用<code>SYS.OBJECTS</code>测试，在数据库中创建的每个用户定义的架构作用域内的对象在该表中对应一行</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IF EXISTS(<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> sys.objects <span class="keyword">WHERE</span> <span class="keyword">name</span>=<span class="string">'STUDENT'</span>)</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span>/PROC dbo.STUDENT</span><br></pre></td></tr></table></figure>
+<h2 id="判断表是否存在方式2"><a href="#判断表是否存在方式2" class="headerlink" title="判断表是否存在方式2"></a>判断表是否存在方式2</h2><p>使用<code>OBJECT_ID</code>测试，<code>OBJECT_ID(OBJECT_NAME.[OBJECT_TYPE])</code>返回架构范围内数据库对象的唯一标识。</p>
+<p><code>OBJECT_TYPE</code>：U表示用户自定义表，P表示SQL存储过程，V表示视图</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IF(OBJECT_ID('STUDENT','U/P/V') IS NOT NULL)</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span>/PROC dbo.STUDENT</span><br></pre></td></tr></table></figure>
+
+<h1 id="SELECT…INTO"><a href="#SELECT…INTO" class="headerlink" title="SELECT…INTO"></a>SELECT…INTO</h1><p>使用<code>SELECT...INTO</code>创建表并复制表中数据，源表中定义的索引、约束和触发器不会转移到新表中，也不能在<code>SELECT...INTO</code>语句中指定它们</p>
+<p>如果定义表的<code>SELECT</code>语句包含一个联接，而该联接将导致<code>IDENTITY</code>属性不能转移到新表</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表并复制表数据</span></span><br><span class="line"><span class="comment">-- 先判断表是否存在，存在则删除，然后再用SELECT...INTO</span></span><br><span class="line">IF(OBJECT_ID('STUDENT_CP','U') IS NOT NULL)</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> dbo.STUDENT_CP</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">INTO</span> STUDENT_CP <span class="keyword">FROM</span> dbo.STUDENT</span><br></pre></td></tr></table></figure>
+
+<h1 id="INSERT…SELECT"><a href="#INSERT…SELECT" class="headerlink" title="INSERT…SELECT"></a>INSERT…SELECT</h1><p>使用<code>INSERT...SELECT</code>将数据从一个表插入另一个表</p>
+<p>基本语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO 目标表...INSERT INTO 源表</span><br></pre></td></tr></table></figure>
+<p><em>注：目标表必须存在</em><br>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 先判断表是否存在，存在则删除，然后再创建一张表，再往表里写源表查询出来的数据</span></span><br><span class="line">IF OBJECT_ID('STUDENT_INSERT','U') IS NOT NULL</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> STUDENT_INSERT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> STUDENT_INSERT</span><br><span class="line">(</span><br><span class="line">姓名 <span class="built_in">VARCHAR</span>(<span class="number">10</span>),</span><br><span class="line">性别 <span class="built_in">CHAR</span>(<span class="number">2</span>),</span><br><span class="line">年龄 <span class="built_in">INT</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> STUDENT_INSERT <span class="keyword">SELECT</span> <span class="keyword">NAME</span>,SEX,AGE <span class="keyword">FROM</span> dbo.STUDENT</span><br></pre></td></tr></table></figure>
+
+<h1 id="MERGE-INTO"><a href="#MERGE-INTO" class="headerlink" title="MERGE..INTO"></a>MERGE..INTO</h1><p>根据与源表的联接的结果，对目标表执行插入、更新或删除操作。例如：根据在另一个表中找到的差异在一个表中插入、更新或删除行，可以对两个表进行同步</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 合并两张学生表的学生信息，当学生姓名相同时更新目标表的学生信息，当目标表没有该学生时插入学生信息</span></span><br><span class="line"><span class="comment">-- 目标表=STUDENT  源表=STUDENT_INSERT</span></span><br><span class="line"><span class="comment">-- 以下操作描述：</span></span><br><span class="line">    <span class="comment">-- 以STUDENT_INSERT为准，如果STUDENT里的哪条数据跟STUDENT_INSERT里哪条数据的NAME相同，则将STUDENT里这条数据的年龄更新成STUDENT_INSERT里这条数据的年龄</span></span><br><span class="line">    <span class="comment">-- 如果STUDENT_INSERT里有数据的姓名是STUDENT里没有的，则向STUDENT里插入这条数据</span></span><br><span class="line"><span class="keyword">MERGE</span> <span class="keyword">INTO</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">USING</span> dbo.STUDENT_INSERT</span><br><span class="line"><span class="keyword">ON</span> dbo.STUDENT.NAME=dbo.STUDENT_INSERT.姓名</span><br><span class="line"><span class="keyword">WHEN</span> <span class="keyword">MATCHED</span> <span class="keyword">THEN</span> <span class="keyword">UPDATE</span> <span class="keyword">SET</span> AGE=dbo.STUDENT_INSERT.年龄 <span class="comment">--匹配上则更新年龄</span></span><br><span class="line"><span class="keyword">WHEN</span> <span class="keyword">NOT</span> <span class="keyword">MATCHED</span> <span class="keyword">THEN</span> <span class="keyword">INSERT</span> (<span class="keyword">NAME</span>,SEX,AGE) <span class="keyword">VALUES</span>(dbo.STUDENT_INSERT.姓名,dbo.STUDENT_INSERT.性别,dbo.STUDENT_INSERT.年龄); <span class="comment">--没匹配上则插入</span></span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/05/20/29.TSqlReview05/" title="T-SQL复习05--基础查询" target="_blank" rel="external">http://www.dimsum.fun/2020/05/20/29.TSqlReview05/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/05/20/28.TSqlReview04/" title="T-SQL复习04--临时表的使用"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '98b838e971ccfd7d747b',
+    clientSecret: '6425df430ebd351ca1120ba9dc54123c06aa9da1',
+    repo: 'dimsum.fun.comments',
+    owner: 'xiejiamiao',
+    admin: ['xiejiamiao'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

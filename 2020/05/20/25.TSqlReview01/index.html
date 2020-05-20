@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>T-SQL复习01--数据库操作 | Hexo</title>
+  <meta name="description" content="T-SQL DDL(数据定义语言) DML(数据操作语言) DCL(数据控制语言) DQL(数据查询语言)   使用T-SQL创建数据库 使用T-SQL新增辅助数据文件 使用T-SQL新增日志文件 使用T-SQL修改数据库文件属性 使用T-SQL操作文件组 添加文件组 添加文件把它放进文件组 设置默认文件组   修改数据库名称&#x2F;删除数据库 修改数据库名称 删除数据库    T-SQLDDL(数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="T-SQL复习01--数据库操作">
+<meta property="og:url" content="http://www.dimsum.fun/2020/05/20/25.TSqlReview01/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="T-SQL DDL(数据定义语言) DML(数据操作语言) DCL(数据控制语言) DQL(数据查询语言)   使用T-SQL创建数据库 使用T-SQL新增辅助数据文件 使用T-SQL新增日志文件 使用T-SQL修改数据库文件属性 使用T-SQL操作文件组 添加文件组 添加文件把它放进文件组 设置默认文件组   修改数据库名称&#x2F;删除数据库 修改数据库名称 删除数据库    T-SQLDDL(数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-20T01:32:00.000Z">
+<meta property="article:modified_time" content="2020-05-20T11:09:09.093Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="SQL Server">
+<meta property="article:tag" content="T-SQL">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/05/20/25.TSqlReview01/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/C/" style="font-size: 13px;">C#</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/SQL-Server/" style="font-size: 13.33px;">SQL Server</a> <a href="/tags/T-SQL/" style="font-size: 13.33px;">T-SQL</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.67px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/29.TSqlReview05/" class="title">T-SQL复习05--基础查询</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T06:49:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/28.TSqlReview04/" class="title">T-SQL复习04--临时表的使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T04:07:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/27.TsqlReview03/" class="title">T-SQL复习03--数据操作语言DML</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T03:48:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/26.TSqlReview02/" class="title">T-SQL复习02--数据表操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T02:21:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/20/25.TSqlReview01/" class="title">T-SQL复习01--数据库操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-20T01:32:00.000Z" itemprop="datePublished">2020-05-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-25.TSqlReview01" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      T-SQL复习01--数据库操作
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/20/25.TSqlReview01/" class="article-date">
+	  <time datetime="2020-05-20T01:32:00.000Z" itemprop="datePublished">2020-05-20</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/SQL-Server/">SQL Server</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a>, <a class="article-tag-link" href="/tags/T-SQL/" rel="tag">T-SQL</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/20/25.TSqlReview01/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 845(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 3(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#t-sql">T-SQL</a><ul>
+<li><a href="#ddl%e6%95%b0%e6%8d%ae%e5%ae%9a%e4%b9%89%e8%af%ad%e8%a8%80">DDL(数据定义语言)</a></li>
+<li><a href="#dml%e6%95%b0%e6%8d%ae%e6%93%8d%e4%bd%9c%e8%af%ad%e8%a8%80">DML(数据操作语言)</a></li>
+<li><a href="#dcl%e6%95%b0%e6%8d%ae%e6%8e%a7%e5%88%b6%e8%af%ad%e8%a8%80">DCL(数据控制语言)</a></li>
+<li><a href="#dql%e6%95%b0%e6%8d%ae%e6%9f%a5%e8%af%a2%e8%af%ad%e8%a8%80">DQL(数据查询语言)</a></li>
+</ul>
+</li>
+<li><a href="#%e4%bd%bf%e7%94%a8t-sql%e5%88%9b%e5%bb%ba%e6%95%b0%e6%8d%ae%e5%ba%93">使用T-SQL创建数据库</a></li>
+<li><a href="#%e4%bd%bf%e7%94%a8t-sql%e6%96%b0%e5%a2%9e%e8%be%85%e5%8a%a9%e6%95%b0%e6%8d%ae%e6%96%87%e4%bb%b6">使用T-SQL新增辅助数据文件</a></li>
+<li><a href="#%e4%bd%bf%e7%94%a8t-sql%e6%96%b0%e5%a2%9e%e6%97%a5%e5%bf%97%e6%96%87%e4%bb%b6">使用T-SQL新增日志文件</a></li>
+<li><a href="#%e4%bd%bf%e7%94%a8t-sql%e4%bf%ae%e6%94%b9%e6%95%b0%e6%8d%ae%e5%ba%93%e6%96%87%e4%bb%b6%e5%b1%9e%e6%80%a7">使用T-SQL修改数据库文件属性</a></li>
+<li><a href="#%e4%bd%bf%e7%94%a8t-sql%e6%93%8d%e4%bd%9c%e6%96%87%e4%bb%b6%e7%bb%84">使用T-SQL操作文件组</a><ul>
+<li><a href="#%e6%b7%bb%e5%8a%a0%e6%96%87%e4%bb%b6%e7%bb%84">添加文件组</a></li>
+<li><a href="#%e6%b7%bb%e5%8a%a0%e6%96%87%e4%bb%b6%e6%8a%8a%e5%ae%83%e6%94%be%e8%bf%9b%e6%96%87%e4%bb%b6%e7%bb%84">添加文件把它放进文件组</a></li>
+<li><a href="#%e8%ae%be%e7%bd%ae%e9%bb%98%e8%ae%a4%e6%96%87%e4%bb%b6%e7%bb%84">设置默认文件组</a></li>
+</ul>
+</li>
+<li><a href="#%e4%bf%ae%e6%94%b9%e6%95%b0%e6%8d%ae%e5%ba%93%e5%90%8d%e7%a7%b0%e5%88%a0%e9%99%a4%e6%95%b0%e6%8d%ae%e5%ba%93">修改数据库名称/删除数据库</a><ul>
+<li><a href="#%e4%bf%ae%e6%94%b9%e6%95%b0%e6%8d%ae%e5%ba%93%e5%90%8d%e7%a7%b0">修改数据库名称</a></li>
+<li><a href="#%e5%88%a0%e9%99%a4%e6%95%b0%e6%8d%ae%e5%ba%93">删除数据库</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="T-SQL"><a href="#T-SQL" class="headerlink" title="T-SQL"></a>T-SQL</h1><h2 id="DDL-数据定义语言"><a href="#DDL-数据定义语言" class="headerlink" title="DDL(数据定义语言)"></a>DDL(数据定义语言)</h2><p>主要针对数据库对象，数据库对象包括表、视图、存储过程、索引等</p>
+<ul>
+<li><code>create</code>(创建)</li>
+<li><code>alter</code>(修改)</li>
+<li><code>drop</code>(删除)<h2 id="DML-数据操作语言"><a href="#DML-数据操作语言" class="headerlink" title="DML(数据操作语言)"></a>DML(数据操作语言)</h2>主要针对对象的内容，对象的内容包括表或视图的记录(数据)</li>
+<li><code>insert</code>(插入)</li>
+<li><code>update</code>(更新)</li>
+<li><code>delete</code>(删除)<h2 id="DCL-数据控制语言"><a href="#DCL-数据控制语言" class="headerlink" title="DCL(数据控制语言)"></a>DCL(数据控制语言)</h2>主要针对用户权限的控制，如数据库的权限和服务器的权限等</li>
+<li><code>revoke</code>(撤销)</li>
+<li><code>deny</code>(拒绝)</li>
+<li><code>grant</code>(同意、授权)<h2 id="DQL-数据查询语言"><a href="#DQL-数据查询语言" class="headerlink" title="DQL(数据查询语言)"></a>DQL(数据查询语言)</h2>就是针对数据查询的</li>
+<li><code>select</code>(查询)</li>
+</ul>
+<h1 id="使用T-SQL创建数据库"><a href="#使用T-SQL创建数据库" class="headerlink" title="使用T-SQL创建数据库"></a>使用T-SQL创建数据库</h1><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> 数据库名</span><br><span class="line"><span class="keyword">on</span> primary</span><br><span class="line">(</span><br><span class="line">    <span class="comment">--数据文件</span></span><br><span class="line">    <span class="keyword">name</span>=<span class="string">'逻辑名'</span>,</span><br><span class="line">    filename=<span class="string">'文件的存放路径'</span>,</span><br><span class="line">    <span class="keyword">size</span>=数据文件的初始大小,</span><br><span class="line">    <span class="keyword">maxsize</span>=数据文件的最大大小,</span><br><span class="line">    filegrowth=文件的增长方式</span><br><span class="line">)</span><br><span class="line"><span class="keyword">log</span> <span class="keyword">on</span></span><br><span class="line">(</span><br><span class="line">    <span class="comment">--日志文件</span></span><br><span class="line">    <span class="keyword">name</span>=逻辑名</span><br><span class="line">    filename=<span class="string">'文件的存放路径'</span>,</span><br><span class="line">    <span class="keyword">size</span>=日志文件的初始大小,</span><br><span class="line">    <span class="keyword">maxsize</span>=日志文件的最大大小,</span><br><span class="line">    filegrowth=日志文件的增长方式</span><br><span class="line">)</span><br><span class="line"><span class="keyword">go</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">ON</span> PRIMARY</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">NAME</span>=<span class="string">'SCHOOL'</span>,</span><br><span class="line">    FILENAME=<span class="string">'C:\database\SCHOOL.MDF'</span>,</span><br><span class="line">    <span class="keyword">SIZE</span>=<span class="number">10</span>MB,</span><br><span class="line">    <span class="keyword">MAXSIZE</span>=<span class="number">100</span>MB,</span><br><span class="line">    FILEGROWTH=<span class="number">2</span>MB</span><br><span class="line">)</span><br><span class="line"><span class="keyword">LOG</span> <span class="keyword">ON</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">NAME</span>=<span class="string">'SCHOOL_LOG'</span>,</span><br><span class="line">    FILENAME=<span class="string">'C:\database\SCHOOL_LOG.LDF'</span>,</span><br><span class="line">    <span class="keyword">SIZE</span>=<span class="number">5</span>MB,</span><br><span class="line">    <span class="keyword">MAXSIZE</span>=<span class="keyword">UNLIMITED</span>, <span class="comment">--大小不受限制</span></span><br><span class="line">    FILEGROWTH=<span class="number">10</span>%</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用T-SQL新增辅助数据文件"><a href="#使用T-SQL新增辅助数据文件" class="headerlink" title="使用T-SQL新增辅助数据文件"></a>使用T-SQL新增辅助数据文件</h1><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 数据库名</span><br><span class="line"><span class="keyword">add</span> <span class="keyword">file</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">name</span>=<span class="string">'逻辑名'</span>,</span><br><span class="line">    filename=<span class="string">'文件存放的路径'</span>,</span><br><span class="line">    <span class="keyword">size</span>=初始大小</span><br><span class="line">    <span class="keyword">maxsize</span>=最大大小,</span><br><span class="line">    filegrowth=增长方式</span><br><span class="line">)</span><br><span class="line"><span class="keyword">go</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">FILE</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">NAME</span>=<span class="string">'SCHOOL01'</span>,</span><br><span class="line">    FILENAME=<span class="string">'C:\database\SCHOOL01.NDF'</span>,</span><br><span class="line">    <span class="keyword">SIZE</span>=<span class="number">5</span>MB,</span><br><span class="line">    <span class="keyword">MAXSIZE</span>=<span class="number">100</span>MB,</span><br><span class="line">    FILEGROWTH=<span class="number">3</span>MB</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用T-SQL新增日志文件"><a href="#使用T-SQL新增日志文件" class="headerlink" title="使用T-SQL新增日志文件"></a>使用T-SQL新增日志文件</h1><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 数据库名</span><br><span class="line"><span class="keyword">add</span> <span class="keyword">log</span> <span class="keyword">file</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">name</span>=逻辑名</span><br><span class="line">    filename=<span class="string">'文件的存放路径'</span>,</span><br><span class="line">    <span class="keyword">size</span>=日志文件的初始大小,</span><br><span class="line">    <span class="keyword">maxsize</span>=日志文件的最大大小,</span><br><span class="line">    filegrowth=日志文件的增长方式</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">LOG</span> <span class="keyword">FILE</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">NAME</span>=<span class="string">'SCHOOL_LOG01'</span>,</span><br><span class="line">    FILENAME=<span class="string">'C:\database\SCHOOL_LOG01.LDF'</span>,</span><br><span class="line">    <span class="keyword">SIZE</span>=<span class="number">5</span>MB,</span><br><span class="line">    <span class="keyword">MAXSIZE</span>=<span class="number">80</span>MB,</span><br><span class="line">    FILEGROWTH=<span class="number">1</span>MB</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用T-SQL修改数据库文件属性"><a href="#使用T-SQL修改数据库文件属性" class="headerlink" title="使用T-SQL修改数据库文件属性"></a>使用T-SQL修改数据库文件属性</h1><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 数据库名</span><br><span class="line"><span class="keyword">modify</span> <span class="keyword">file</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">name</span>=<span class="string">'逻辑名'</span>,</span><br><span class="line">    <span class="keyword">size</span>=修改后的大小,</span><br><span class="line">    <span class="keyword">maxsize</span>=修改后的大小，</span><br><span class="line">    filegrowth=修改后的大小</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">MODIFY</span> <span class="keyword">FILE</span></span><br><span class="line">(</span><br><span class="line"><span class="keyword">NAME</span>=<span class="string">'SCHOOL_LOG01'</span>,</span><br><span class="line"><span class="keyword">SIZE</span>=<span class="number">18</span>MB,</span><br><span class="line"><span class="keyword">MAXSIZE</span>=<span class="number">88</span>MB,</span><br><span class="line">FILEGROWTH=<span class="number">8</span>MB</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用T-SQL操作文件组"><a href="#使用T-SQL操作文件组" class="headerlink" title="使用T-SQL操作文件组"></a>使用T-SQL操作文件组</h1><h2 id="添加文件组"><a href="#添加文件组" class="headerlink" title="添加文件组"></a>添加文件组</h2><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 数据库名</span><br><span class="line"><span class="keyword">add</span> filegroup 文件组名</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">ADD</span> FILEGROUP FILEGROUP01</span><br></pre></td></tr></table></figure>
+<h2 id="添加文件把它放进文件组"><a href="#添加文件把它放进文件组" class="headerlink" title="添加文件把它放进文件组"></a>添加文件把它放进文件组</h2><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 数据库名</span><br><span class="line"><span class="keyword">add</span> <span class="keyword">file</span></span><br><span class="line">(...)</span><br><span class="line"><span class="keyword">to</span> filegroup 文件组名</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">FILE</span></span><br><span class="line">(</span><br><span class="line">    <span class="keyword">NAME</span>=<span class="string">'SCHOOL02'</span>,</span><br><span class="line">    FILENAME=<span class="string">'C:\database\SCHOOL02.NDF'</span>,</span><br><span class="line">    <span class="keyword">SIZE</span>=<span class="number">5</span>MB,</span><br><span class="line">    <span class="keyword">MAXSIZE</span>=<span class="number">50</span>MB,</span><br><span class="line">    FILEGROWTH=<span class="number">1</span>MB</span><br><span class="line">)</span><br><span class="line"><span class="keyword">TO</span> FILEGROUP FILEGROUP01</span><br></pre></td></tr></table></figure>
+<h2 id="设置默认文件组"><a href="#设置默认文件组" class="headerlink" title="设置默认文件组"></a>设置默认文件组</h2><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 数据库名</span><br><span class="line"><span class="keyword">modify</span> filegroup 文件组名 <span class="keyword">default</span></span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">MODIFY</span> FILEGROUP FILEGROUP01 <span class="keyword">DEFAULT</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="修改数据库名称-删除数据库"><a href="#修改数据库名称-删除数据库" class="headerlink" title="修改数据库名称/删除数据库"></a>修改数据库名称/删除数据库</h1><h2 id="修改数据库名称"><a href="#修改数据库名称" class="headerlink" title="修改数据库名称"></a>修改数据库名称</h2><p>具体语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> 原数据库名称</span><br><span class="line"><span class="keyword">modify</span> <span class="keyword">name</span>=新数据库名</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> SCHOOL</span><br><span class="line"><span class="keyword">MODIFY</span> <span class="keyword">NAME</span>=SCHOOL_NEW</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h2><p><strong>不能删除系统数据库</strong><br>具体语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop database 数据库名</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">DATABASE</span> SCHOOL_NEW</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/05/20/25.TSqlReview01/" title="T-SQL复习01--数据库操作" target="_blank" rel="external">http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/20/26.TSqlReview02/" title="T-SQL复习02--数据表操作"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/05/14/24.InterviewBackup/" title="面试备忘"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '98b838e971ccfd7d747b',
+    clientSecret: '6425df430ebd351ca1120ba9dc54123c06aa9da1',
+    repo: 'dimsum.fun.comments',
+    owner: 'xiejiamiao',
+    admin: ['xiejiamiao'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
