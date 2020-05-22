@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>T-SQL复习08--数据完整性(约束) | Hexo</title>
+  <meta name="description" content="数据完整性 概念 类型 约束   域完整性类型 DEFAULT约束 为现有表添加DEFAULT约束 创建表时添加DEFAULT约束   CHECK约束 创建表时添加CHECK约束 为现有表添加CHECK约束 删除约束   NULL约束 创建表时指定是否允许为NULL 修改现有表的字段是否允许为NULL     实体完整性类型 primary key约束 创建表时指定主键 给现有的表添加主键">
+<meta property="og:type" content="article">
+<meta property="og:title" content="T-SQL复习08--数据完整性(约束)">
+<meta property="og:url" content="http://www.dimsum.fun/2020/05/22/32.TSqlReview08/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="数据完整性 概念 类型 约束   域完整性类型 DEFAULT约束 为现有表添加DEFAULT约束 创建表时添加DEFAULT约束   CHECK约束 创建表时添加CHECK约束 为现有表添加CHECK约束 删除约束   NULL约束 创建表时指定是否允许为NULL 修改现有表的字段是否允许为NULL     实体完整性类型 primary key约束 创建表时指定主键 给现有的表添加主键">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-22T03:17:00.000Z">
+<meta property="article:modified_time" content="2020-05-22T11:00:01.084Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="SQL Server">
+<meta property="article:tag" content="T-SQL">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/05/22/32.TSqlReview08/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/C/" style="font-size: 13px;">C#</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/SQL-Server/" style="font-size: 13.33px;">SQL Server</a> <a href="/tags/T-SQL/" style="font-size: 13.33px;">T-SQL</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.67px;">教程备忘</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/22/35.TSqlReview11/" class="title">T-SQL复习11--存储过程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-22T09:51:00.000Z" itemprop="datePublished">2020-05-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/22/34.TSqlReview10/" class="title">T-SQL复习10--索引</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-22T08:19:00.000Z" itemprop="datePublished">2020-05-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/22/33.TSqlReview09/" class="title">T-SQL复习09--视图</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-22T07:36:00.000Z" itemprop="datePublished">2020-05-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/22/32.TSqlReview08/" class="title">T-SQL复习08--数据完整性(约束)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-22T03:17:00.000Z" itemprop="datePublished">2020-05-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/21/31.TSqlReview07/" class="title">T-SQL复习07--表或字段添加描述信息</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-21T10:15:00.000Z" itemprop="datePublished">2020-05-21</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-32.TSqlReview08" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      T-SQL复习08--数据完整性(约束)
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/22/32.TSqlReview08/" class="article-date">
+	  <time datetime="2020-05-22T03:17:00.000Z" itemprop="datePublished">2020-05-22</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/SQL-Server/">SQL Server</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a>, <a class="article-tag-link" href="/tags/T-SQL/" rel="tag">T-SQL</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/22/32.TSqlReview08/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.4k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 5(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#%e6%95%b0%e6%8d%ae%e5%ae%8c%e6%95%b4%e6%80%a7">数据完整性</a><ul>
+<li><a href="#%e6%a6%82%e5%bf%b5">概念</a></li>
+<li><a href="#%e7%b1%bb%e5%9e%8b">类型</a></li>
+<li><a href="#%e7%ba%a6%e6%9d%9f">约束</a></li>
+</ul>
+</li>
+<li><a href="#%e5%9f%9f%e5%ae%8c%e6%95%b4%e6%80%a7%e7%b1%bb%e5%9e%8b">域完整性类型</a><ul>
+<li><a href="#default%e7%ba%a6%e6%9d%9f">DEFAULT约束</a><ul>
+<li><a href="#%e4%b8%ba%e7%8e%b0%e6%9c%89%e8%a1%a8%e6%b7%bb%e5%8a%a0default%e7%ba%a6%e6%9d%9f">为现有表添加DEFAULT约束</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%a1%a8%e6%97%b6%e6%b7%bb%e5%8a%a0default%e7%ba%a6%e6%9d%9f">创建表时添加DEFAULT约束</a></li>
+</ul>
+</li>
+<li><a href="#check%e7%ba%a6%e6%9d%9f">CHECK约束</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%a1%a8%e6%97%b6%e6%b7%bb%e5%8a%a0check%e7%ba%a6%e6%9d%9f">创建表时添加CHECK约束</a></li>
+<li><a href="#%e4%b8%ba%e7%8e%b0%e6%9c%89%e8%a1%a8%e6%b7%bb%e5%8a%a0check%e7%ba%a6%e6%9d%9f">为现有表添加CHECK约束</a></li>
+<li><a href="#%e5%88%a0%e9%99%a4%e7%ba%a6%e6%9d%9f">删除约束</a></li>
+</ul>
+</li>
+<li><a href="#null%e7%ba%a6%e6%9d%9f">NULL约束</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%a1%a8%e6%97%b6%e6%8c%87%e5%ae%9a%e6%98%af%e5%90%a6%e5%85%81%e8%ae%b8%e4%b8%banull">创建表时指定是否允许为NULL</a></li>
+<li><a href="#%e4%bf%ae%e6%94%b9%e7%8e%b0%e6%9c%89%e8%a1%a8%e7%9a%84%e5%ad%97%e6%ae%b5%e6%98%af%e5%90%a6%e5%85%81%e8%ae%b8%e4%b8%banull">修改现有表的字段是否允许为NULL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%e5%ae%9e%e4%bd%93%e5%ae%8c%e6%95%b4%e6%80%a7%e7%b1%bb%e5%9e%8b">实体完整性类型</a><ul>
+<li><a href="#primary-key%e7%ba%a6%e6%9d%9f">primary key约束</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%a1%a8%e6%97%b6%e6%8c%87%e5%ae%9a%e4%b8%bb%e9%94%ae">创建表时指定主键</a></li>
+<li><a href="#%e7%bb%99%e7%8e%b0%e6%9c%89%e7%9a%84%e8%a1%a8%e6%b7%bb%e5%8a%a0%e4%b8%bb%e9%94%ae">给现有的表添加主键</a></li>
+</ul>
+</li>
+<li><a href="#unique%e7%ba%a6%e6%9d%9f">UNIQUE约束</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba%e8%a1%a8%e6%97%b6%e5%90%8c%e6%97%b6%e5%88%9b%e5%bb%baunique%e7%ba%a6%e6%9d%9f">创建表时同时创建UNIQUE约束</a></li>
+<li><a href="#%e7%bb%99%e7%8e%b0%e6%9c%89%e7%9a%84%e8%a1%a8%e6%b7%bb%e5%8a%a0unique%e7%ba%a6%e6%9d%9f">给现有的表添加UNIQUE约束</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%e5%bc%95%e7%94%a8%e5%ae%8c%e6%95%b4%e6%80%a7%e7%b1%bb%e5%9e%8b">引用完整性类型</a><ul>
+<li><a href="#foreign-key%e7%ba%a6%e6%9d%9f">FOREIGN KEY约束</a></li>
+</ul>
+</li>
+<li><a href="#%e6%80%bb%e7%bb%93">总结</a></li>
+</ul>
+<h1 id="数据完整性"><a href="#数据完整性" class="headerlink" title="数据完整性"></a>数据完整性</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>数据完整性是指存储在数据库中数据的准确性和可靠性，它是应防止数据库中存在不符合语义规定的数据和防止因错误信息的输入输出造成无效操作或错误信息而提出的</p>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><ul>
+<li>域完整性：域完整性指特定列的项的有效性</li>
+<li>实体完整性：要求表中的所有行具有唯一的标识，例如主关键字值</li>
+<li>引用完整性：确保量表之间的关系在更新和删除期间保持同步<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2>使用不同的约束强制数据完整性。约束时重要的数据库对象</li>
+</ul>
+<h1 id="域完整性类型"><a href="#域完整性类型" class="headerlink" title="域完整性类型"></a>域完整性类型</h1><h2 id="DEFAULT约束"><a href="#DEFAULT约束" class="headerlink" title="DEFAULT约束"></a>DEFAULT约束</h2><p>指定列的默认值</p>
+<h3 id="为现有表添加DEFAULT约束"><a href="#为现有表添加DEFAULT约束" class="headerlink" title="为现有表添加DEFAULT约束"></a>为现有表添加DEFAULT约束</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> DEF_SEX  <span class="comment">--添加的约束名称</span></span><br><span class="line"><span class="keyword">DEFAULT</span> <span class="string">'男'</span>  <span class="comment">--约束类型及约束的值</span></span><br><span class="line"><span class="keyword">FOR</span> SEX  <span class="comment">--添加约束的列</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建表时添加DEFAULT约束"><a href="#创建表时添加DEFAULT约束" class="headerlink" title="创建表时添加DEFAULT约束"></a>创建表时添加DEFAULT约束</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEMP_DEFAULT</span><br><span class="line">(</span><br><span class="line"><span class="keyword">Id</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">JOB <span class="keyword">NVARCHAR</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="string">'.NET CORE DEV'</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<p><em>注：每一列只能有一个<code>DEFAULT</code>约束，不能用于<code>IDENTITY</code>属性的列，若默认值长度大于该字段允许的字符空间，则插入到该列的值会被截断</em></p>
+<h2 id="CHECK约束"><a href="#CHECK约束" class="headerlink" title="CHECK约束"></a>CHECK约束</h2><p>限制列可接受的值，控制列值的范围，检车列值</p>
+<p><code>CHECK</code>约束默认检查现有数据和所有新数据，使用<code>WITH NOCHECK</code>中检查新数据</p>
+<h3 id="创建表时添加CHECK约束"><a href="#创建表时添加CHECK约束" class="headerlink" title="创建表时添加CHECK约束"></a>创建表时添加CHECK约束</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEMP_CHECK</span><br><span class="line">(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">JOB <span class="keyword">NVARCHAR</span>(<span class="number">100</span>) <span class="keyword">CHECK</span>(JOB=<span class="string">'JAVA'</span> <span class="keyword">OR</span> JOB=<span class="string">'C#'</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="为现有表添加CHECK约束"><a href="#为现有表添加CHECK约束" class="headerlink" title="为现有表添加CHECK约束"></a>为现有表添加CHECK约束</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.STUDENT <span class="comment">--[WITH NOCHECK] 添加WITH NOCHECK则指检查新数据，不检查表里原有数据</span></span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> CHECK_AGE  <span class="comment">--指定约束名称</span></span><br><span class="line"><span class="keyword">CHECK</span>(AGE&gt;=<span class="number">0</span> <span class="keyword">AND</span> AGE&lt;=<span class="number">150</span>) <span class="comment">--指定约束访范围</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="删除约束"><a href="#删除约束" class="headerlink" title="删除约束"></a>删除约束</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span> CHECK_AGE <span class="comment">--约束名称</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="NULL约束"><a href="#NULL约束" class="headerlink" title="NULL约束"></a>NULL约束</h2><p>指定列是否允许<code>NULL</code>，空值(或<code>NULL</code>)不同于<code>0</code>、空白或长度为0的字符串(如””)。NULL的意思是没有输入</p>
+<h3 id="创建表时指定是否允许为NULL"><a href="#创建表时指定是否允许为NULL" class="headerlink" title="创建表时指定是否允许为NULL"></a>创建表时指定是否允许为NULL</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEMP_NULL</span><br><span class="line">(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="keyword">NAME</span> <span class="keyword">NVARCHAR</span>(<span class="number">100</span>) <span class="literal">NULL</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+<h3 id="修改现有表的字段是否允许为NULL"><a href="#修改现有表的字段是否允许为NULL" class="headerlink" title="修改现有表的字段是否允许为NULL"></a>修改现有表的字段是否允许为NULL</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">COLUMN</span> <span class="keyword">ID</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="comment">--NOT NULL修改为NULL则标识允许为NULL</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="实体完整性类型"><a href="#实体完整性类型" class="headerlink" title="实体完整性类型"></a>实体完整性类型</h1><h2 id="primary-key约束"><a href="#primary-key约束" class="headerlink" title="primary key约束"></a>primary key约束</h2><p>能唯一标识表中每一行的值的一列或一组列，这样的一列或多列称为表的主键。一个表只能有一个<code>primary key</code>约束，并且<code>primary key</code>约束中的列不允许空值，不允许重复。如果对多列定义了<code>primary key</code>约束，则一列中的值可能会重复，但来自<code>primary key</code>约束定义中所有列的任何值组合必须唯一。</p>
+<h3 id="创建表时指定主键"><a href="#创建表时指定主键" class="headerlink" title="创建表时指定主键"></a>创建表时指定主键</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEMP_PK</span><br><span class="line">(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">BIGINT</span> PRIMARY <span class="keyword">KEY</span>(<span class="keyword">ID</span>),</span><br><span class="line"><span class="keyword">NAME</span> <span class="keyword">NVARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="给现有的表添加主键"><a href="#给现有的表添加主键" class="headerlink" title="给现有的表添加主键"></a>给现有的表添加主键</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> PK_ID <span class="comment">--约束名称</span></span><br><span class="line">PRIMARY <span class="keyword">KEY</span>(<span class="keyword">ID</span>) <span class="comment">--指定主键列</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="UNIQUE约束"><a href="#UNIQUE约束" class="headerlink" title="UNIQUE约束"></a>UNIQUE约束</h2><p>确保在非主键列中不输入重复的值，可以对一个表定义多个<code>UNIQUE</code>约束，但只能定义一个<code>PRIMARY KEY</code>约束，<code>UNIQUE</code>约束允许一个<code>NULL</code>值，而<code>PARMARY KEY</code>约束不允许有<code>NULL</code>值</p>
+<p>创建<code>UNIQUE</code>约束时，同时会创建一个同名的非聚集索引，当插入或修改数据时，<code>UNIQUE</code>约束自动执行校验数据</p>
+<h3 id="创建表时同时创建UNIQUE约束"><a href="#创建表时同时创建UNIQUE约束" class="headerlink" title="创建表时同时创建UNIQUE约束"></a>创建表时同时创建UNIQUE约束</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEMP_UNIUQE</span><br><span class="line">(</span><br><span class="line"><span class="keyword">ID</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="keyword">NAME</span> <span class="keyword">NVARCHAR</span>(<span class="number">20</span>) <span class="keyword">CONSTRAINT</span> UNIQUE_NAME <span class="keyword">UNIQUE</span>(<span class="keyword">NAME</span>) <span class="literal">NULL</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="给现有的表添加UNIQUE约束"><a href="#给现有的表添加UNIQUE约束" class="headerlink" title="给现有的表添加UNIQUE约束"></a>给现有的表添加UNIQUE约束</h3><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> UNIQUE_NAME</span><br><span class="line"><span class="keyword">UNIQUE</span>(<span class="keyword">NAME</span>)</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="引用完整性类型"><a href="#引用完整性类型" class="headerlink" title="引用完整性类型"></a>引用完整性类型</h1><h2 id="FOREIGN-KEY约束"><a href="#FOREIGN-KEY约束" class="headerlink" title="FOREIGN KEY约束"></a>FOREIGN KEY约束</h2><p>用于建立和加强两个表数据之间的链接，可以是一列或多列，称为表的外键(<code>FK</code>)，一个表可以有多个<code>FOREIGN KEY</code>约束，选作外键必须与其他对应的主键列具有相同的数据类型，每个键中列的数必须相等，即如果主键是一列，则外键是一列，如果主键是多列，则外键对应也是多列。<code>FOREIGN KEY</code>约束不仅可以与另一个表的<code>PRIMARY KEY</code>约束相关联，还可以定义为引用另一个表的<code>UNIQUE</code>约束列</p>
+<p>主键要先创建好才能创建外键，<code>FOREIGN KEY</code>约束不能自动创建索引</p>
+<p>外键约束的主要目的时控制可以存储在外键表中的数据，同时它也可以控制对主键表中数据的更改</p>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> dbo.GRADE</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> FK_STUDENT_ID  <span class="comment">--外键约束名称</span></span><br><span class="line"><span class="keyword">FOREIGN</span> <span class="keyword">KEY</span>(STUDENTID)  <span class="comment">--指定当前表哪一列是外键</span></span><br><span class="line"><span class="keyword">REFERENCES</span> dbo.STUDENT(<span class="keyword">ID</span>) <span class="comment">--这个外键对应的是哪个表的主键</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li><code>DEFAULT</code>、<code>CHECK</code>、<code>NULL</code>约束是针对表中的列进行完整性的控制，因此叫做域完整性</li>
+<li><code>PRIMARY KEY</code>、<code>UNIQUE</code>约束是针对行限制数据行的唯一性，因此叫做实体完整性</li>
+<li><code>FOREIGN KEY</code>约束是针对表与表之间的关系控制数据完整性，因此叫参照完整性</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/05/22/32.TSqlReview08/" title="T-SQL复习08--数据完整性(约束)" target="_blank" rel="external">http://www.dimsum.fun/2020/05/22/32.TSqlReview08/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/22/33.TSqlReview09/" title="T-SQL复习09--视图"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/05/21/31.TSqlReview07/" title="T-SQL复习07--表或字段添加描述信息"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '98b838e971ccfd7d747b',
+    clientSecret: '6425df430ebd351ca1120ba9dc54123c06aa9da1',
+    repo: 'dimsum.fun.comments',
+    owner: 'xiejiamiao',
+    admin: ['xiejiamiao'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
