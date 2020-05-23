@@ -18,15 +18,15 @@
   
   
   <title>T-SQL复习11--存储过程 | Hexo</title>
-  <meta name="description" content="解析存储过程是由一个或多个Transact-SQL语句构成的一个组 存储过程可以：  接受输入参数并以输出参数的格式向调用程序返回多个值 包含用于在数据库中执行操作的编程语句，这包括调用其他存储过程 向调用程序返回状态值，以值明成功或失败(以及失败的原因)  使用存储过程的好处：  减少了服务器&#x2F;客户端网络流量 更强的安全性 代码的重复使用 更容易维护 改进的性能  存储过程的类型 用户定义的存储">
+  <meta name="description" content="解析 存储过程的类型 简单的存储过程 创建 执行 修改 删除   执行多步操作的存储过程 带输入参数的存储过程 概念 创建 执行   带通配符的存储过程 创建 执行   带输出参数的存储过程 创建 执行   带表值参数的存储过程 创建 执行   带变量的存储过程 概念 创建 执行   可捕获异常的存储过程 概念 创建 执行   对存储过程加密及重新编译 概念 创建   存储过程的优化  解析存储">
 <meta property="og:type" content="article">
 <meta property="og:title" content="T-SQL复习11--存储过程">
 <meta property="og:url" content="http://www.dimsum.fun/2020/05/22/35.TSqlReview11/index.html">
 <meta property="og:site_name" content="dimsum">
-<meta property="og:description" content="解析存储过程是由一个或多个Transact-SQL语句构成的一个组 存储过程可以：  接受输入参数并以输出参数的格式向调用程序返回多个值 包含用于在数据库中执行操作的编程语句，这包括调用其他存储过程 向调用程序返回状态值，以值明成功或失败(以及失败的原因)  使用存储过程的好处：  减少了服务器&#x2F;客户端网络流量 更强的安全性 代码的重复使用 更容易维护 改进的性能  存储过程的类型 用户定义的存储">
+<meta property="og:description" content="解析 存储过程的类型 简单的存储过程 创建 执行 修改 删除   执行多步操作的存储过程 带输入参数的存储过程 概念 创建 执行   带通配符的存储过程 创建 执行   带输出参数的存储过程 创建 执行   带表值参数的存储过程 创建 执行   带变量的存储过程 概念 创建 执行   可捕获异常的存储过程 概念 创建 执行   对存储过程加密及重新编译 概念 创建   存储过程的优化  解析存储">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-22T09:51:00.000Z">
-<meta property="article:modified_time" content="2020-05-22T11:00:01.086Z">
+<meta property="article:modified_time" content="2020-05-23T10:12:55.672Z">
 <meta property="article:author" content="Jiamiao.x">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="SQL Server">
@@ -187,7 +187,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -197,7 +197,7 @@
   <div class="widget">
     <h3 class="widget-title">标签</h3>
     <div class="widget-body">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -216,7 +216,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
     </div>
   </div>
 
@@ -228,6 +228,51 @@
     <div class="widget-body">
       <ul class="recent-post-list list-unstyled no-thumbnail">
         
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/23/38.TSqlReview14/" class="title">T-SQL复习14--游标</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-23T08:54:00.000Z" itemprop="datePublished">2020-05-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/23/37.TSqlReview13/" class="title">T-SQL复习13--流程控制语句</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-23T08:17:00.000Z" itemprop="datePublished">2020-05-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/23/36.TSqlReview12/" class="title">T-SQL复习12--CASE表达式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-23T07:48:00.000Z" itemprop="datePublished">2020-05-23</time>
+              </p>
+            </div>
+          </li>
+          
           <li>
             
             <div class="item-inner">
@@ -254,51 +299,6 @@
               </p>
               <p class="item-date">
                 <time datetime="2020-05-22T08:19:00.000Z" itemprop="datePublished">2020-05-22</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
-              </p>
-              <p class="item-title">
-                <a href="/2020/05/22/33.TSqlReview09/" class="title">T-SQL复习09--视图</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2020-05-22T07:36:00.000Z" itemprop="datePublished">2020-05-22</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
-              </p>
-              <p class="item-title">
-                <a href="/2020/05/22/32.TSqlReview08/" class="title">T-SQL复习08--数据完整性(约束)</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2020-05-22T03:17:00.000Z" itemprop="datePublished">2020-05-22</time>
-              </p>
-            </div>
-          </li>
-          
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
-              </p>
-              <p class="item-title">
-                <a href="/2020/05/21/31.TSqlReview07/" class="title">T-SQL复习07--表或字段添加描述信息</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2020-05-21T10:15:00.000Z" itemprop="datePublished">2020-05-21</time>
               </p>
             </div>
           </li>
@@ -360,17 +360,68 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/22/35.TSqlReview11/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 279(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.2k(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 8(分)</span>
 	
 
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>存储过程是由一个或多个<code>Transact-SQL</code>语句构成的一个组</p>
+        <ul>
+<li><a href="#%e8%a7%a3%e6%9e%90">解析</a></li>
+<li><a href="#%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b%e7%9a%84%e7%b1%bb%e5%9e%8b">存储过程的类型</a></li>
+<li><a href="#%e7%ae%80%e5%8d%95%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">简单的存储过程</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba">创建</a></li>
+<li><a href="#%e6%89%a7%e8%a1%8c">执行</a></li>
+<li><a href="#%e4%bf%ae%e6%94%b9">修改</a></li>
+<li><a href="#%e5%88%a0%e9%99%a4">删除</a></li>
+</ul>
+</li>
+<li><a href="#%e6%89%a7%e8%a1%8c%e5%a4%9a%e6%ad%a5%e6%93%8d%e4%bd%9c%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">执行多步操作的存储过程</a></li>
+<li><a href="#%e5%b8%a6%e8%be%93%e5%85%a5%e5%8f%82%e6%95%b0%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">带输入参数的存储过程</a><ul>
+<li><a href="#%e6%a6%82%e5%bf%b5">概念</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba-1">创建</a></li>
+<li><a href="#%e6%89%a7%e8%a1%8c-1">执行</a></li>
+</ul>
+</li>
+<li><a href="#%e5%b8%a6%e9%80%9a%e9%85%8d%e7%ac%a6%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">带通配符的存储过程</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba-2">创建</a></li>
+<li><a href="#%e6%89%a7%e8%a1%8c-2">执行</a></li>
+</ul>
+</li>
+<li><a href="#%e5%b8%a6%e8%be%93%e5%87%ba%e5%8f%82%e6%95%b0%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">带输出参数的存储过程</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba-3">创建</a></li>
+<li><a href="#%e6%89%a7%e8%a1%8c-3">执行</a></li>
+</ul>
+</li>
+<li><a href="#%e5%b8%a6%e8%a1%a8%e5%80%bc%e5%8f%82%e6%95%b0%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">带表值参数的存储过程</a><ul>
+<li><a href="#%e5%88%9b%e5%bb%ba-4">创建</a></li>
+<li><a href="#%e6%89%a7%e8%a1%8c-4">执行</a></li>
+</ul>
+</li>
+<li><a href="#%e5%b8%a6%e5%8f%98%e9%87%8f%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">带变量的存储过程</a><ul>
+<li><a href="#%e6%a6%82%e5%bf%b5-1">概念</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba-5">创建</a></li>
+<li><a href="#%e6%89%a7%e8%a1%8c-5">执行</a></li>
+</ul>
+</li>
+<li><a href="#%e5%8f%af%e6%8d%95%e8%8e%b7%e5%bc%82%e5%b8%b8%e7%9a%84%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b">可捕获异常的存储过程</a><ul>
+<li><a href="#%e6%a6%82%e5%bf%b5-2">概念</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba-6">创建</a></li>
+<li><a href="#%e6%89%a7%e8%a1%8c-6">执行</a></li>
+</ul>
+</li>
+<li><a href="#%e5%af%b9%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b%e5%8a%a0%e5%af%86%e5%8f%8a%e9%87%8d%e6%96%b0%e7%bc%96%e8%af%91">对存储过程加密及重新编译</a><ul>
+<li><a href="#%e6%a6%82%e5%bf%b5-3">概念</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba-7">创建</a></li>
+</ul>
+</li>
+<li><a href="#%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b%e7%9a%84%e4%bc%98%e5%8c%96">存储过程的优化</a></li>
+</ul>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p>存储过程是由一个或多个<code>Transact-SQL</code>语句构成的一个组</p>
 <p>存储过程可以：</p>
 <ul>
 <li>接受输入参数并以输出参数的格式向调用程序返回多个值</li>
@@ -390,6 +441,96 @@
 <li>临时存储过程：也是由用户创建的存储过程，存储在<code>tempdb</code>中，名字以<code>#</code>开头，仅在创建该过程的会话中存在，会话结束，临时存储过程即被删除(类似临时表)</li>
 <li>系统存储过程：系统存储过程是由SQL Server附带的，系统过程以<code>sp_</code>开头，帮助用户使用、管理数据库</li>
 </ul>
+<h1 id="简单的存储过程"><a href="#简单的存储过程" class="headerlink" title="简单的存储过程"></a>简单的存储过程</h1><h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">NAME</span>,AGE <span class="keyword">FROM</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EXEC dbo.P_STUDENT  <span class="comment">--EXEC是EXECUTE的简写</span></span><br><span class="line"><span class="keyword">EXECUTE</span> dbo.P_STUDENT</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">NAME</span>,AGE,SEX <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> AGE&gt;<span class="number">13</span></span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> dbo.P_STUDENT</span><br></pre></td></tr></table></figure>
+
+<h1 id="执行多步操作的存储过程"><a href="#执行多步操作的存储过程" class="headerlink" title="执行多步操作的存储过程"></a>执行多步操作的存储过程</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_COURSE02'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_COURSE02</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_COURSE02</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> COURSE01 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.COURSE</span><br><span class="line">	<span class="keyword">UPDATE</span> COURSE01 <span class="keyword">SET</span> <span class="keyword">NAME</span>=<span class="string">'高数'</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'.NET CORE'</span></span><br><span class="line">	<span class="keyword">DELETE</span> <span class="keyword">FROM</span> dbo.COURSE01 <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'JAVA'</span></span><br><span class="line">	<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.COURSE01</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="带输入参数的存储过程"><a href="#带输入参数的存储过程" class="headerlink" title="带输入参数的存储过程"></a>带输入参数的存储过程</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li>输入参数：调用方将数据值传递给存储过程</li>
+<li>输出参数：存储过程将数据值返回给调用方</li>
+<li>变量：可以在存储过程内部存储和传递数据值，不能将数据从外部传递到存储过程内部</li>
+</ul>
+<h2 id="创建-1"><a href="#创建-1" class="headerlink" title="创建"></a>创建</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line">@sex <span class="built_in">CHAR</span>(<span class="number">2</span>),   <span class="comment">--注意：定义参数位置在存储过程名称粥，参数要以@符号开始</span></span><br><span class="line">@age <span class="built_in">INT</span> = <span class="number">18</span>   <span class="comment">--这里是将age参数的默认值设定为18，当参数由默认值的时候，调用方如果没传该参数的值过来，则使用默认值进行执行</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">SELECT</span> <span class="keyword">ID</span>,<span class="keyword">NAME</span>,AGE,SEX <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> SEX=@sex <span class="keyword">AND</span> AGE&gt;@age </span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="执行-1"><a href="#执行-1" class="headerlink" title="执行"></a>执行</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC dbo.P_STUDENT @sex='女',@age=15</span><br></pre></td></tr></table></figure>
+
+<h1 id="带通配符的存储过程"><a href="#带通配符的存储过程" class="headerlink" title="带通配符的存储过程"></a>带通配符的存储过程</h1><p>示例：</p>
+<h2 id="创建-2"><a href="#创建-2" class="headerlink" title="创建"></a>创建</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>,<span class="string">'P'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line">@<span class="keyword">name</span> <span class="keyword">NVARCHAR</span>(<span class="number">100</span>)   <span class="comment">--参数定义方法不变</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">NAME</span>,AGE,SEX <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span> <span class="keyword">LIKE</span> @<span class="keyword">name</span>  <span class="comment">--通配符查询得使用LIKE</span></span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="执行-2"><a href="#执行-2" class="headerlink" title="执行"></a>执行</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC dbo.P_STUDENT @name = N'王%'</span><br></pre></td></tr></table></figure>
+
+<h1 id="带输出参数的存储过程"><a href="#带输出参数的存储过程" class="headerlink" title="带输出参数的存储过程"></a>带输出参数的存储过程</h1><h2 id="创建-3"><a href="#创建-3" class="headerlink" title="创建"></a>创建</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>,<span class="string">'P'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line">@<span class="keyword">name</span> <span class="keyword">NVARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">@age <span class="built_in">INT</span> <span class="keyword">OUTPUT</span>  <span class="comment">--OUTPUT或OUT都表示为输出参数</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">SELECT</span> @age=AGE <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=@<span class="keyword">name</span></span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+<h2 id="执行-3"><a href="#执行-3" class="headerlink" title="执行"></a>执行</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 执行带输出参数的存储过程时一定要先使用DECLARE声明参数</span></span><br><span class="line"><span class="keyword">DECLARE</span> @age <span class="built_in">INT</span></span><br><span class="line"><span class="keyword">EXECUTE</span> dbo.P_STUDENT @<span class="keyword">name</span> = N<span class="string">'李筱思'</span>,</span><br><span class="line">                      @age = @age <span class="keyword">OUTPUT</span></span><br><span class="line"><span class="keyword">SELECT</span> @age 返回值age</span><br></pre></td></tr></table></figure>
+
+<h1 id="带表值参数的存储过程"><a href="#带表值参数的存储过程" class="headerlink" title="带表值参数的存储过程"></a>带表值参数的存储过程</h1><h2 id="创建-4"><a href="#创建-4" class="headerlink" title="创建"></a>创建</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="comment">-- 创建表类型</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'TYPE01'</span>,<span class="string">'TT'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TYPE</span> TYPE01</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TYPE</span> TYPE01 <span class="keyword">AS</span> <span class="keyword">TABLE</span></span><br><span class="line">(</span><br><span class="line"><span class="keyword">NAME</span> <span class="keyword">NVARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">SEX <span class="built_in">CHAR</span>(<span class="number">2</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">AGE <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="comment">-- 创建存储过程</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_INSERT_STUDENT'</span>,<span class="string">'P'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_INSERT_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_INSERT_STUDENT</span><br><span class="line">@<span class="keyword">DATA</span> TYPE01 READONLY  <span class="comment">--定义输入参数类型为上面定义的TYPE01类型</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> STUDENT(<span class="keyword">NAME</span>,SEX,AGE) <span class="keyword">SELECT</span> <span class="keyword">NAME</span>,SEX,AGE <span class="keyword">FROM</span> @<span class="keyword">DATA</span></span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+<h2 id="执行-4"><a href="#执行-4" class="headerlink" title="执行"></a>执行</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 执行存储类型</span></span><br><span class="line"><span class="comment">-- 先定义表类型的变量@MyData</span></span><br><span class="line"><span class="keyword">DECLARE</span> @MyData <span class="keyword">AS</span> TYPE01</span><br><span class="line"><span class="comment">-- 然后往变量@MyData里添加数据</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> @MyData</span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">'Jame'</span>,<span class="string">'男'</span>,<span class="number">12</span> <span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">'Alice'</span>,<span class="string">'女'</span>,<span class="number">23</span></span><br><span class="line"><span class="comment">-- 执行存储过程，将上面定义的变量传入存储过程</span></span><br><span class="line">EXEC dbo.P_INSERT_STUDENT @<span class="keyword">DATA</span> = @MyData</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="comment">-- 查看执行结果</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="带变量的存储过程"><a href="#带变量的存储过程" class="headerlink" title="带变量的存储过程"></a>带变量的存储过程</h1><h2 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h2><p>变量：变量分局部变量和全局变量</p>
+<ul>
+<li>局部变量：用户自定义的变量，作用范围在程序内部，局部变量必须先生命，再使用，名称必须以<code>@</code>开头</li>
+<li>全局变量：是SQL系统内部实现定义好的变量，不需要用户参与定义，任何程序均可以随时调用，SQL中共有30多个全局变量，名称都以<code>@@</code>开头，主要用于SQL Server的配置设定值和效能统计数据</li>
+</ul>
+<p>声明局部变量：<code>DECLARE 以@开头的变量名 数据类型(长度)</code></p>
+<p>局部变量复制：</p>
+<ol>
+<li><code>SET 局部变量名=值</code></li>
+<li><code>SELECT 局部变量名=字段名 FROM 表名 ORDER BY 字段名</code>，若<code>SELECT</code>返回值有多个，则数据库引擎会分配最后一个值给变量</li>
+</ol>
+<p>局部变量的作用域：在<code>DECLARE</code>变量开始至脚本或存储过程结束</p>
+<h2 id="创建-5"><a href="#创建-5" class="headerlink" title="创建"></a>创建</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>,<span class="string">'P'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> dbo.P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line">@<span class="keyword">NAME</span> <span class="keyword">NVARCHAR</span>(<span class="number">100</span>)</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">DECLARE</span> @AGE <span class="built_in">INT</span>  <span class="comment">--注意：参数的定义位置在AS前面，变量的定义位置在AS后面</span></span><br><span class="line">	<span class="keyword">SELECT</span> @AGE=AGE <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=@<span class="keyword">NAME</span>  <span class="comment">--通过查询结果给变量复制</span></span><br><span class="line">	<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> AGE=@AGE <span class="comment">--使用变量进行查询</span></span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="执行-5"><a href="#执行-5" class="headerlink" title="执行"></a>执行</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC dbo.P_STUDENT @NAME = N'李筱思'</span><br></pre></td></tr></table></figure>
+
+<h1 id="可捕获异常的存储过程"><a href="#可捕获异常的存储过程" class="headerlink" title="可捕获异常的存储过程"></a>可捕获异常的存储过程</h1><h2 id="概念-2"><a href="#概念-2" class="headerlink" title="概念"></a>概念</h2><p>使用<code>TRY...CATCH</code>结构来捕获并处理异常</p>
+<p>在<code>TRY</code>块中的SQL发生异常，则执行<code>CATCH</code>块中的SQL，<code>TRY...CATCH</code>不可用在用户自定义函数中</p>
+<h2 id="创建-6"><a href="#创建-6" class="headerlink" title="创建"></a>创建</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>,<span class="string">'P'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> dbo.P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line">@<span class="keyword">ID</span> <span class="built_in">CHAR</span>(<span class="number">10</span>),</span><br><span class="line">@<span class="keyword">NAME</span> <span class="built_in">VARCHAR</span>(<span class="number">10</span>),</span><br><span class="line">@SEX <span class="built_in">CHAR</span>(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">BEGIN</span> TRY</span><br><span class="line">		<span class="keyword">INSERT</span> <span class="keyword">INTO</span> STUDENT(<span class="keyword">ID</span>,SEX,<span class="keyword">NAME</span>)  <span class="comment">--这里模拟个异常</span></span><br><span class="line">		<span class="keyword">SELECT</span> @<span class="keyword">ID</span>,@<span class="keyword">NAME</span>,@SEX</span><br><span class="line">	<span class="keyword">END</span> TRY</span><br><span class="line">	<span class="keyword">BEGIN</span> CATCH</span><br><span class="line">		<span class="keyword">SELECT</span> ERROR_NUMBER() <span class="keyword">AS</span> ERROR_NUM,</span><br><span class="line">               ERROR_PROCEDURE() <span class="keyword">AS</span> ERROR_PROC,</span><br><span class="line">               ERROR_SEVERITY() <span class="keyword">AS</span> ERROR_SEVE,</span><br><span class="line">               ERROR_MESSAGE() <span class="keyword">AS</span> ERROR_MSG</span><br><span class="line">	<span class="keyword">END</span> CATCH</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+<h2 id="执行-6"><a href="#执行-6" class="headerlink" title="执行"></a>执行</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">EXEC dbo.P_STUDENT @ID = '1',</span><br><span class="line">                   @NAME = '123131',</span><br><span class="line">                   @SEX = '131'</span><br></pre></td></tr></table></figure>
+
+<h1 id="对存储过程加密及重新编译"><a href="#对存储过程加密及重新编译" class="headerlink" title="对存储过程加密及重新编译"></a>对存储过程加密及重新编译</h1><h2 id="概念-3"><a href="#概念-3" class="headerlink" title="概念"></a>概念</h2><p>使用<code>EXEC sys.sp_helptext 存储过程名字</code>查看存储过程定义</p>
+<p>使用<code>WITH ENCRYPTION</code>选项对过程定义进行模糊处理</p>
+<p>使用<code>WITH RECOMPILE</code>选项强制重新编译过程：</p>
+<ol>
+<li>数据结构进行了重要更改，则重新编译过程会进行更新并针对这些更改优化过程的查询计划，这样可以提高过程的处理性能</li>
+<li>对过程引用的基础表添加了过程可能从中受益的新索引，可以强制在下次执行过程时对其重新编译</li>
+</ol>
+<h2 id="创建-7"><a href="#创建-7" class="headerlink" title="创建"></a>创建</h2><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>,<span class="string">'P'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line">@<span class="keyword">NAME</span> <span class="built_in">VARCHAR</span>(<span class="number">10</span>)</span><br><span class="line"><span class="keyword">WITH</span> ENCRYPTION,RECOMPILE</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">DECLARE</span> @AGE <span class="built_in">INT</span></span><br><span class="line">	<span class="keyword">SELECT</span> @AGE=AGE <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=@<span class="keyword">NAME</span></span><br><span class="line">	<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.STUDENT <span class="keyword">WHERE</span> AGE=@AGE</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="存储过程的优化"><a href="#存储过程的优化" class="headerlink" title="存储过程的优化"></a>存储过程的优化</h1><ol>
+<li>在存储过程中使用<code>SET NOCOUNT ON/OFF</code>关闭或启用显示受TSQL语句影响的行计数消息：<strong><code>SET NOCOUNT ON</code>有利于提升过程执行效率</strong></li>
+<li>当在过程中创建或引用数据库对象时使用架构名称，减少数据库引擎解析对象名称所用的处理时间：<strong>就是类似<code>dbo.STUDENT</code>这样的写法，补上前面的<code>dbo</code>，不要直接写<code>STUDENT</code></strong></li>
+<li>避免函数包装在<code>WHERE</code>和<code>JOIN</code>子句中指定的列，这样做会使列具有不确定性并且禁止查询处理器使用索引</li>
+<li>避免在返回许多行数据的<code>SELECT</code>语句中使用标量函数。因为标量函数必须应用于每一行，会降低性能</li>
+<li>避免使用<code>SELECT *</code>。而是应指定所需的列名称</li>
+<li>避免处理或返回过多的数据，尽可能在过程代码中缩小结果的范围</li>
+<li>通过使用<code>BEGIN/END TRANSACTION</code>来使用显示事务并且保留尽可能短的事务。更长的事务意味着更长的记录锁定和更高的死锁风险</li>
+<li>通过<code>TRY...CATCH...</code>功能进行过程内的错误处理，<code>TRY...CATCH...</code>可以封装整个TSQL语句块</li>
+<li>在过程主体中对<code>CREATE TABLE</code>或<code>ALTER TABLE</code>语句引用的所有表列使用<code>DEFAULT</code>关键字，这将禁止将<code>NULL</code>传递到不允许<code>NULL</code>值的列</li>
+<li>对于临时表中的每一列使用<code>NULL</code>或<code>NOT NULL</code></li>
+<li>使用<code>UNION ALL</code>运算符来代替<code>UNION</code>或<code>OR</code>运算符，除非存在针对非重复值的特定需要。<code>UNION ALL</code>运算符要求更少的处理开销，因为重复值不从结果集中筛选出来</li>
+</ol>
 
       
     </div>
@@ -444,6 +585,10 @@
   <div class="bar-inner">
   
   <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/23/36.TSqlReview12/" title="T-SQL复习12--CASE表达式"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
     
     
     <li class="next">
