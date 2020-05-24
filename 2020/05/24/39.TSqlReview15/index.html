@@ -17,18 +17,23 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>404 Not Found：该页无法显示 | Hexo</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="404 Not Found：该页无法显示">
-<meta property="og:url" content="http://www.dimsum.fun/404.html">
+  <title>T-SQL复习15--事务 | Hexo</title>
+  <meta name="description" content="概念 SQL Server事务 创建提交事务 标记一个事务 回滚事务 在事务内设置保存点 在存储过程中使用事务  概念事务是单个工作单元，如果某一事务成功，则在该事务中进行的所有数据修改均会提交，成为数据库中的永久组成部分，如果该事务遇到错误且必须取消或回滚，则所有数据修改均被清楚 SQL Server事务 自动提交事务：每条单独的语句都是一个事务 显式事务：每个事务均已BEGIN TRANSA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="T-SQL复习15--事务">
+<meta property="og:url" content="http://www.dimsum.fun/2020/05/24/39.TSqlReview15/index.html">
 <meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="概念 SQL Server事务 创建提交事务 标记一个事务 回滚事务 在事务内设置保存点 在存储过程中使用事务  概念事务是单个工作单元，如果某一事务成功，则在该事务中进行的所有数据修改均会提交，成为数据库中的永久组成部分，如果该事务遇到错误且必须取消或回滚，则所有数据修改均被清楚 SQL Server事务 自动提交事务：每条单独的语句都是一个事务 显式事务：每个事务均已BEGIN TRANSA">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-03-27T07:39:01.629Z">
-<meta property="article:modified_time" content="2020-03-27T07:22:15.606Z">
+<meta property="article:published_time" content="2020-05-24T02:19:00.000Z">
+<meta property="article:modified_time" content="2020-05-24T06:11:11.138Z">
 <meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="SQL Server">
+<meta property="article:tag" content="T-SQL">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://www.dimsum.fun/404.html">
+  <link rel="canonical" href="http://www.dimsum.fun/2020/05/24/39.TSqlReview15/index.html">
   
     <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
   
@@ -311,14 +316,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="page-" class="article article-type-page" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-39.TSqlReview15" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      404 Not Found：该页无法显示
+      T-SQL复习15--事务
     </h1>
   
 
@@ -326,12 +331,22 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/404.html" class="article-date">
-	  <time datetime="2020-03-27T07:39:01.629Z" itemprop="datePublished">2020-03-27</time>
+	<a href="/2020/05/24/39.TSqlReview15/" class="article-date">
+	  <time datetime="2020-05-24T02:19:00.000Z" itemprop="datePublished">2020-05-24</time>
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/SQL-Server/">SQL Server</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a>, <a class="article-tag-link" href="/tags/T-SQL/" rel="tag">T-SQL</a>
+  </span>
+
 
         
 	<span class="article-read hidden-xs">
@@ -342,21 +357,48 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/404.html#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/24/39.TSqlReview15/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 0(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 617(字)</span>
 	
 	
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
 	
 
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <script type="text/javascript" src="//www.qq.com/404/search_children.js" charset="utf-8" homePageUrl="<%- config.url %>" homePageName="回到我的主页"></script>
+        <ul>
+<li><a href="#%e6%a6%82%e5%bf%b5">概念</a></li>
+<li><a href="#sql-server%e4%ba%8b%e5%8a%a1">SQL Server事务</a></li>
+<li><a href="#%e5%88%9b%e5%bb%ba%e6%8f%90%e4%ba%a4%e4%ba%8b%e5%8a%a1">创建提交事务</a></li>
+<li><a href="#%e6%a0%87%e8%ae%b0%e4%b8%80%e4%b8%aa%e4%ba%8b%e5%8a%a1">标记一个事务</a></li>
+<li><a href="#%e5%9b%9e%e6%bb%9a%e4%ba%8b%e5%8a%a1">回滚事务</a></li>
+<li><a href="#%e5%9c%a8%e4%ba%8b%e5%8a%a1%e5%86%85%e8%ae%be%e7%bd%ae%e4%bf%9d%e5%ad%98%e7%82%b9">在事务内设置保存点</a></li>
+<li><a href="#%e5%9c%a8%e5%ad%98%e5%82%a8%e8%bf%87%e7%a8%8b%e4%b8%ad%e4%bd%bf%e7%94%a8%e4%ba%8b%e5%8a%a1">在存储过程中使用事务</a></li>
+</ul>
+<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>事务是单个工作单元，如果某一事务成功，则在该事务中进行的所有数据修改均会提交，成为数据库中的永久组成部分，如果该事务遇到错误且必须取消或回滚，则所有数据修改均被清楚</p>
+<h1 id="SQL-Server事务"><a href="#SQL-Server事务" class="headerlink" title="SQL Server事务"></a>SQL Server事务</h1><ul>
+<li>自动提交事务：每条单独的语句都是一个事务</li>
+<li>显式事务：每个事务均已<code>BEGIN TRANSACTION</code>语句显示开始，已<code>COMMIT</code>或<code>ROLLBACK</code>语句显式结束</li>
+<li>隐式事务：在前一个事务完成时新事务隐式启动，但每个事务仍已<code>COMMIT</code>或<code>ROLLBACK</code>语句显式结束</li>
+</ul>
+<h1 id="创建提交事务"><a href="#创建提交事务" class="headerlink" title="创建提交事务"></a>创建提交事务</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span> UP_STU <span class="comment">--表示开始一个事务，BEGIN TRANSACTION使@@TRANCOUNT值按1递增</span></span><br><span class="line"><span class="comment">--SELECT @@TRANCOUNT  --查询@@TRANCOUNT</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">UPDATE</span> dbo.STUDENT <span class="keyword">SET</span> Age=<span class="number">10</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'Hello'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COMMIT</span> <span class="keyword">TRANSACTION</span> UP_STU  <span class="comment">--表示提交一个事务，仅当对数据库的操作全部正确时，才可以提交事务。COMMIT TRANSACTION时@@TRANCOUNT值按1递减</span></span><br><span class="line"><span class="comment">--SELECT @@TRANCOUNT</span></span><br></pre></td></tr></table></figure>
 
+<h1 id="标记一个事务"><a href="#标记一个事务" class="headerlink" title="标记一个事务"></a>标记一个事务</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span> UP_STU</span><br><span class="line"><span class="keyword">WITH</span> MARK <span class="string">'修改学生年龄'</span> <span class="comment">--使用WITH MARK来标记事务</span></span><br><span class="line"><span class="keyword">UPDATE</span> dbo.STUDENT <span class="keyword">SET</span> Age=<span class="number">10</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'Hello'</span></span><br><span class="line"><span class="keyword">COMMIT</span> <span class="keyword">TRANSACTION</span> UP_STU</span><br></pre></td></tr></table></figure>
+<p><em>注：标记事务时事务名于事务日志中，在还原数据库时可将数据库还原到标记的事务</em></p>
+<h1 id="回滚事务"><a href="#回滚事务" class="headerlink" title="回滚事务"></a>回滚事务</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span> UP_STU</span><br><span class="line"><span class="keyword">UPDATE</span> dbo.STUDENT <span class="keyword">SET</span> Age=<span class="number">10</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'Hello'</span></span><br><span class="line"><span class="keyword">ROLLBACK</span> <span class="keyword">TRANSACTION</span> UP_STU <span class="comment">--回滚事务到事务的起点，清除自事务起点所作的所有数据的修改，ROLLBACK TRANSACTION使@@TRANCOUNT值递减到0</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="在事务内设置保存点"><a href="#在事务内设置保存点" class="headerlink" title="在事务内设置保存点"></a>在事务内设置保存点</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span> UP_STU</span><br><span class="line"><span class="keyword">UPDATE</span> dbo.STUDENT <span class="keyword">SET</span> Age=<span class="number">10</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'Hello'</span></span><br><span class="line"><span class="keyword">SAVE</span> <span class="keyword">TRANSACTION</span> TRAN_SAVE</span><br><span class="line"><span class="keyword">UPDATE</span> dbo.STUDENT <span class="keyword">SET</span> Age=<span class="number">12</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'World'</span></span><br><span class="line"><span class="keyword">ROLLBACK</span> <span class="keyword">TRANSACTION</span> TRAN_SAVE <span class="comment">--回滚到事务的保存点位置，ROLLBACK TRANSACTION savePointName 不影响@@TRANCOUNT</span></span><br><span class="line"><span class="keyword">UPDATE</span> dbo.STUDENT <span class="keyword">SET</span> Age=<span class="number">13</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'World'</span></span><br><span class="line"><span class="keyword">COMMIT</span> <span class="keyword">TRANSACTION</span> UP_STU</span><br></pre></td></tr></table></figure>
+
+<h1 id="在存储过程中使用事务"><a href="#在存储过程中使用事务" class="headerlink" title="在存储过程中使用事务"></a>在存储过程中使用事务</h1><p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">USE</span> SCHOOL</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">IF</span> OBJECT_ID(<span class="string">'P_STUDENT'</span>,<span class="string">'P'</span>) <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">GO</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> P_STUDENT</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">BEGIN</span> TRY</span><br><span class="line">		<span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span> TRAN1 <span class="comment">--外层事务</span></span><br><span class="line">			<span class="keyword">UPDATE</span> STUDENT <span class="keyword">SET</span> Age=<span class="number">10</span> <span class="keyword">WHERE</span> <span class="keyword">NAME</span>=<span class="string">'Hello'</span></span><br><span class="line">			<span class="keyword">BEGIN</span> <span class="keyword">TRANSACTION</span> SUBTRAN1  <span class="comment">--嵌套事务</span></span><br><span class="line">				<span class="keyword">INSERT</span> <span class="keyword">INTO</span> STUDENT(<span class="keyword">NAME</span>,Age,SEX) <span class="keyword">VALUES</span>(<span class="string">'JAME'</span>,<span class="number">12</span>,<span class="string">'男'</span>)</span><br><span class="line">			<span class="keyword">COMMIT</span> <span class="keyword">TRANSACTION</span> SUBTRAN1</span><br><span class="line">		<span class="keyword">COMMIT</span> <span class="keyword">TRANSACTION</span> TRAN1</span><br><span class="line">	<span class="keyword">END</span> TRY</span><br><span class="line">	<span class="keyword">BEGIN</span> CATCH</span><br><span class="line">		<span class="keyword">IF</span> @@TRANCOUNT &gt; <span class="number">0</span> <span class="comment">--@@TRANCOUNT&gt;0表示在TRY块中的事务没有成功提交，那么就回滚整个外层事务</span></span><br><span class="line">		<span class="keyword">BEGIN</span></span><br><span class="line">			PRINT @@TRANCOUNT</span><br><span class="line">			<span class="keyword">SELECT</span> ERROR_LINE(),ERROR_MESSAGE(),ERROR_PROCEDURE()</span><br><span class="line">			<span class="keyword">ROLLBACK</span> <span class="keyword">TRANSACTION</span> TRAN1</span><br><span class="line">		<span class="keyword">END</span></span><br><span class="line">		<span class="keyword">ELSE</span>  <span class="comment">--ELSE就是@@TRANCOUNT的值为0，说明事务都已经全部提交了</span></span><br><span class="line">		<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> dbo.STUDENT</span><br><span class="line">	<span class="keyword">END</span> CATCH</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"><span class="keyword">GO</span></span><br></pre></td></tr></table></figure>
       
     </div>
     <div class="article-footer">
@@ -365,7 +407,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://www.dimsum.fun/404.html" title="404 Not Found：该页无法显示" target="_blank" rel="external">http://www.dimsum.fun/404.html</a>
+      <a href="http://www.dimsum.fun/2020/05/24/39.TSqlReview15/" title="T-SQL复习15--事务" target="_blank" rel="external">http://www.dimsum.fun/2020/05/24/39.TSqlReview15/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -396,12 +438,32 @@
   </article>
   
     
+  <section id="comments">
+  	
+           
+    
+  </section>
+
 
   
 </div>
 
   <nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/24/40.TSqlReview16/" title="T-SQL复习16--函数"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/05/23/38.TSqlReview14/" title="T-SQL复习14--游标"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
   
   
   <!-- Button trigger modal -->
@@ -517,6 +579,33 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '98b838e971ccfd7d747b',
+    clientSecret: '6425df430ebd351ca1120ba9dc54123c06aa9da1',
+    repo: 'dimsum.fun.comments',
+    owner: 'xiejiamiao',
+    admin: ['xiejiamiao'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
 
 
 
