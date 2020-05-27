@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>多线程 | Hexo</title>
+  <meta name="description" content="计算机概念进程程序在服务器运行时，占据的计算资源合计，称之为进程。进程之间不会相互干扰，但是进程间的通信比较困难（分布式）。 线程程序执行的最小单位，相应操作的最小执行流，线程也包含自己的计算资源。线程是属于进程的，一个进程可以有多个线程。 多线程一个进程里面，有多个线程并发执行 C#多线程ThreadThread是一个类，就是一个封装，是.NET对线程对象的抽象封装，通过Thread去完成的操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程">
+<meta property="og:url" content="http://www.dimsum.fun/2020/05/25/42.MultiThreading/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="计算机概念进程程序在服务器运行时，占据的计算资源合计，称之为进程。进程之间不会相互干扰，但是进程间的通信比较困难（分布式）。 线程程序执行的最小单位，相应操作的最小执行流，线程也包含自己的计算资源。线程是属于进程的，一个进程可以有多个线程。 多线程一个进程里面，有多个线程并发执行 C#多线程ThreadThread是一个类，就是一个封装，是.NET对线程对象的抽象封装，通过Thread去完成的操作">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-25T02:11:00.000Z">
+<meta property="article:modified_time" content="2020-05-27T16:57:02.915Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="多线程">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/05/25/42.MultiThreading/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C#</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/C/" style="font-size: 13.25px;">C#</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/RabbitMQ/" style="font-size: 13px;">RabbitMQ</a> <a href="/tags/SQL-Server/" style="font-size: 13.5px;">SQL Server</a> <a href="/tags/T-SQL/" style="font-size: 13.5px;">T-SQL</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 13px;">多线程</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.75px;">教程备忘</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 13px;">消息队列</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/26/43.RabbitMq_document/" class="title">RabbitMq</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-26T14:36:00.000Z" itemprop="datePublished">2020-05-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C/">C#</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/25/42.MultiThreading/" class="title">多线程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-25T02:11:00.000Z" itemprop="datePublished">2020-05-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/24/41.TSqlReview17/" class="title">T-SQL复习17--触发器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-24T05:24:00.000Z" itemprop="datePublished">2020-05-24</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/24/40.TSqlReview16/" class="title">T-SQL复习16--函数</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-24T03:42:00.000Z" itemprop="datePublished">2020-05-24</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/24/39.TSqlReview15/" class="title">T-SQL复习15--事务</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-24T02:19:00.000Z" itemprop="datePublished">2020-05-24</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-42.MultiThreading" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多线程
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/25/42.MultiThreading/" class="article-date">
+	  <time datetime="2020-05-25T02:11:00.000Z" itemprop="datePublished">2020-05-25</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C/">C#</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/C/" rel="tag">C#</a>, <a class="article-tag-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/25/42.MultiThreading/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.6k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="计算机概念"><a href="#计算机概念" class="headerlink" title="计算机概念"></a>计算机概念</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>程序在服务器运行时，占据的计算资源合计，称之为进程。进程之间不会相互干扰，但是进程间的通信比较困难（分布式）。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>程序执行的最小单位，相应操作的最小执行流，线程也包含自己的计算资源。线程是属于进程的，一个进程可以有多个线程。</p>
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p>一个进程里面，有多个线程并发执行</p>
+<h1 id="C"><a href="#C" class="headerlink" title="C#"></a>C#</h1><h2 id="多线程Thread"><a href="#多线程Thread" class="headerlink" title="多线程Thread"></a>多线程Thread</h2><p><code>Thread</code>是一个类，就是一个封装，是.NET对线程对象的抽象封装，通过<code>Thread</code>去完成的操作，最终是通过像操作系统请求得到的执行流</p>
+<ul>
+<li><code>CurrentThread</code>：当前线程–任何操作执行都是线程完成的，即获得运行当前这句话的线程</li>
+<li><code>ManagerThreadId</code>：是.NET平台给Thread起的名字，就是一个<code>int</code>值，尽量不重复</li>
+</ul>
+<hr>
+<ul>
+<li>同步单线程方法：按顺序执行，每次调用完成后才能进下一行，是同一个线程运行的</li>
+<li>异步多线程方法：发起调用，不等待结果就直接进入下一行(主线程)，动作会由一个新线程来执行(子线程)</li>
+</ul>
+<h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><h2 id="界面卡顿"><a href="#界面卡顿" class="headerlink" title="界面卡顿"></a>界面卡顿</h2><ul>
+<li>同步单线程方法卡界面 —- 主(UI)线程线程忙于计算，所以不能相应</li>
+<li>异步多线程不卡界面 —- 计算任务交给子线程，主(UI)线程已经闲置，可以相应别的操作</li>
+<li>多线程对于C/S：点击按钮后能不卡死，例如：上传文件界面不卡死</li>
+<li>多线程对于B/S：例如：用户注册时同时发邮件/发短信/写日志<h2 id="执行速度"><a href="#执行速度" class="headerlink" title="执行速度"></a>执行速度</h2></li>
+<li>同步单线程方法慢 —- 因为只有一个线程在计算</li>
+<li>异步多线程方法快 —- 因为多个线程并发计算</li>
+<li>多线程就是用资源换性能</li>
+<li>但是两者的速度差不是线性增长，例如1个线程耗时1000毫秒，5个线程不代表能做到耗时200毫秒。说明多线程的协调管理由额外的成本，同时资源也是由上限的</li>
+<li>所以：线程并不是越多越好<h2 id="无序性"><a href="#无序性" class="headerlink" title="无序性"></a>无序性</h2></li>
+<li>启动无序：几乎同一时间向操作系统请求线程，因为线程时操作系统资源，CLR只能去申请，具体时什么顺序启动这个无法掌握</li>
+<li>执行时间不确定：同个线程同个任务耗时都不一样，更何况多个任务多个线程。这跟操作系统的资源调度策略有关</li>
+<li>结束无序：上面的都无序，结束时间怎么可能有序</li>
+</ul>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>使用多线程时，千万不要通过延时等方式去掌控顺序</p>
+<h1 id="多线程控制顺序"><a href="#多线程控制顺序" class="headerlink" title="多线程控制顺序"></a>多线程控制顺序</h1><h2 id="异步回调"><a href="#异步回调" class="headerlink" title="异步回调"></a>异步回调</h2><h2 id="死循环IsCompleted等待"><a href="#死循环IsCompleted等待" class="headerlink" title="死循环IsCompleted等待"></a>死循环IsCompleted等待</h2><h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><h2 id="EndInvoke获得返回值"><a href="#EndInvoke获得返回值" class="headerlink" title="EndInvoke获得返回值"></a>EndInvoke获得返回值</h2><h1 id="使用各个版本的多线程处理方式"><a href="#使用各个版本的多线程处理方式" class="headerlink" title="使用各个版本的多线程处理方式"></a>使用各个版本的多线程处理方式</h1><h2 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h2><p>示例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Thread的API特别丰富，可以玩的很花哨，但是其实大部分人都玩不好，因为线程资源是操作系统管理的，相应并部灵敏，所以没那么好控制</span></span><br><span class="line"><span class="comment">// Thread启动线程是没限制的，一个for循环启动几百万个线程，分分钟搞死服务器</span></span><br><span class="line">ThreadStart threadHandler = () =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$"Thread Start。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>); </span><br><span class="line">    Thread.Sleep(<span class="number">2000</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"Thread End。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> thread = <span class="keyword">new</span> Thread(threadHandler);</span><br><span class="line">thread.Start();</span><br></pre></td></tr></table></figure>
+
+<h2 id="ThreadPool"><a href="#ThreadPool" class="headerlink" title="ThreadPool"></a>ThreadPool</h2><p>示例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ThreadPool：池化资源管理设计思想，线程是一种资源，以前要用到线程就去申请一个，使用完释放掉。</span></span><br><span class="line"><span class="comment">// 这样是一种浪费，池化就是一个容器，容器提前申请一批线程，程序需要使用线程，直接找容器获取，用完再放回容器(通过控制资源的状态)，避免频繁的申请和销毁，容器自己还会根据限制的数量去申请和释放</span></span><br><span class="line"><span class="comment">// 好处：1.线程服用，2.可以限制最大线程数量</span></span><br><span class="line"><span class="comment">// 缺点：ThreadPool的API太少了，线程等待顺序控制比较弱，影响了实战</span></span><br><span class="line">WaitCallback callback = o =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$"ThreadPool Start。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    Thread.Sleep(<span class="number">2000</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"ThreadPool End。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">&#125;;</span><br><span class="line">ThreadPool.QueueUserWorkItem(callback);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h2><p>示例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Task:多线程最佳实践</span></span><br><span class="line"><span class="comment">// 优点：1.Task的线程券是线程池的线程  2.提供了丰富的API，非常适合开发实践</span></span><br><span class="line">Action action = () =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$"Task Start。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    Thread.Sleep(<span class="number">2000</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$"Task End。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">&#125;;</span><br><span class="line">Task task = <span class="keyword">new</span> Task(action);</span><br><span class="line">task.Start();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Parallel"><a href="#Parallel" class="headerlink" title="Parallel"></a>Parallel</h2><p>示例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Parallel：并行编程</span></span><br><span class="line"><span class="comment">// 可以同时执行多个操作，同时主线程也会参与计算，不会闲置。可以节约一个线程</span></span><br><span class="line"><span class="comment">// 可以通过ParallelOptions的MaxDegreeOfParallelism控制最大并发数量</span></span><br><span class="line">Parallel.Invoke(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Parallel 1 Start。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">        Thread.Sleep(<span class="number">2000</span>);</span><br><span class="line">        Console.WriteLine(<span class="string">$"Parallel 1 End。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    () =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Parallel 2 Start。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">        Thread.Sleep(<span class="number">2000</span>);</span><br><span class="line">        Console.WriteLine(<span class="string">$"Parallel 2 End。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    () =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"Parallel 3 Start。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">        Thread.Sleep(<span class="number">2000</span>);</span><br><span class="line">        Console.WriteLine(<span class="string">$"Parallel 3 End。。。<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="Task比较全面示例"><a href="#Task比较全面示例" class="headerlink" title="Task比较全面示例"></a>Task比较全面示例</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Coding</span>(<span class="params"><span class="keyword">string</span> dev, <span class="keyword">string</span> module</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> random = <span class="keyword">new</span> Random();</span><br><span class="line">    <span class="keyword">var</span> stopWatch = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">    stopWatch.Start();</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;dev&#125;</span>开发<span class="subst">&#123;module&#125;</span>模块 开始.......... ManagedThreadId=<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    Thread.Sleep(random.Next(<span class="number">1000</span>, <span class="number">5000</span>));</span><br><span class="line">    stopWatch.Stop();</span><br><span class="line">    Console.WriteLine(<span class="string">$"<span class="subst">&#123;dev&#125;</span>开发<span class="subst">&#123;module&#125;</span>模块 完成.......... ManagedThreadId=<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>   共耗时<span class="subst">&#123;stopWatch.ElapsedMilliseconds&#125;</span>毫秒"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AllJob</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">"谈需求..."</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">"选成员..."</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">"分配模块..."</span>);</span><br><span class="line"></span><br><span class="line">    List&lt;Task&gt; tasks = <span class="keyword">new</span> List&lt;Task&gt;();</span><br><span class="line"></span><br><span class="line">    tasks.Add(Task.Run(() =&gt; Coding(<span class="string">"张小三"</span>, <span class="string">"用户管理"</span>)));</span><br><span class="line">    tasks.Add(Task.Run(() =&gt; Coding(<span class="string">"李筱思"</span>, <span class="string">"商品管理"</span>)));</span><br><span class="line">    tasks.Add(Task.Run(() =&gt; Coding(<span class="string">"王小五"</span>, <span class="string">"订单管理"</span>)));</span><br><span class="line">    tasks.Add(Task.Run(() =&gt; Coding(<span class="string">"赵小六"</span>, <span class="string">"售后管理"</span>)));</span><br><span class="line"></span><br><span class="line">    TaskFactory taskFactory = <span class="keyword">new</span> TaskFactory();</span><br><span class="line">    taskFactory.ContinueWhenAny(tasks.ToArray(), t =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"达到里程碑...  ManagerThreadId=<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 等待全部任务完成后，启动一个新的task来完成后续动作</span></span><br><span class="line">    taskFactory.ContinueWhenAll(tasks.ToArray(), tArray =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$"项目上线...  ManagerThreadId=<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">        Console.WriteLine(<span class="string">$"项目验收...  ManagerThreadId=<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">        Console.WriteLine(<span class="string">$"支付费用...  ManagerThreadId=<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    // 会阻塞当前线程，直到任一任务结束</span></span><br><span class="line"><span class="comment">    Task.WaitAny(tasks.ToArray());</span></span><br><span class="line"><span class="comment">    Console.WriteLine("达到里程碑...");</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    // 等待上面所有的多线程都计算完毕</span></span><br><span class="line"><span class="comment">    // 会阻塞当前线程，直到全部任务结束</span></span><br><span class="line"><span class="comment">    Task.WaitAll(tasks.ToArray());</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    Console.WriteLine("项目上线...");</span></span><br><span class="line"><span class="comment">    Console.WriteLine("项目验收...");</span></span><br><span class="line"><span class="comment">    Console.WriteLine("支付费用...");</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="多线程安全"><a href="#多线程安全" class="headerlink" title="多线程安全"></a>多线程安全</h1><p>如果一段代码，单线程执行和多线程执行结果不一致，就表明由线程安全问题</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/05/25/42.MultiThreading/" title="多线程" target="_blank" rel="external">http://www.dimsum.fun/2020/05/25/42.MultiThreading/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/26/43.RabbitMq_document/" title="RabbitMq"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/05/24/41.TSqlReview17/" title="T-SQL复习17--触发器"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '98b838e971ccfd7d747b',
+    clientSecret: '6425df430ebd351ca1120ba9dc54123c06aa9da1',
+    repo: 'dimsum.fun.comments',
+    owner: 'xiejiamiao',
+    admin: ['xiejiamiao'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
