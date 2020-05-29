@@ -1,4 +1,6 @@
-http://www.dimsum.fun/2020/05/26/43.RabbitMq_document/
+http://www.dimsum.fun/2020/05/29/45.Redis1_document/
+http://www.dimsum.fun/2020/05/29/44.RabbitMq2_document/
+http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/
 http://www.dimsum.fun/2020/05/25/42.MultiThreading/
 http://www.dimsum.fun/2020/05/24/41.TSqlReview17/
 http://www.dimsum.fun/2020/05/24/40.TSqlReview16/

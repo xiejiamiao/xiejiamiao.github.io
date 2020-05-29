@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>RabbitMq | Hexo</title>
+  <meta name="description" content="主流消息中间件 ActiveMQ Kafka RocketMQ RabbitMQ   RabbitMQ核心概念及AMQP协议 为什么用RabbitMQ RabbitMQ高性能的原因 什么是AMQP AMQP核心概念 RabbitMQ整体架构 RabbitMQ消息流转   RabbitMQ常用命令 rabbitmq-server rabbitmqctl 用户相关 virtual host相关 qu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMq">
+<meta property="og:url" content="http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="主流消息中间件 ActiveMQ Kafka RocketMQ RabbitMQ   RabbitMQ核心概念及AMQP协议 为什么用RabbitMQ RabbitMQ高性能的原因 什么是AMQP AMQP核心概念 RabbitMQ整体架构 RabbitMQ消息流转   RabbitMQ常用命令 rabbitmq-server rabbitmqctl 用户相关 virtual host相关 qu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/UmneOgI2GSRY7Kp.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/K7ZvEM3S16XLDUr.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/SDQGuKW8sAz93RX.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/fGiY93JrbTU1xI7.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/KPqzXyw2lYTxs3Q.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/9o4DdunCB53hPyR.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/6DIpaO721zVJFQn.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/fXumPnWEpoLehdy.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/bYIA27sadEDihwx.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/J95AiKbfn4UutRa.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/27/VaGHXMh6YsboDJp.png">
+<meta property="article:published_time" content="2020-05-26T14:36:00.000Z">
+<meta property="article:modified_time" content="2020-05-29T11:12:41.608Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="RabbitMQ">
+<meta property="article:tag" content="消息队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/27/UmneOgI2GSRY7Kp.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C#</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NOSQL/" rel="tag">NOSQL</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/C/" style="font-size: 13.25px;">C#</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/NOSQL/" style="font-size: 13px;">NOSQL</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/RabbitMQ/" style="font-size: 13.25px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/SQL-Server/" style="font-size: 13.5px;">SQL Server</a> <a href="/tags/T-SQL/" style="font-size: 13.5px;">T-SQL</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 13px;">多线程</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.75px;">教程备忘</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 13.25px;">消息队列</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Redis/">Redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/29/45.Redis1_document/" class="title">Redis基础</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-29T02:19:00.000Z" itemprop="datePublished">2020-05-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/29/44.RabbitMq2_document/" class="title">RabbitMq高级特性</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-29T01:32:00.000Z" itemprop="datePublished">2020-05-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/26/43.RabbitMq1_document/" class="title">RabbitMq</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-26T14:36:00.000Z" itemprop="datePublished">2020-05-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/C/">C#</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/25/42.MultiThreading/" class="title">多线程</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-25T02:11:00.000Z" itemprop="datePublished">2020-05-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SQL-Server/">SQL Server</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/24/41.TSqlReview17/" class="title">T-SQL复习17--触发器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-24T05:24:00.000Z" itemprop="datePublished">2020-05-24</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-43.RabbitMq1_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RabbitMq
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/26/43.RabbitMq1_document/" class="article-date">
+	  <time datetime="2020-05-26T14:36:00.000Z" itemprop="datePublished">2020-05-26</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a>, <a class="article-tag-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/26/43.RabbitMq1_document/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 3.8k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 17(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#主流消息中间件">主流消息中间件</a><ul>
+<li><a href="#activemq">ActiveMQ</a></li>
+<li><a href="#kafka">Kafka</a></li>
+<li><a href="#rocketmq">RocketMQ</a></li>
+<li><a href="#rabbitmq">RabbitMQ</a></li>
+</ul>
+</li>
+<li><a href="#rabbitmq核心概念及amqp协议">RabbitMQ核心概念及AMQP协议</a><ul>
+<li><a href="#为什么用rabbitmq">为什么用RabbitMQ</a></li>
+<li><a href="#rabbitmq高性能的原因">RabbitMQ高性能的原因</a></li>
+<li><a href="#什么是amqp">什么是AMQP</a></li>
+<li><a href="#amqp核心概念">AMQP核心概念</a></li>
+<li><a href="#rabbitmq整体架构">RabbitMQ整体架构</a></li>
+<li><a href="#rabbitmq消息流转">RabbitMQ消息流转</a></li>
+</ul>
+</li>
+<li><a href="#rabbitmq常用命令">RabbitMQ常用命令</a><ul>
+<li><a href="#rabbitmq-server">rabbitmq-server</a></li>
+<li><a href="#rabbitmqctl">rabbitmqctl</a><ul>
+<li><a href="#用户相关">用户相关</a></li>
+<li><a href="#virtual-host相关">virtual host相关</a></li>
+<li><a href="#queue相关">queue相关</a></li>
+<li><a href="#高级操作">高级操作</a></li>
+</ul>
+</li>
+<li><a href="#rabbitmq-plugins">rabbitmq-plugins</a></li>
+</ul>
+</li>
+<li><a href="#消息生产与消费">消息生产与消费</a><ul>
+<li><a href="#重要概念">重要概念</a></li>
+<li><a href="#创建项目">创建项目</a></li>
+<li><a href="#具体代码">具体代码</a></li>
+<li><a href="#运行测试">运行测试</a></li>
+</ul>
+</li>
+<li><a href="#exchange--交换机">Exchange–交换机</a><ul>
+<li><a href="#exchange属性交换机属性">Exchange属性(交换机属性)</a></li>
+<li><a href="#direct-exchange">Direct Exchange</a><ul>
+<li><a href="#代码示例">代码示例</a><ul>
+<li><a href="#创建项目-1">创建项目</a></li>
+<li><a href="#具体代码-1">具体代码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#topic-exchange">Topic Exchange</a><ul>
+<li><a href="#代码示例-1">代码示例</a><ul>
+<li><a href="#创建项目-2">创建项目</a></li>
+<li><a href="#具体代码-2">具体代码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#fanout-exchange">Fanout Exchange</a><ul>
+<li><a href="#代码示例-2">代码示例</a><ul>
+<li><a href="#创建项目-3">创建项目</a></li>
+<li><a href="#具体代码-3">具体代码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#binding--绑定">Binding–绑定</a></li>
+<li><a href="#queue--消息队列">Queue–消息队列</a></li>
+<li><a href="#message--消息">Message–消息</a></li>
+<li><a href="#virtual-hots--虚拟主机">Virtual Hots–虚拟主机</a></li>
+</ul>
+<blockquote>
+<p>源码：<a href="https://github.com/xiejiamiao/RabbitMQSample" target="_blank" rel="noopener">https://github.com/xiejiamiao/RabbitMQSample</a></p>
+</blockquote>
+<h1 id="主流消息中间件"><a href="#主流消息中间件" class="headerlink" title="主流消息中间件"></a>主流消息中间件</h1><p><strong>衡量MQ指标：服务性能、数据存储、集群架构</strong></p>
+<h2 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h2><ul>
+<li>ActiveMQ是Apache出品，最流行的、能力最强劲的开源消息总线，并且它是一个完全支持JMS规范的消息中间件</li>
+<li>其丰富的API、多种集群构建模式使得它称为业界老牌消息中间件，在中小型企业中应用广泛</li>
+<li>性能比较一般，面对大数量高并发的情况容易出现堵塞、消息堆积过多导致延迟</li>
+<li>适合并发量不高的场景</li>
+</ul>
+<p>ActiveMQ的集群模式：<br><img src="https://i.loli.net/2020/05/27/UmneOgI2GSRY7Kp.png" alt="ActiveMQ集群模式.png"></p>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><p>Kafka是LinkedIn开源的分布式发布-订阅消息系统，目前归属于Apache顶级项目。Kafka主要特点是基于Pull的模式来处理消息消费，追求高吞吐量(配置不高的单机服务器也能支撑每秒100K的吞吐数据量)，一开始的目的就是用于日志收集和传输。0.8版本开始支持复制，不支持事务，对消息的重复、丢失、错误没有严格要求，适合产生大量数据的互联网服务的数据收集业务</p>
+<p>Kafka集群模式：<br><img src="https://i.loli.net/2020/05/27/K7ZvEM3S16XLDUr.png" alt="Kafka集群模式.png"></p>
+<h2 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h2><p>RocketMQ是阿里开源的消息中间件，目前也已经孵化为Apache顶级项目，它是纯Java开发，具有高吞吐量、高可用性、适合大规模分布式系统应用的特点。RocketMQ思路起源于Kafka，它对消息的可靠传输和事务性做了优化，目前在阿里集团被广泛应用于交易、充值、流计算、消息推送、日志流式处理、binglog分布等场景</p>
+<p>RocketMQ集群模式：<br><img src="https://i.loli.net/2020/05/27/SDQGuKW8sAz93RX.png" alt="RocketMQ集群模式.png"></p>
+<h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><p>RabbitMQ是使用Erlang语言开发的开源消息队列系统，基于AMQP协议来实现。AMQP的主要特征是面向消息、队列、路由（包括点对点和发布/订阅）、可靠性、安全。AMQP协议更多用在企业系统内，对数据一致性、稳定性和可靠性要求很高的场景，对性能和吞吐量的要求还在其次。</p>
+<p>RabbitMQ高可用负载均衡集群模式：<br><img src="https://i.loli.net/2020/05/27/fGiY93JrbTU1xI7.png" alt="RbbitMQ高可用负载均衡集群.png"></p>
+<h1 id="RabbitMQ核心概念及AMQP协议"><a href="#RabbitMQ核心概念及AMQP协议" class="headerlink" title="RabbitMQ核心概念及AMQP协议"></a>RabbitMQ核心概念及AMQP协议</h1><p><strong>RabbitMQ</strong>是一个开源的消息代理和队列服务器，用来通过普通协议在完全不同的应用之间共享数据，RabbitMQ是使用Erlang语言来编写的，并且RabbitMQ是基于AMQP协议的。</p>
+<h2 id="为什么用RabbitMQ"><a href="#为什么用RabbitMQ" class="headerlink" title="为什么用RabbitMQ"></a>为什么用RabbitMQ</h2><ul>
+<li>与<code>SpringAMQP</code>完美的整合、API丰富</li>
+<li>集群模式丰富，表达式配置，HA模式，镜像队列模型</li>
+<li>保证数据不丢失的前提下做到高可靠性、可用性</li>
+</ul>
+<h2 id="RabbitMQ高性能的原因"><a href="#RabbitMQ高性能的原因" class="headerlink" title="RabbitMQ高性能的原因"></a>RabbitMQ高性能的原因</h2><p><strong>Erlang语言</strong>最初在于交换机领域的架构模式，这使得RabbitMQ在Broker之间进行数据交互的性能是非常优秀的</p>
+<p><strong>Erlang</strong>的优点：有着与原生Socket一样的延迟</p>
+<h2 id="什么是AMQP"><a href="#什么是AMQP" class="headerlink" title="什么是AMQP"></a>什么是AMQP</h2><ul>
+<li>AMQP全称：Advance Message Queuing Protocol（高级消息队列协议）</li>
+<li>AMQP定义：具有现代特征的二进制协议。是一个提供统一消息的应用层标准高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计。</li>
+<li>AMQP协议模型：<br><img src="https://i.loli.net/2020/05/27/KPqzXyw2lYTxs3Q.png" alt="AMQP协议模型.png"></li>
+</ul>
+<h2 id="AMQP核心概念"><a href="#AMQP核心概念" class="headerlink" title="AMQP核心概念"></a>AMQP核心概念</h2><ul>
+<li><strong>Server</strong>：又称Broker，接受客户端的连接，实现AMQP实体服务</li>
+<li><strong>Connection</strong>：连接，应用程序域Broker的网络连接</li>
+<li><strong>Channel</strong>：网络信道，几乎所有的操作都在Channel中进行，Channel是进行消息读写的通道。客户端可建立多个Channel，每个Channel代表一个会话任务</li>
+<li><strong>Message</strong>：消息，服务器和应用程序之间传送的数据，有<code>Properties</code>和<code>Body</code>组成，Properties可以对消息进行修饰，比如消息的优先级、延迟等高级特性；Body则是消息体内容</li>
+<li><strong>Virtual host</strong>：虚拟主机，用于进行逻辑隔离，最上层的消息路由。一个Virtual host里面可以有若干个Exchange和Queue，同一个Virtual host里面不能有相同名称的Exchange和Queue</li>
+<li><strong>Exchange</strong>：交换机，接受消息，根据路由键转发消息到绑定的队列</li>
+<li><strong>Binding</strong>：Exchange和Queue之间的虚拟连接，bingding中可以包含routing key</li>
+<li><strong>Routing key</strong>：一个路由规则，虚拟机可用它来确定如何路由一个特定消息</li>
+<li><strong>Queue</strong>：也成为Message Queue，消息队列，保存消息并将它们转发给消费者</li>
+</ul>
+<h2 id="RabbitMQ整体架构"><a href="#RabbitMQ整体架构" class="headerlink" title="RabbitMQ整体架构"></a>RabbitMQ整体架构</h2><p><img src="https://i.loli.net/2020/05/27/9o4DdunCB53hPyR.png" alt="RabbitMQ整体架构.png"></p>
+<h2 id="RabbitMQ消息流转"><a href="#RabbitMQ消息流转" class="headerlink" title="RabbitMQ消息流转"></a>RabbitMQ消息流转</h2><p><img src="https://i.loli.net/2020/05/27/6DIpaO721zVJFQn.png" alt="RabbitMQ消息流转.png"></p>
+<h1 id="RabbitMQ常用命令"><a href="#RabbitMQ常用命令" class="headerlink" title="RabbitMQ常用命令"></a>RabbitMQ常用命令</h1><h2 id="rabbitmq-server"><a href="#rabbitmq-server" class="headerlink" title="rabbitmq-server"></a>rabbitmq-server</h2><ul>
+<li>启动并后台运行：<code>rabbitmq-server start &amp;</code></li>
+<li>停止服务：<code>rabbitmq-server stop</code><h2 id="rabbitmqctl"><a href="#rabbitmqctl" class="headerlink" title="rabbitmqctl"></a>rabbitmqctl</h2></li>
+<li>启动应用：<code>rabbitmqctl start_app</code></li>
+<li>停止应用：<code>rabbitmqctl stop_app</code></li>
+<li>节点状态：<code>rabbitmqctl status</code><h3 id="用户相关"><a href="#用户相关" class="headerlink" title="用户相关"></a>用户相关</h3></li>
+<li>添加用户：<code>rabbitmqctl add_user username password</code></li>
+<li>列出所有用户：<code>rabbitmqctl list_users</code></li>
+<li>删除用户：<code>rabbitmqctl delete_user username</code></li>
+<li>清除用户权限：<code>rabbitmqctl clear_permissions -p vhostpath username</code></li>
+<li>列出用户权限：<code>rabbitmqctl list_user_permissions username</code></li>
+<li>修改密码：<code>rabbitmqctl change_password username newpassword</code></li>
+<li>设置用户权限：<code>rabbitmqctl set_permissions -p vhostpath username &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</code><h3 id="virtual-host相关"><a href="#virtual-host相关" class="headerlink" title="virtual host相关"></a>virtual host相关</h3></li>
+<li>创建虚拟主机：<code>rabbitmqctl add_vhost vhostpath</code></li>
+<li>列出所有虚拟主机：<code>rabbitmqctl list_vhosts</code></li>
+<li>列出虚拟主机上所有权限：<code>rabbitmqctl list_permissions -p vhostpath</code></li>
+<li>删除虚拟主机：<code>rabbitmqctl delete_vhost vhostpath</code><h3 id="queue相关"><a href="#queue相关" class="headerlink" title="queue相关"></a>queue相关</h3></li>
+<li>查看所有队列信息：<code>rabbitmqctl list_queues</code></li>
+<li>清楚队列里的消息：<code>rabbitmqctl -p vhostpath purge_queue blue</code><h3 id="高级操作"><a href="#高级操作" class="headerlink" title="高级操作"></a>高级操作</h3></li>
+<li>移除所有数据：<code>rabbitmqctl reset</code>(要在<code>rabbitmqctl stop_app</code>之后使用)</li>
+<li>组成集群命令：<code>rabbitmqctl join_cluster &lt;clusternode&gt; [--ram]</code></li>
+<li>查看集群状态：<code>rabbitmqctl cluster_status</code></li>
+<li>修改集群节点的存储形式：<code>rabbitmqctl change_cluster_node_type disc | ram</code></li>
+<li>忘记节点(摘除节点)：<code>rabbitmqctl forget_cluster_node [--offline]</code></li>
+<li>修改节点名称：<code>rabbitmqctl rename_cluster_node oldnode1 newnode1 [oldnode2] [newnode2...]</code></li>
+</ul>
+<h2 id="rabbitmq-plugins"><a href="#rabbitmq-plugins" class="headerlink" title="rabbitmq-plugins"></a>rabbitmq-plugins</h2><ul>
+<li>列出当前所有插件：<code>rabbitmq-plugins list</code></li>
+<li>启动控制台：<code>rabbitmq-plugins enable rabbitmq_management</code></li>
+</ul>
+<h1 id="消息生产与消费"><a href="#消息生产与消费" class="headerlink" title="消息生产与消费"></a>消息生产与消费</h1><h2 id="重要概念"><a href="#重要概念" class="headerlink" title="重要概念"></a>重要概念</h2><ul>
+<li><code>ConnectionFactory</code>：获取连接工厂</li>
+<li><code>Connection</code>：一个连接</li>
+<li><code>Channel</code>：数据通信信道，可发送和接收消息</li>
+<li><code>Queue</code>：具体的消息存储队列</li>
+<li><code>Producer</code>：消息生产者</li>
+<li><code>Consumer</code>：消息消费者</li>
+</ul>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建两个控制台应用程序，名字分别为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BasicConsumer</span><br><span class="line">BasicProducer</span><br></pre></td></tr></table></figure>
+<p>在两个项目分别通过nuget引入<code>RabbitMQ.Client</code></p>
+<h2 id="具体代码"><a href="#具体代码" class="headerlink" title="具体代码"></a>具体代码</h2><p>BasicProducer.Program代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line"></span><br><span class="line">namespace BasicProducer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F; 1.创建一个ConnectionFactory</span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;,</span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;,</span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;</span><br><span class="line">            &#125;;</span><br><span class="line">            &#x2F;&#x2F; 2.通过连接工厂创建连接</span><br><span class="line">            using (var connection &#x3D; connectionFactory.CreateConnection())</span><br><span class="line">            &#123;</span><br><span class="line">                &#x2F;&#x2F; 3.通过connection创建Channel</span><br><span class="line">                var channel &#x3D; connection.CreateModel();</span><br><span class="line">                &#x2F;&#x2F; 4.通过channel发送数据</span><br><span class="line">                var message &#x3D; &quot;Hello RabbitMQ&quot;;</span><br><span class="line">                var body &#x3D; Encoding.UTF8.GetBytes(message);</span><br><span class="line">                for (int i &#x3D; 0; i &lt; 5; i++)</span><br><span class="line">                &#123;</span><br><span class="line">                    channel.BasicPublish(exchange: &quot;&quot;, routingKey: &quot;test001&quot;, basicProperties: null, body: body);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            Console.WriteLine(&quot;发送完毕&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>BasicConsumer.Program代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line">using RabbitMQ.Client.Events;</span><br><span class="line"></span><br><span class="line">namespace BasicConsumer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F; 1.创建一个ConnectionFactory</span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;, </span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;, </span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;</span><br><span class="line">            &#125;;</span><br><span class="line">            &#x2F;&#x2F; 2.通过连接工厂创建连接</span><br><span class="line">            using (var connection &#x3D; connectionFactory.CreateConnection())</span><br><span class="line">            &#123;</span><br><span class="line">                &#x2F;&#x2F; 3.通过connection创建Channel</span><br><span class="line">                var channel &#x3D; connection.CreateModel();</span><br><span class="line">                &#x2F;&#x2F; 4.声明一个队列</span><br><span class="line">                var queue &#x3D; channel.QueueDeclare(queue: &quot;test001&quot;, durable: true, exclusive: false, autoDelete: true, arguments: null);</span><br><span class="line">                &#x2F;&#x2F; 5.创建消费者</span><br><span class="line">                var consumer &#x3D; new EventingBasicConsumer(channel);</span><br><span class="line">                &#x2F;&#x2F; 6.设置Channel</span><br><span class="line">                channel.BasicConsume(queue: &quot;test001&quot;, autoAck: true, consumer: consumer);</span><br><span class="line">                &#x2F;&#x2F; 7.获取消息</span><br><span class="line">                consumer.Received +&#x3D; (model, ea) &#x3D;&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    var body &#x3D; ea.Body;</span><br><span class="line">                    var message &#x3D; Encoding.UTF8.GetString(body.ToArray());</span><br><span class="line">                    Console.WriteLine($&quot;接收到消息:&#123;message&#125;&quot;);</span><br><span class="line">                &#125;;</span><br><span class="line">                Console.WriteLine(&quot;输入回车键键退出&quot;);</span><br><span class="line">                Console.ReadLine();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h2><p><strong>注意：先运行Consumer，再运行Producer</strong>，可以看到Consumer端接收到了Producer端发出的5条消息</p>
+<h1 id="Exchange–交换机"><a href="#Exchange–交换机" class="headerlink" title="Exchange–交换机"></a>Exchange–交换机</h1><p>Exchange：接受消息，并根据路由键转发消息所绑定的队列<br><img src="https://i.loli.net/2020/05/27/fXumPnWEpoLehdy.png" alt="Exchange.png"></p>
+<h2 id="Exchange属性-交换机属性"><a href="#Exchange属性-交换机属性" class="headerlink" title="Exchange属性(交换机属性)"></a>Exchange属性(交换机属性)</h2><ul>
+<li>Name：交换机名字</li>
+<li>Type：交换机类型 <code>direct</code>、<code>topic</code>、<code>fanout</code>、<code>headers</code></li>
+<li>Durability：是否需要持久化，true为持久化</li>
+<li>Auto Delete：当最后一个绑定到Exchange上的队列删除后，自动删除该Exchange</li>
+<li>Internal：当前Exchange是否用于RabbitMQ内部使用，默认为false</li>
+<li>Arguments：扩展参数，用于扩展AMQP协议自制定化使用</li>
+</ul>
+<h2 id="Direct-Exchange"><a href="#Direct-Exchange" class="headerlink" title="Direct Exchange"></a>Direct Exchange</h2><p>所有发送到Direct Exchange的消息都会被转发到RouteKey中指定的Queue</p>
+<p><strong>注意：Direct模式可以使用RabbitMQ自带的Exchange:default Exchange，所以不需要将Exchange进行任何绑定(bingding)操作，消息传递时，RouteKey必须完全匹配才会被队列接受，否则该消息会被抛弃</strong></p>
+<p><img src="https://i.loli.net/2020/05/27/bYIA27sadEDihwx.png" alt="Direct Exchange.png"></p>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><h4 id="创建项目-1"><a href="#创建项目-1" class="headerlink" title="创建项目"></a>创建项目</h4><p>创建两个控制台应用程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DirectExchange.Consumer</span><br><span class="line">DirectExchange.Producer</span><br></pre></td></tr></table></figure>
+<p>再分别通过nuget引入<code>RabbitMQ.Client</code></p>
+<h4 id="具体代码-1"><a href="#具体代码-1" class="headerlink" title="具体代码"></a>具体代码</h4><p>DirectExchange.Producer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line"></span><br><span class="line">namespace DirectExchange.Producer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;**** Direct Exchange Producer Sample ****&quot;);</span><br><span class="line"></span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory()</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;,</span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;,</span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;,</span><br><span class="line">                AutomaticRecoveryEnabled &#x3D; true,</span><br><span class="line">                NetworkRecoveryInterval &#x3D; TimeSpan.FromSeconds(3)</span><br><span class="line">            &#125;;</span><br><span class="line">            using (var connection &#x3D; connectionFactory.CreateConnection())</span><br><span class="line">            &#123;</span><br><span class="line">                using (var channel &#x3D; connection.CreateModel())</span><br><span class="line">                &#123;</span><br><span class="line">                    var exchangeName &#x3D; &quot;test_direct_exchange&quot;;</span><br><span class="line">                    var routingKey &#x3D; &quot;test.direct&quot;;</span><br><span class="line"></span><br><span class="line">                    var message &#x3D; &quot;Hello World RabbitMQ For Direct Exchange&quot;;</span><br><span class="line">                    var body &#x3D; Encoding.UTF8.GetBytes(message);</span><br><span class="line"></span><br><span class="line">                    channel.BasicPublish(exchangeName, routingKey, null, body);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(&quot;消息发送完毕&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>DirectExchange.Consumer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line">using RabbitMQ.Client.Events;</span><br><span class="line"></span><br><span class="line">namespace DirectExchange.Consumer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;**** Direct Exchange Consumer Sample ****&quot;);</span><br><span class="line"></span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory()</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;,</span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;,</span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;,</span><br><span class="line">                AutomaticRecoveryEnabled &#x3D; true,</span><br><span class="line">                NetworkRecoveryInterval &#x3D; TimeSpan.FromSeconds(3)</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            using var connection &#x3D; connectionFactory.CreateConnection();</span><br><span class="line">            using var channel &#x3D; connection.CreateModel();</span><br><span class="line"></span><br><span class="line">            var exchangeName &#x3D; &quot;test_direct_exchange&quot;;</span><br><span class="line">            var queueName &#x3D; &quot;test_direct_queue&quot;;</span><br><span class="line">            var routingKey &#x3D; &quot;test.direct&quot;;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F; 声明一个交换机</span><br><span class="line">            channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Direct, durable: true, autoDelete: false, arguments: null);</span><br><span class="line">            &#x2F;&#x2F; 声明一个队列</span><br><span class="line">            channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);</span><br><span class="line">            &#x2F;&#x2F; 建立一个绑定关系</span><br><span class="line">            channel.QueueBind(queue:queueName,exchange:exchangeName,routingKey:routingKey);</span><br><span class="line"></span><br><span class="line">            var consumer &#x3D; new EventingBasicConsumer(channel);</span><br><span class="line">            channel.BasicConsume(queue: queueName, autoAck: true, consumer);</span><br><span class="line">            consumer.Received +&#x3D; (model, ea) &#x3D;&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                var body &#x3D; ea.Body;</span><br><span class="line">                var message &#x3D; Encoding.UTF8.GetString(body.ToArray());</span><br><span class="line">                Console.WriteLine($&quot;接收到消息：&#123;message&#125;&quot;);</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(&quot;输入回车键退出...&quot;);</span><br><span class="line">            Console.ReadLine();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Topic-Exchange"><a href="#Topic-Exchange" class="headerlink" title="Topic Exchange"></a>Topic Exchange</h2><p>所有发送到Topic Exchange的消息都会被转发到所有关系RouteKey中指定Topic的Queue上</p>
+<p>Exchange将RouteKey和某个Topic进行模糊匹配，此时队列需要绑定一个Topic</p>
+<p><em>注意：可以使用通配符进行模糊匹配</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">符号&quot;#&quot;匹配一个或多个词</span><br><span class="line">符号&quot;*&quot;匹配不多不少一个词</span><br><span class="line">例如：&quot;log.#&quot; 能够匹配到 &quot;log.info.oa&quot;</span><br><span class="line">      &quot;log.*&quot; 只能够匹配到 &quot;log.error&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/05/27/J95AiKbfn4UutRa.png" alt="Topic Exchange.png"></p>
+<h3 id="代码示例-1"><a href="#代码示例-1" class="headerlink" title="代码示例"></a>代码示例</h3><h4 id="创建项目-2"><a href="#创建项目-2" class="headerlink" title="创建项目"></a>创建项目</h4><p>创建两个控制台应用程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TopicExchange.Consumer</span><br><span class="line">TopicExchange.Producer</span><br></pre></td></tr></table></figure>
+<p>再分别通过nuget引入<code>RabbitMQ.Client</code></p>
+<h4 id="具体代码-2"><a href="#具体代码-2" class="headerlink" title="具体代码"></a>具体代码</h4><p>TopicExchange.Producer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line"></span><br><span class="line">namespace TopicExchange.Producer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;**** Topic Exchange Producer Sample ****&quot;);</span><br><span class="line"></span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory()</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;,</span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;,</span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;,</span><br><span class="line">                AutomaticRecoveryEnabled &#x3D; true,</span><br><span class="line">                NetworkRecoveryInterval &#x3D; TimeSpan.FromSeconds(3)</span><br><span class="line">            &#125;;</span><br><span class="line">            using var connection &#x3D; connectionFactory.CreateConnection();</span><br><span class="line">            using var channel &#x3D; connection.CreateModel();</span><br><span class="line"></span><br><span class="line">            var exchangeName &#x3D; &quot;test_topic_exchange&quot;;</span><br><span class="line">            var routingKey1 &#x3D; &quot;user.save&quot;;</span><br><span class="line">            var routingKey2 &#x3D; &quot;user.update&quot;;</span><br><span class="line">            var routingKey3 &#x3D; &quot;user.delete.abc&quot;;</span><br><span class="line"></span><br><span class="line">            var message &#x3D; &quot;Hello World RabbitMQ For Topic Exchange Message&quot;;</span><br><span class="line">            var body &#x3D; Encoding.UTF8.GetBytes(message);</span><br><span class="line"></span><br><span class="line">            channel.BasicPublish(exchange: exchangeName, routingKey: routingKey1, basicProperties: null, body);</span><br><span class="line">            channel.BasicPublish(exchange: exchangeName, routingKey: routingKey2, basicProperties: null, body);</span><br><span class="line">            channel.BasicPublish(exchange: exchangeName, routingKey: routingKey3, basicProperties: null, body);</span><br><span class="line">            </span><br><span class="line">            Console.WriteLine(&quot;消息发送完毕&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>TopicExchange.Consumer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line">using RabbitMQ.Client.Events;</span><br><span class="line"></span><br><span class="line">namespace TopicExchange.Consumer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;**** Topic Exchange Consumer Sample ****&quot;);</span><br><span class="line"></span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory()</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;,</span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;,</span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;,</span><br><span class="line">                AutomaticRecoveryEnabled &#x3D; true,</span><br><span class="line">                NetworkRecoveryInterval &#x3D; TimeSpan.FromSeconds(3)</span><br><span class="line">            &#125;;</span><br><span class="line">            using var connection &#x3D; connectionFactory.CreateConnection();</span><br><span class="line">            using var channel &#x3D; connection.CreateModel();</span><br><span class="line"></span><br><span class="line">            var exchangeName &#x3D; &quot;test_topic_exchange&quot;;</span><br><span class="line">            var queueName &#x3D; &quot;test_topic_queue&quot;;</span><br><span class="line">            var routingKey &#x3D; &quot;user.*&quot;;</span><br><span class="line">            &#x2F;&#x2F; 声明交换机</span><br><span class="line">            channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Topic, durable: true, autoDelete: false, arguments: null);</span><br><span class="line">            &#x2F;&#x2F; 声明队列</span><br><span class="line">            channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);</span><br><span class="line">            &#x2F;&#x2F; 建立绑定关系</span><br><span class="line">            channel.QueueBind(queue: queueName, exchange: exchangeName, routingKey: routingKey);</span><br><span class="line"></span><br><span class="line">            var consumer &#x3D; new EventingBasicConsumer(channel);</span><br><span class="line">            channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);</span><br><span class="line">            consumer.Received +&#x3D; (model, ea) &#x3D;&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                var body &#x3D; ea.Body;</span><br><span class="line">                var message &#x3D; Encoding.UTF8.GetString(body.ToArray());</span><br><span class="line">                </span><br><span class="line">                Console.WriteLine($&quot;接收到消息：&#123;message&#125;   RoutingKey&#x3D;&#123;ea.RoutingKey&#125;&quot;);</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(&quot;输入回车退出...&quot;);</span><br><span class="line">            Console.ReadLine();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Fanout-Exchange"><a href="#Fanout-Exchange" class="headerlink" title="Fanout Exchange"></a>Fanout Exchange</h2><p>不处理路由键，只需要简单的队列绑定到交换机上，发送到交换机上的消息都会被转发到与该交换机绑定的所有队列上，<strong>Fanout交换机转发消息是最快的</strong></p>
+<p><img src="https://i.loli.net/2020/05/27/VaGHXMh6YsboDJp.png" alt="Fanout Exchange.png"></p>
+<h3 id="代码示例-2"><a href="#代码示例-2" class="headerlink" title="代码示例"></a>代码示例</h3><h4 id="创建项目-3"><a href="#创建项目-3" class="headerlink" title="创建项目"></a>创建项目</h4><p>创建两个控制台应用程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FanoutExchange.Consumer</span><br><span class="line">FanoutExchange.Producer</span><br></pre></td></tr></table></figure>
+<p>再分别通过nuget引入<code>RabbitMQ.Client</code></p>
+<h4 id="具体代码-3"><a href="#具体代码-3" class="headerlink" title="具体代码"></a>具体代码</h4><p>FanoutExchange.Producer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line"></span><br><span class="line">namespace FanoutExchange.Producer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;**** Fanout Exchange Producer Sample ****&quot;);</span><br><span class="line"></span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory()</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;,</span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;,</span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;,</span><br><span class="line">                AutomaticRecoveryEnabled &#x3D; true,</span><br><span class="line">                NetworkRecoveryInterval &#x3D; TimeSpan.FromSeconds(3)</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            using var connection &#x3D; connectionFactory.CreateConnection();</span><br><span class="line">            using var channel &#x3D; connection.CreateModel();</span><br><span class="line"></span><br><span class="line">            var exchangeName &#x3D; &quot;test_fanout_exchange&quot;;</span><br><span class="line">            var message &#x3D; &quot;Hello World RabbitMQ For Fanout Exchange&quot;;</span><br><span class="line">            var body &#x3D; Encoding.UTF8.GetBytes(message);</span><br><span class="line">            channel.BasicPublish(exchange: exchangeName, routingKey: &quot;&quot;, basicProperties: null, body: body);</span><br><span class="line"></span><br><span class="line">            Console.WriteLine(&quot;消息发送完毕&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>FanoutExchange.Consumer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Text;</span><br><span class="line">using RabbitMQ.Client;</span><br><span class="line">using RabbitMQ.Client.Events;</span><br><span class="line"></span><br><span class="line">namespace FanoutExchange.Consumer</span><br><span class="line">&#123;</span><br><span class="line">    class Program</span><br><span class="line">    &#123;</span><br><span class="line">        static void Main(string[] args)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(&quot;**** Fanout Exchange Consumer Sample ****&quot;);</span><br><span class="line"></span><br><span class="line">            var connectionFactory &#x3D; new ConnectionFactory()</span><br><span class="line">            &#123;</span><br><span class="line">                HostName &#x3D; &quot;127.0.0.1&quot;,</span><br><span class="line">                Port &#x3D; 5672,</span><br><span class="line">                UserName &#x3D; &quot;admin&quot;,</span><br><span class="line">                Password &#x3D; &quot;admin&quot;,</span><br><span class="line">                VirtualHost &#x3D; &quot;&#x2F;&quot;,</span><br><span class="line">                AutomaticRecoveryEnabled &#x3D; true,</span><br><span class="line">                NetworkRecoveryInterval &#x3D; TimeSpan.FromSeconds(3)</span><br><span class="line">            &#125;;</span><br><span class="line">            using var connection &#x3D; connectionFactory.CreateConnection();</span><br><span class="line">            using var channel &#x3D; connection.CreateModel();</span><br><span class="line"></span><br><span class="line">            var exchangeName &#x3D; &quot;test_fanout_exchange&quot;;</span><br><span class="line">            var queueName &#x3D; &quot;test_fanout_queue&quot;;</span><br><span class="line">            &#x2F;&#x2F; 声明</span><br><span class="line">            channel.ExchangeDeclare(exchange: exchangeName, type: ExchangeType.Fanout, durable: true, autoDelete: false, arguments: null);</span><br><span class="line">            channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);</span><br><span class="line">            channel.QueueBind(queue:queueName,exchange:exchangeName,&quot;&quot;);</span><br><span class="line"></span><br><span class="line">            var consumer &#x3D; new EventingBasicConsumer(channel);</span><br><span class="line">            channel.BasicConsume(queue: queueName, autoAck: true, consumer);</span><br><span class="line">            consumer.Received +&#x3D; (model, ea) &#x3D;&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                var body &#x3D; ea.Body;</span><br><span class="line">                var message &#x3D; Encoding.UTF8.GetString(body.ToArray());</span><br><span class="line">                Console.WriteLine($&quot;接收到消息：&#123;message&#125;&quot;);</span><br><span class="line">            &#125;;</span><br><span class="line">            Console.WriteLine(&quot;输入回车退出...&quot;);</span><br><span class="line">            Console.ReadLine();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Binding–绑定"><a href="#Binding–绑定" class="headerlink" title="Binding–绑定"></a>Binding–绑定</h1><ul>
+<li>Exchange和Exchange、Queue之间的连接关系</li>
+<li>Binding中可以包含RoutingKey或参数</li>
+</ul>
+<h1 id="Queue–消息队列"><a href="#Queue–消息队列" class="headerlink" title="Queue–消息队列"></a>Queue–消息队列</h1><ul>
+<li>消息队列，实际存储消息数据</li>
+<li>Durability：是否持久化，Durable：是，Transient：否</li>
+<li>Auto Delete：如果是yes，则代表当最后一个监听被移除之后，该queue会被自动删除</li>
+</ul>
+<h1 id="Message–消息"><a href="#Message–消息" class="headerlink" title="Message–消息"></a>Message–消息</h1><ul>
+<li>服务器和应用程序之间传送的数据</li>
+<li>本质上就是一段数据，由Properties和Payload(Body)组成</li>
+<li>常用属性：delivery mode、headers（自定义属性）</li>
+<li>content_type、content_encoding、priority(优先级)</li>
+<li>correlation_id（消息唯一ID）、reply_to（消息处理失败了返回哪个队列）、expiration（消息过期时间，多久时间没被消费就过期）、message_id</li>
+<li>timestamp、type、user_id、app_id、cluster_id</li>
+</ul>
+<h1 id="Virtual-Hots–虚拟主机"><a href="#Virtual-Hots–虚拟主机" class="headerlink" title="Virtual Hots–虚拟主机"></a>Virtual Hots–虚拟主机</h1><ul>
+<li>虚拟地址，用于进行逻辑隔离，最上层的消息路由</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/" title="RabbitMq" target="_blank" rel="external">http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/05/29/44.RabbitMq2_document/" title="RabbitMq高级特性"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/05/25/42.MultiThreading/" title="多线程"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '98b838e971ccfd7d747b',
+    clientSecret: '6425df430ebd351ca1120ba9dc54123c06aa9da1',
+    repo: 'dimsum.fun.comments',
+    owner: 'xiejiamiao',
+    admin: ['xiejiamiao'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
