@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://www.dimsum.fun/2020/05/29/45.Redis1_document/</loc>
-    <lastmod>2020-05-29</lastmod>
+    <loc>http://www.dimsum.fun/2020/05/30/46.Redis2_document/</loc>
+    <lastmod>2020-05-31</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/29/44.RabbitMq2_document/</loc>
-    <lastmod>2020-05-29</lastmod>
+    <lastmod>2020-05-31</lastmod>
+  </url>  <url>
+    <loc>http://www.dimsum.fun/2020/05/29/45.Redis1_document/</loc>
+    <lastmod>2020-05-31</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/</loc>
-    <lastmod>2020-05-29</lastmod>
+    <lastmod>2020-05-31</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/25/42.MultiThreading/</loc>
     <lastmod>2020-05-27</lastmod>
@@ -28,13 +31,13 @@
     <loc>http://www.dimsum.fun/2020/05/23/38.TSqlReview14/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>  <url>
-    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
+    <loc>http://www.dimsum.fun/2020/05/23/36.TSqlReview12/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/23/37.TSqlReview13/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>  <url>
-    <loc>http://www.dimsum.fun/2020/05/23/36.TSqlReview12/</loc>
+    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/22/33.TSqlReview09/</loc>
@@ -61,10 +64,10 @@
     <loc>http://www.dimsum.fun/2020/05/20/28.TSqlReview04/</loc>
     <lastmod>2020-05-20</lastmod>
   </url>  <url>
-    <loc>http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</loc>
+    <loc>http://www.dimsum.fun/2020/05/20/26.TSqlReview02/</loc>
     <lastmod>2020-05-20</lastmod>
   </url>  <url>
-    <loc>http://www.dimsum.fun/2020/05/20/26.TSqlReview02/</loc>
+    <loc>http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</loc>
     <lastmod>2020-05-20</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/04/01/StepByStep/</loc>

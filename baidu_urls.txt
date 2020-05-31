@@ -1,3 +1,4 @@
+http://www.dimsum.fun/2020/05/30/46.Redis2_document/
 http://www.dimsum.fun/2020/05/29/45.Redis1_document/
 http://www.dimsum.fun/2020/05/29/44.RabbitMq2_document/
 http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/

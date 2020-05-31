@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/29/45.Redis1_document/</loc>
+    <loc>http://www.dimsum.fun/2020/05/30/46.Redis2_document/</loc>
     
-    <lastmod>2020-05-29T11:12:41.610Z</lastmod>
+    <lastmod>2020-05-31T15:58:31.057Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.dimsum.fun/2020/05/29/44.RabbitMq2_document/</loc>
     
-    <lastmod>2020-05-29T11:12:41.609Z</lastmod>
+    <lastmod>2020-05-31T15:58:31.056Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/05/29/45.Redis1_document/</loc>
+    
+    <lastmod>2020-05-31T15:58:31.056Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/</loc>
     
-    <lastmod>2020-05-29T11:12:41.608Z</lastmod>
+    <lastmod>2020-05-31T15:58:31.055Z</lastmod>
     
   </url>
   
@@ -65,7 +72,7 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
+    <loc>http://www.dimsum.fun/2020/05/23/36.TSqlReview12/</loc>
     
     <lastmod>2020-05-23T10:12:55.672Z</lastmod>
     
@@ -79,7 +86,7 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/23/36.TSqlReview12/</loc>
+    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
     
     <lastmod>2020-05-23T10:12:55.672Z</lastmod>
     
@@ -142,14 +149,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</loc>
+    <loc>http://www.dimsum.fun/2020/05/20/26.TSqlReview02/</loc>
     
     <lastmod>2020-05-20T11:09:09.093Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/20/26.TSqlReview02/</loc>
+    <loc>http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</loc>
     
     <lastmod>2020-05-20T11:09:09.093Z</lastmod>
     
@@ -352,14 +359,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/links/index.html</loc>
+    <loc>http://www.dimsum.fun/repository/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/repository/index.html</loc>
+    <loc>http://www.dimsum.fun/links/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
     
