@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.dimsum.fun/2020/06/01/47.Redis3_document/</loc>
+    <lastmod>2020-06-01</lastmod>
+  </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/30/46.Redis2_document/</loc>
+    <lastmod>2020-06-01</lastmod>
+  </url>  <url>
+    <loc>http://www.dimsum.fun/2020/05/29/45.Redis1_document/</loc>
     <lastmod>2020-05-31</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/29/44.RabbitMq2_document/</loc>
-    <lastmod>2020-05-31</lastmod>
-  </url>  <url>
-    <loc>http://www.dimsum.fun/2020/05/29/45.Redis1_document/</loc>
     <lastmod>2020-05-31</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/05/26/43.RabbitMq1_document/</loc>
@@ -64,10 +67,10 @@
     <loc>http://www.dimsum.fun/2020/05/20/28.TSqlReview04/</loc>
     <lastmod>2020-05-20</lastmod>
   </url>  <url>
-    <loc>http://www.dimsum.fun/2020/05/20/26.TSqlReview02/</loc>
+    <loc>http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</loc>
     <lastmod>2020-05-20</lastmod>
   </url>  <url>
-    <loc>http://www.dimsum.fun/2020/05/20/25.TSqlReview01/</loc>
+    <loc>http://www.dimsum.fun/2020/05/20/26.TSqlReview02/</loc>
     <lastmod>2020-05-20</lastmod>
   </url>  <url>
     <loc>http://www.dimsum.fun/2020/04/01/StepByStep/</loc>
