@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Redis企业级解决方案 | Hexo</title>
+  <meta name="description" content="缓存预热 现象 问题排查 解决方案 前置准备工作 准备工作 实施     缓存雪崩 现象 问题排查 解决方案（道） 解决方案（术） 总结   缓存击穿 现象 问题排查 问题分析 解决方案（术） 总结   缓存穿透 现象 问题排查 问题分析 解决方案（术） 总结   性能指标监控 性能指标：Performance 内存指标：Memory 基本活动指标：Basic activity 持久性指标：Pe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis企业级解决方案">
+<meta property="og:url" content="http://www.dimsum.fun/2020/06/02/48.Redis4_document/index.html">
+<meta property="og:site_name" content="dimsum">
+<meta property="og:description" content="缓存预热 现象 问题排查 解决方案 前置准备工作 准备工作 实施     缓存雪崩 现象 问题排查 解决方案（道） 解决方案（术） 总结   缓存击穿 现象 问题排查 问题分析 解决方案（术） 总结   缓存穿透 现象 问题排查 问题分析 解决方案（术） 总结   性能指标监控 性能指标：Performance 内存指标：Memory 基本活动指标：Basic activity 持久性指标：Pe">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-02T07:48:00.000Z">
+<meta property="article:modified_time" content="2020-06-02T09:20:42.836Z">
+<meta property="article:author" content="Jiamiao.x">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="NOSQL">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://www.dimsum.fun/2020/06/02/48.Redis4_document/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="dimsum" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xiejiamiao" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Jiamiao.x</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">程序员，会写demo的那种</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>好好学习天天向上!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NET/">.NET</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/NET-Core%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E8%AF%BE%E7%A8%8B%E5%A4%87%E5%BF%98/">.NET Core开发实战课程备忘</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ASP-NET-Core/">ASP.NET Core</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C#</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E5%9F%BA%E7%A1%80%E5%A4%87%E5%BF%98/">C#基础备忘</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SQL-Server/">SQL Server</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/StepByStep/">StepByStep</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET-Core/" rel="tag">.NET Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ASP-NET-Core/" rel="tag">ASP.NET Core</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CAP/" rel="tag">CAP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CQRS/" rel="tag">CQRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DDD/" rel="tag">DDD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/EntityFramework-Core/" rel="tag">EntityFramework Core</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MediatR/" rel="tag">MediatR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MicroServices/" rel="tag">MicroServices</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NOSQL/" rel="tag">NOSQL</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/" rel="tag">ORM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-Server/" rel="tag">SQL Server</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/T-SQL/" rel="tag">T-SQL</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Visual-Studio-Code/" rel="tag">Visual Studio Code</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gRPC/" rel="tag">gRPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" rel="tag">教程备忘</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" rel="tag">特基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/NET-Core/" style="font-size: 13px;">.NET Core</a> <a href="/tags/ASP-NET-Core/" style="font-size: 14px;">ASP.NET Core</a> <a href="/tags/C/" style="font-size: 13.2px;">C#</a> <a href="/tags/CAP/" style="font-size: 13px;">CAP</a> <a href="/tags/CQRS/" style="font-size: 13px;">CQRS</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/EntityFramework-Core/" style="font-size: 13px;">EntityFramework Core</a> <a href="/tags/MediatR/" style="font-size: 13px;">MediatR</a> <a href="/tags/MicroServices/" style="font-size: 13px;">MicroServices</a> <a href="/tags/NOSQL/" style="font-size: 13.4px;">NOSQL</a> <a href="/tags/ORM/" style="font-size: 13px;">ORM</a> <a href="/tags/RabbitMQ/" style="font-size: 13.2px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 13.4px;">Redis</a> <a href="/tags/SQL-Server/" style="font-size: 13.6px;">SQL Server</a> <a href="/tags/T-SQL/" style="font-size: 13.6px;">T-SQL</a> <a href="/tags/Visual-Studio-Code/" style="font-size: 13px;">Visual Studio Code</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/gRPC/" style="font-size: 13px;">gRPC</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 13px;">多线程</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%95%99%E7%A8%8B%E5%A4%87%E5%BF%98/" style="font-size: 13.8px;">教程备忘</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 13.2px;">消息队列</a> <a href="/tags/%E7%89%B9%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">特基础</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">8</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Redis/">Redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/02/48.Redis4_document/" class="title">Redis企业级解决方案</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-02T07:48:00.000Z" itemprop="datePublished">2020-06-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Redis/">Redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/06/01/47.Redis3_document/" class="title">Redis集群</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-06-01T07:28:00.000Z" itemprop="datePublished">2020-06-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Redis/">Redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/30/46.Redis2_document/" class="title">Redis进阶</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-30T04:08:00.000Z" itemprop="datePublished">2020-05-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Redis/">Redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/29/45.Redis1_document/" class="title">Redis基础</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-29T02:19:00.000Z" itemprop="datePublished">2020-05-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/05/29/44.RabbitMq2_document/" class="title">RabbitMQ进阶</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-05-29T01:32:00.000Z" itemprop="datePublished">2020-05-29</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-48.Redis4_document" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis企业级解决方案
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/06/02/48.Redis4_document/" class="article-date">
+	  <time datetime="2020-06-02T07:48:00.000Z" itemprop="datePublished">2020-06-02</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/NOSQL/" rel="tag">NOSQL</a>, <a class="article-tag-link" href="/tags/Redis/" rel="tag">Redis</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/06/02/48.Redis4_document/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.4k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 8(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="#缓存预热">缓存预热</a><ul>
+<li><a href="#现象">现象</a></li>
+<li><a href="#问题排查">问题排查</a></li>
+<li><a href="#解决方案">解决方案</a><ul>
+<li><a href="#前置准备工作">前置准备工作</a></li>
+<li><a href="#准备工作">准备工作</a></li>
+<li><a href="#实施">实施</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#缓存雪崩">缓存雪崩</a><ul>
+<li><a href="#现象-1">现象</a></li>
+<li><a href="#问题排查-1">问题排查</a></li>
+<li><a href="#解决方案道">解决方案（道）</a></li>
+<li><a href="#解决方案术">解决方案（术）</a></li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</li>
+<li><a href="#缓存击穿">缓存击穿</a><ul>
+<li><a href="#现象-2">现象</a></li>
+<li><a href="#问题排查-2">问题排查</a></li>
+<li><a href="#问题分析">问题分析</a></li>
+<li><a href="#解决方案术-1">解决方案（术）</a></li>
+<li><a href="#总结-1">总结</a></li>
+</ul>
+</li>
+<li><a href="#缓存穿透">缓存穿透</a><ul>
+<li><a href="#现象-3">现象</a></li>
+<li><a href="#问题排查-3">问题排查</a></li>
+<li><a href="#问题分析-1">问题分析</a></li>
+<li><a href="#解决方案术-2">解决方案（术）</a></li>
+<li><a href="#总结-2">总结</a></li>
+</ul>
+</li>
+<li><a href="#性能指标监控">性能指标监控</a><ul>
+<li><a href="#性能指标performance">性能指标：Performance</a></li>
+<li><a href="#内存指标memory">内存指标：Memory</a></li>
+<li><a href="#基本活动指标basic-activity">基本活动指标：Basic activity</a></li>
+<li><a href="#持久性指标persistence">持久性指标：Persistence</a></li>
+<li><a href="#错误指标error">错误指标：Error</a></li>
+</ul>
+</li>
+<li><a href="#监控方式">监控方式</a><ul>
+<li><a href="#工具">工具</a></li>
+<li><a href="#命令">命令</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="缓存预热"><a href="#缓存预热" class="headerlink" title="缓存预热"></a>缓存预热</h1><h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>宕机：服务器启动之后迅速宕机</p>
+<h2 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h2><ol>
+<li>请求数量较高</li>
+<li>主从之间数据吞吐量较大，数据同步操作频度较高<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="前置准备工作"><a href="#前置准备工作" class="headerlink" title="前置准备工作"></a>前置准备工作</h3></li>
+<li>日常理性统计数据访问记录，统计访问频度较高的热点数据</li>
+<li>利用LRU数据删除策略，构建数据留存队列<ol>
+<li>例如：storm与kafka配合<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3></li>
+</ol>
+</li>
+<li>将统计结果中的数据分类，根据级别，redis有限加载级别较高的热点数据</li>
+<li>利用分布式多服务器同时进行数据读取，提速数据加载过程<h3 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h3></li>
+<li>使用脚本程序固定触发数据预热过程</li>
+<li>如果有条件，使用CDN，效果会更好</li>
+</ol>
+<h1 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h1><h2 id="现象-1"><a href="#现象-1" class="headerlink" title="现象"></a>现象</h2><ol>
+<li>系统平稳运行过程中，忽然数据库连接量激增</li>
+<li>应用服务器无法及时处理请求</li>
+<li>大量408、500错误</li>
+<li>客户反复刷新页面获取数据</li>
+<li>数据库崩溃</li>
+<li>应用服务器崩溃</li>
+<li>重启应用服务器无效</li>
+<li>Redis服务器崩溃</li>
+<li>Redis集群崩溃</li>
+<li>重启数据库后再次被瞬间流量放倒<h2 id="问题排查-1"><a href="#问题排查-1" class="headerlink" title="问题排查"></a>问题排查</h2></li>
+<li>在一个<strong>较短</strong>的时间内，缓存中<strong>较多</strong>的key<strong>集中过期</strong></li>
+<li>此周期内请求访问过期的数据，redis未命中，redis向数据库获取数据</li>
+<li>数据库同时接收到大量的请求无法及时处理</li>
+<li>Redis大量请求被积压，开始出现超时现象</li>
+<li>数据库流量激增，数据库崩溃</li>
+<li>重启后仍然面对缓存中无数据可用</li>
+<li>Redis服务器资源被严重占用，Redis服务器崩溃</li>
+<li>Redis集群呈现崩塌，集群瓦解</li>
+<li>应用服务器无法即使得到数据响应请求，来自客户端的请求数量越来越多，应用服务器崩溃</li>
+<li>应用服务器、Redis、数据库全部重启，效果不理想<h2 id="解决方案（道）"><a href="#解决方案（道）" class="headerlink" title="解决方案（道）"></a>解决方案（道）</h2></li>
+<li>更多的页面静态化处理</li>
+<li>构建多级缓存架构：nginx缓存+redis缓存+ehcache缓存</li>
+<li>检测MySql严重耗时业务进行优化，对数据库的瓶颈排查，例如超时查询、耗时较高事务等</li>
+<li>灾难预警机制，监控redis服务器性能指标：<ol>
+<li>CPU占用、CPU使用率</li>
+<li>内存容量</li>
+<li>查询平均响应时间</li>
+<li>线程数</li>
+</ol>
+</li>
+<li>限流、降级：短时间范围内牺牲一些客户体验，限制一部分请求访问，降低应用服务器压力，待业务低速运转后再逐步放开访问<h2 id="解决方案（术）"><a href="#解决方案（术）" class="headerlink" title="解决方案（术）"></a>解决方案（术）</h2></li>
+<li>LRU与LFU切换</li>
+<li>数据有效期策略调整<ol>
+<li>根据业务数据有效期进行分类错峰，A类90分钟、B类80分钟、C类70分钟</li>
+<li>过期时间使用固定时间+随机值的形式，稀释集中到期的key的数量</li>
+</ol>
+</li>
+<li>超热数据使用永久key</li>
+<li>定期维护（自动+人工）：对即将过期数据做访问量分析，确认是否延时，配合访问量统计，做热点数据的延时</li>
+<li>加锁：慎用！！！<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>缓存雪崩就是顺接过期数据量太大，导致对数据库服务器造成压力，如果能够避免过期时间集中，可以有效解决雪崩现象的出现(40%)，配合其他策略一起使用，并监控服务器的运行数据，根据运行记录做快速调整</li>
+</ol>
+<h1 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h1><h2 id="现象-2"><a href="#现象-2" class="headerlink" title="现象"></a>现象</h2><ol>
+<li>系统平稳运行过程中</li>
+<li>数据库连接量瞬间激增</li>
+<li>Redis服务器无大量key过期</li>
+<li>Redis内存平稳，无波动</li>
+<li>Redis服务器CPU正常</li>
+<li>数据库崩溃<h2 id="问题排查-2"><a href="#问题排查-2" class="headerlink" title="问题排查"></a>问题排查</h2></li>
+<li>Redis中某个key过期，该key访问量巨大</li>
+<li>多个数据请求从服务器直接压倒Redis后，均为命中</li>
+<li>Redis在短时间内发起了大量对数据库中同一数据的访问<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2></li>
+<li>单个key高热数据</li>
+<li>key过期<h2 id="解决方案（术）-1"><a href="#解决方案（术）-1" class="headerlink" title="解决方案（术）"></a>解决方案（术）</h2></li>
+<li>预先设定：以电商为例，每个商家根据店铺等级，指定若干款主打商品，在购物节期间，加大此类信息key的过期时长。注意：购物街不仅仅指当天，以及后续若干天，访问峰值呈现逐渐降低的去式</li>
+<li>现场调整：监控访问量，对自然流量激增的数据演唱过期时间或设置未永久性key</li>
+<li>后台刷新数据：启动定时任务，高峰期来临之前，刷新数据有效期，确保不丢失</li>
+<li>二级缓存：设置不同的过期时间，保障不会被<strong>同时</strong>淘汰就行</li>
+<li>枷锁：分布式锁，防止被击穿，但是要注意也是性能瓶颈，慎用！！！<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2>缓存击穿就是单个高热数据过期的瞬间，数据量访问较大，未命中Redis后，发起了大量对统一数据的数据库访问，导致对数据库服务器造成压力。应对策略应该是在业务数据分析与预防方面进行，配合运行监控测试与即时调整策略，毕竟单个key的过期监控难度较高，配合雪崩处理策略即可。</li>
+</ol>
+<h1 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h1><h2 id="现象-3"><a href="#现象-3" class="headerlink" title="现象"></a>现象</h2><ol>
+<li>系统平稳运行过程中</li>
+<li>应用服务器流量随时间增量较大</li>
+<li>Redis服务器命中率随时间逐步降低</li>
+<li>Redis内存平稳，内存无压力</li>
+<li>Redis服务器CPU占用激增</li>
+<li>数据库服务器压力激增</li>
+<li>数据库崩溃</li>
+</ol>
+<h2 id="问题排查-3"><a href="#问题排查-3" class="headerlink" title="问题排查"></a>问题排查</h2><ol>
+<li>Redis中大面积出现未命中</li>
+<li>出现非正常URL访问</li>
+</ol>
+<h2 id="问题分析-1"><a href="#问题分析-1" class="headerlink" title="问题分析"></a>问题分析</h2><ol>
+<li>获取的数据在数据库中也不存在，数据库查询未得到对应数据</li>
+<li>Redis获得到null数据未进行持久化，直接返回</li>
+<li>下次此类数据达到重复上述过程</li>
+<li>出现黑客攻击服务器</li>
+</ol>
+<h2 id="解决方案（术）-2"><a href="#解决方案（术）-2" class="headerlink" title="解决方案（术）"></a>解决方案（术）</h2><ol>
+<li>缓存null：对查询结果为null的数据进行缓存（长期使用，定期清理），设定短时限，例如30~60秒，最高5分钟</li>
+<li>白名单策略<ol>
+<li>提前预热各种分类数据id对应的bitmaps，id作为bitmap的offset，相当于设置了数据白名单，当加载正常数据时，放行，加载异常数据时直接拦截（效率偏低）</li>
+<li>使用布隆过滤器（有关布隆过滤器的命中问题对当前状态可以忽略）</li>
+</ol>
+</li>
+<li>实时监控：实时监控Redis命中率（业务正常范围时，通常会有一个波动值）与null数据的占比<ol>
+<li>非活动时段波动：通常检测3~5倍，超过5倍纳入重点排查对象</li>
+<li>活动时段波动：通常检测10~50倍，超过50倍纳入重点排查对象</li>
+<li>根据倍数不同，启动不同的排查流程。然后使用黑名单进行防控</li>
+</ol>
+</li>
+<li>key加密：问题出现后，临时启动防灾业务key，对key进行业务层传输加密服务，设定校验程序，过来的key校验<ol>
+<li>例如每天随机分配60个加密串，挑选2~3个，混淆到页面数据id中，发现访问key不满足规则，驳回数据访问</li>
+</ol>
+</li>
+</ol>
+<h2 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h2><p>缓存击穿访问了不存在的数据，跳过了合法数据的Redis数据缓存阶段，每次访问数据库，导致对数据库服务器造成压力，通常此类数据的出现量是一个较低的值，当出现此类情况以毒攻毒，并及时<strong>报警</strong>，应对策略应该在临时预案方面多做文章</p>
+<p>无论时黑名单还是白名单，都是对整体系统的压力，警报解除后尽快移除</p>
+<h1 id="性能指标监控"><a href="#性能指标监控" class="headerlink" title="性能指标监控"></a>性能指标监控</h1><h2 id="性能指标：Performance"><a href="#性能指标：Performance" class="headerlink" title="性能指标：Performance"></a>性能指标：Performance</h2><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>latency</td>
+<td>Redis平均响应一个请求的时间</td>
+</tr>
+<tr>
+<td>instantaneous_ops_per_sec</td>
+<td>平均每秒处理请求总数（QPS）</td>
+</tr>
+<tr>
+<td>hit rate(calculated)</td>
+<td>缓存命中率(计算出来的)</td>
+</tr>
+</tbody></table>
+<h2 id="内存指标：Memory"><a href="#内存指标：Memory" class="headerlink" title="内存指标：Memory"></a>内存指标：Memory</h2><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>used_memory</td>
+<td>已使用内存</td>
+</tr>
+<tr>
+<td>mem_fragmentation_ratio</td>
+<td>内存碎片率</td>
+</tr>
+<tr>
+<td>evicted_key</td>
+<td>由于最大内存限制被移除的key的数量</td>
+</tr>
+<tr>
+<td>block_clients</td>
+<td>由于BLPOP、BRPOP、BRPOPLPUSH而被阻塞的客户端</td>
+</tr>
+</tbody></table>
+<h2 id="基本活动指标：Basic-activity"><a href="#基本活动指标：Basic-activity" class="headerlink" title="基本活动指标：Basic activity"></a>基本活动指标：Basic activity</h2><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>connected_clients</td>
+<td>客户端连接数</td>
+</tr>
+<tr>
+<td>connected_slaves</td>
+<td>slave数量</td>
+</tr>
+<tr>
+<td>master_last_io_seconds_ago</td>
+<td>最近一次主从交互之后的秒数</td>
+</tr>
+<tr>
+<td>keyspace</td>
+<td>数据库中的key值总数</td>
+</tr>
+</tbody></table>
+<h2 id="持久性指标：Persistence"><a href="#持久性指标：Persistence" class="headerlink" title="持久性指标：Persistence"></a>持久性指标：Persistence</h2><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rdb_last_save_time</td>
+<td>最后一次持久化保存到磁盘的时间戳</td>
+</tr>
+<tr>
+<td>rdb_changes_since_last_save</td>
+<td>自最后一次持久化以来数据库的更改数</td>
+</tr>
+</tbody></table>
+<h2 id="错误指标：Error"><a href="#错误指标：Error" class="headerlink" title="错误指标：Error"></a>错误指标：Error</h2><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rejected_connections</td>
+<td>由于达到maxclient限制而被拒绝的连接数</td>
+</tr>
+<tr>
+<td>keyspace_misses</td>
+<td>key值查找失败（没有命中）次数</td>
+</tr>
+<tr>
+<td>master_link_down_since_seconds</td>
+<td>主从断开的持续时间（以秒为单位）</td>
+</tr>
+</tbody></table>
+<h1 id="监控方式"><a href="#监控方式" class="headerlink" title="监控方式"></a>监控方式</h1><h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
+<li>Cloud Insight Redis</li>
+<li>Prometheus</li>
+<li>Redis-stat</li>
+<li>Redis-faina</li>
+<li>RedisLive</li>
+<li>zabbix<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2></li>
+<li>benchmark<ul>
+<li><code>redis-benchmark</code>：50个连接，10000次请求对应的性能</li>
+<li><code>redis-benchmark -c 100 -n 5000</code>：100个连接，5000次请求对应的性能</li>
+</ul>
+</li>
+<li>redis-cli<ul>
+<li>monitor</li>
+<li>slowlog<ul>
+<li><code>slowlog get</code>：获取慢查询日志</li>
+<li><code>slowlog len</code>：获取慢查询日志条目数</li>
+<li><code>slowlog reset</code>：重置慢查询日志</li>
+<li>相关配置：<ul>
+<li><code>slow-log-slower-than 1000</code>：设置慢查询的时间下限，单位：毫秒</li>
+<li><code>slowlog-max-len 100</code>：设置慢查询命令对应的日志显示长度，单位：命令数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://www.dimsum.fun/2020/06/02/48.Redis4_document/" title="Redis企业级解决方案" target="_blank" rel="external">http://www.dimsum.fun/2020/06/02/48.Redis4_document/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xiejiamiao" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xiejiamiao" target="_blank"><span class="text-dark">Jiamiao.x</span><small class="ml-1x">程序员，会写demo的那种</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/06/01/47.Redis3_document/" title="Redis集群"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xiejiamiao" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '98b838e971ccfd7d747b',
+    clientSecret: '6425df430ebd351ca1120ba9dc54123c06aa9da1',
+    repo: 'dimsum.fun.comments',
+    owner: 'xiejiamiao',
+    admin: ['xiejiamiao'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

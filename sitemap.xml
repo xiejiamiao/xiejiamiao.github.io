@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.dimsum.fun/2020/06/02/48.Redis4_document/</loc>
+    
+    <lastmod>2020-06-02T09:20:42.836Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/06/01/47.Redis3_document/</loc>
     
-    <lastmod>2020-06-01T10:59:44.328Z</lastmod>
+    <lastmod>2020-06-02T09:20:42.835Z</lastmod>
     
   </url>
   
@@ -51,14 +58,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/24/41.TSqlReview17/</loc>
+    <loc>http://www.dimsum.fun/2020/05/24/40.TSqlReview16/</loc>
     
     <lastmod>2020-05-24T06:11:11.139Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/24/40.TSqlReview16/</loc>
+    <loc>http://www.dimsum.fun/2020/05/24/41.TSqlReview17/</loc>
     
     <lastmod>2020-05-24T06:11:11.139Z</lastmod>
     
@@ -86,14 +93,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/23/37.TSqlReview13/</loc>
+    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
     
     <lastmod>2020-05-23T10:12:55.672Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
+    <loc>http://www.dimsum.fun/2020/05/23/37.TSqlReview13/</loc>
     
     <lastmod>2020-05-23T10:12:55.672Z</lastmod>
     
@@ -219,14 +226,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/07/18.MicroService01_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/</loc>
     
     <lastmod>2020-04-09T09:20:56.918Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/04/09/19.Docker_AspNetCore_document/</loc>
+    <loc>http://www.dimsum.fun/2020/04/07/18.MicroService01_document/</loc>
     
     <lastmod>2020-04-09T09:20:56.918Z</lastmod>
     
@@ -359,6 +366,13 @@
   </url>
   
   <url>
+    <loc>http://www.dimsum.fun/categories/index.html</loc>
+    
+    <lastmod>2020-03-27T07:22:15.609Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/links/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.609Z</lastmod>
@@ -373,21 +387,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/categories/index.html</loc>
-    
-    <lastmod>2020-03-27T07:22:15.609Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.dimsum.fun/about/index.html</loc>
+    <loc>http://www.dimsum.fun/books/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.608Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/books/index.html</loc>
+    <loc>http://www.dimsum.fun/about/index.html</loc>
     
     <lastmod>2020-03-27T07:22:15.608Z</lastmod>
     
