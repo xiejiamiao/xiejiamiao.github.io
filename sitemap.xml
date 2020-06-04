@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.dimsum.fun/2020/06/03/50.Git_document/</loc>
+    
+    <lastmod>2020-06-04T16:43:59.913Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.dimsum.fun/2020/06/03/49.Transaction01/</loc>
+    
+    <lastmod>2020-06-04T16:43:59.912Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/06/02/48.Redis4_document/</loc>
     
     <lastmod>2020-06-02T09:20:42.836Z</lastmod>
@@ -86,6 +100,13 @@
   </url>
   
   <url>
+    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
+    
+    <lastmod>2020-05-23T10:12:55.672Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.dimsum.fun/2020/05/23/36.TSqlReview12/</loc>
     
     <lastmod>2020-05-23T10:12:55.672Z</lastmod>
@@ -100,21 +121,14 @@
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/22/35.TSqlReview11/</loc>
-    
-    <lastmod>2020-05-23T10:12:55.672Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.dimsum.fun/2020/05/22/33.TSqlReview09/</loc>
+    <loc>http://www.dimsum.fun/2020/05/22/34.TSqlReview10/</loc>
     
     <lastmod>2020-05-22T11:00:01.085Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.dimsum.fun/2020/05/22/34.TSqlReview10/</loc>
+    <loc>http://www.dimsum.fun/2020/05/22/33.TSqlReview09/</loc>
     
     <lastmod>2020-05-22T11:00:01.085Z</lastmod>
     

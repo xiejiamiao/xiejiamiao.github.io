@@ -1,3 +1,5 @@
+http://www.dimsum.fun/2020/06/03/50.Git_document/
+http://www.dimsum.fun/2020/06/03/49.Transaction01/
 http://www.dimsum.fun/2020/06/02/48.Redis4_document/
 http://www.dimsum.fun/2020/06/01/47.Redis3_document/
 http://www.dimsum.fun/2020/05/30/46.Redis2_document/
