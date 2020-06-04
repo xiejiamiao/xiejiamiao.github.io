@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.dimsum.fun/"/>
-  <updated>2020-06-04T16:43:59.913Z</updated>
+  <updated>2020-06-04T16:52:01.893Z</updated>
   <id>http://www.dimsum.fun/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://www.dimsum.fun/2020/06/03/50.Git_document/"/>
     <id>http://www.dimsum.fun/2020/06/03/50.Git_document/</id>
     <published>2020-06-03T08:02:00.000Z</published>
-    <updated>2020-06-04T16:43:59.913Z</updated>
+    <updated>2020-06-04T16:52:01.893Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="本地仓库版本切换"><a href="#本地仓库版本切换" class="headerlink" title="本地仓库版本切换"></a>本地仓库版本切换</h1><ul><li>查询当前本版以前的所有提交记录：<code>git log --pretty=oneline</code></li><li>查询所有版本记录：<code>git reflog</code></li><li>代码切换到指定目录：<code>git reset --hard 版本号</code></li></ul><h1 id="远程仓库操作"><a href="#远程仓库操作" class="headerlink" title="远程仓库操作"></a>远程仓库操作</h1><ul><li>推送本地仓库代码到远程仓库：<code>git push</code></li><li>拉取远程仓库代码：<code>git pull</code></li></ul><h1 id="分支常用命令"><a href="#分支常用命令" class="headerlink" title="分支常用命令"></a>分支常用命令</h1><ul><li>查看分支：<code>git branch</code></li><li>创建分支：<code>git branch 分支名</code></li><li>切换分支：<code>git checkout 分支名</code></li><li>创建再切换到新建的分支：<code>git checkout -b 分支名</code></li><li>删除分支：<code>git branch -d 分支名</code>  <strong>不能删除当前正在使用的分支</strong></li><li>合并分支：<code>git merge 被合并的分支名</code></li></ul><h1 id="测试一下"><a href="#测试一下" class="headerlink" title="测试一下"></a>测试一下</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="本地仓库版本切换"><a href="#本地仓库版本切换" class="headerlink" title="本地仓库版本切换"></a>本地仓库版本切换</h1><ul><li>查询当前本版以前的所有提交记录：<code>git log --pretty=oneline</code></li><li>查询所有版本记录：<code>git reflog</code></li><li>代码切换到指定目录：<code>git reset --hard 版本号</code></li></ul><h1 id="远程仓库操作"><a href="#远程仓库操作" class="headerlink" title="远程仓库操作"></a>远程仓库操作</h1><ul><li>推送本地仓库代码到远程仓库：<code>git push</code></li><li>拉取远程仓库代码：<code>git pull</code></li></ul><h1 id="分支常用命令"><a href="#分支常用命令" class="headerlink" title="分支常用命令"></a>分支常用命令</h1><ul><li>查看分支：<code>git branch</code></li><li>创建分支：<code>git branch 分支名</code></li><li>切换分支：<code>git checkout 分支名</code></li><li>创建再切换到新建的分支：<code>git checkout -b 分支名</code></li><li>删除分支：<code>git branch -d 分支名</code>  <strong>不能删除当前正在使用的分支</strong></li><li>合并分支：<code>git merge 被合并的分支名</code></li></ul>]]></content>
     
     <summary type="html">
     
